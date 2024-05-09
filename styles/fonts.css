@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+
+@font-face {
+    font-family: 'ETmodules';
+    src: url('fonts/ETmodules.eot'), url('fonts/ETmodules.woff') format('woff'), url('fonts/ETmodules.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'MinionPro-Regular';
+    src: url('fonts/MinionPro-Regular.eot'), url('fonts/MinionPro-Regular.woff') format('woff'), url('fonts/MinionPro-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'Poppins-Medium';
+    src: url('fonts/Poppins-Medium.eot'), url('fonts/Poppins-Medium.woff') format('woff'), url('fonts/Poppins-Medium.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('fonts/Poppins-Regular.eot'), url('fonts/Poppins-Regular.woff') format('woff'), url('fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'Poppins-SemiBold';
+    src: url('fonts/Poppins-SemiBold.eot'), url('fonts/Poppins-SemiBold.woff') format('woff'), url('fonts/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'PPNeueMachina-InktrapRegular';
+    src: url('fonts/PPNeueMachina-InktrapRegular.eot'), url('fonts/PPNeueMachina-InktrapRegular.woff') format('woff'), url('fonts/PPNeueMachina-InktrapRegular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal
+}

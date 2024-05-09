@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 105.19 75.1">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clippath);
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8 {
+        stroke-width: 0px;
+      }
+
+      .cls-9 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-10 {
+        clip-path: url(#clippath-4);
+      }
+
+      .cls-11 {
+        clip-path: url(#clippath-3);
+      }
+
+      .cls-12 {
+        clip-path: url(#clippath-2);
+      }
+
+      .cls-13 {
+        clip-path: url(#clippath-5);
+      }
+
+      .cls-3 {
+        fill: url(#_未命名的渐变_6);
+      }
+
+      .cls-4 {
+        fill: url(#_未命名的渐变_6-2);
+      }
+
+      .cls-5 {
+        fill: url(#_未命名的渐变_6-4);
+      }
+
+      .cls-6 {
+        fill: url(#_未命名的渐变_6-3);
+      }
+
+      .cls-7 {
+        fill: url(#_未命名的渐变_6-6);
+      }
+
+      .cls-8 {
+        fill: url(#_未命名的渐变_6-5);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-2" x="45.07" y="45.06" width="15.02" height="15.02"/>
+    </clipPath>
+    <radialGradient id="_未命名的渐变_6" data-name="未命名的渐变 6" cx="-243.18" cy="459.06" fx="-243.18" fy="459.06" r="1" gradientTransform="translate(161514.69 304190.65) scale(661.84 -661.84)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f5e355"/>
+      <stop offset="0" stop-color="#f5e355"/>
+      <stop offset=".29" stop-color="#43b791"/>
+      <stop offset=".53" stop-color="#47bfe4"/>
+      <stop offset=".8" stop-color="#7f7ab8"/>
+      <stop offset="1" stop-color="#a782b9"/>
+      <stop offset="1" stop-color="#a782b9"/>
+    </radialGradient>
+    <clipPath id="clippath-1">
+      <rect class="cls-2" x="45.04" y="15.02" width="15.02" height="15.02"/>
+    </clipPath>
+    <radialGradient id="_未命名的渐变_6-2" data-name="未命名的渐变 6" cx="-243.18" cy="459.06" fx="-243.18" fy="459.06" r="1" xlink:href="#_未命名的渐变_6"/>
+    <clipPath id="clippath-2">
+      <polygon class="cls-2" points="75.14 15.02 75.14 30.04 75.14 45.06 75.14 60.08 89.17 60.08 105.19 60.08 105.19 45.06 90.16 45.06 90.16 30.04 90.16 15.02 75.14 15.02"/>
+    </clipPath>
+    <radialGradient id="_未命名的渐变_6-3" data-name="未命名的渐变 6" cx="-243.18" cy="458.87" fx="-243.18" fy="458.87" r="1" gradientTransform="translate(161514.69 455672.51) scale(661.84 -992.24)" xlink:href="#_未命名的渐变_6"/>
+    <clipPath id="clippath-3">
+      <polygon class="cls-2" points="15.01 15.02 7.5 15.02 7.5 30.04 15.01 30.04 15.01 45.06 0 45.06 0 60.08 15.01 60.08 30.03 60.08 30.03 45.06 30.03 30.04 30.03 15.02 15.01 15.02"/>
+    </clipPath>
+    <radialGradient id="_未命名的渐变_6-4" data-name="未命名的渐变 6" cx="-243.18" cy="458.87" fx="-243.18" fy="458.87" r="1" gradientTransform="translate(161514.69 456087.56) scale(661.84 -993.14)" xlink:href="#_未命名的渐变_6"/>
+    <clipPath id="clippath-4">
+      <rect class="cls-2" x="30.19" width="15.02" height="15.02"/>
+    </clipPath>
+    <radialGradient id="_未命名的渐变_6-5" data-name="未命名的渐变 6" cx="-243.18" cy="459.06" fx="-243.18" fy="459.06" r="1" gradientTransform="translate(161514.69 304221.07) scale(661.84 -661.9)" xlink:href="#_未命名的渐变_6"/>
+    <clipPath id="clippath-5">
+      <rect class="cls-2" x="60.06" y="60.08" width="15.02" height="15.02"/>
+    </clipPath>
+    <radialGradient id="_未命名的渐变_6-6" data-name="未命名的渐变 6" cx="-243.18" cy="459.06" fx="-243.18" fy="459.06" r="1" xlink:href="#_未命名的渐变_6"/>
+  </defs>
+  <g class="cls-1">
+    <rect class="cls-3" x="45.07" y="45.06" width="15.02" height="15.02"/>
+  </g>
+  <g class="cls-9">
+    <rect class="cls-4" x="45.04" y="15.02" width="15.02" height="15.02"/>
+  </g>
+  <g class="cls-12">
+    <rect class="cls-6" x="75.14" y="15.02" width="30.05" height="45.06"/>
+  </g>
+  <g class="cls-11">
+    <rect class="cls-5" y="15.02" width="30.03" height="45.06"/>
+  </g>
+  <g class="cls-10">
+    <rect class="cls-8" x="30.19" y="0" width="15.02" height="15.02"/>
+  </g>
+  <g class="cls-13">
+    <rect class="cls-7" x="60.06" y="60.08" width="15.02" height="15.02"/>
+  </g>
+</svg>
