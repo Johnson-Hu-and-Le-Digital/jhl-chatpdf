@@ -816,3 +816,22 @@ hr.hr-white {
 #drop_area.drag-enter {
   background-color: #f5f5f5;
 }
+
+.references-box{
+  background-color: #423c81;
+  border-radius: 8px;
+  padding: 10px 8px;
+  color: #ffffff;
+}
+.references-box .references-title{
+  font-family: 'Poppins-SemiBold';
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+}
+.references-box p{
+  font-family: 'Poppins-Regular';
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+}

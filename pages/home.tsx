@@ -180,7 +180,6 @@ export default function Home() {
                 <div className="row justify-content-center align-items-center">
                     <div className="col-12 col-lg-9">
                         <div className="title">Introducing the <span>AIAnalyzer</span></div>
-                        
                         <main className={styles.main}>
                           <div className={styles.cloud} style={{width: '100%'}}>
                             <div ref={messageListRef} className={styles.messagelist}>
@@ -230,32 +229,14 @@ export default function Home() {
                                     </div>
                                     {message.sourceDocs && (
                                       <div
-                                        className="p-5"
-                                        key={`sourceDocsAccordion-${index}`}
+                                        className="references-box"
                                       >
-                                        <Accordion
-                                          type="single"
-                                          collapsible
-                                          className="flex-col"
-                                        >
+                                        <div className='references-title'>References: </div>
                                           {message.sourceDocs.map((doc, index) => (
-                                            <div key={`messageSourceDocs-${index}`}>
-                                              <AccordionItem value={`item-${index}`}>
-                                                <AccordionTrigger>
-                                                  <h3>Source {index + 1}</h3>
-                                                </AccordionTrigger>
-                                                <AccordionContent>
-                                                  <ReactMarkdown linkTarget="_blank">
-                                                    {doc.pageContent}
-                                                  </ReactMarkdown>
-                                                  <p className="mt-2">
-                                                    <b>Source:</b> {doc.metadata.source}
-                                                  </p>
-                                                </AccordionContent>
-                                              </AccordionItem>
-                                            </div>
+                                              <p className="mt-1">
+                                                {index + 1}. {doc.metadata.source}
+                                              </p>
                                           ))}
-                                        </Accordion>
                                       </div>
                                     )}
                                   </>
