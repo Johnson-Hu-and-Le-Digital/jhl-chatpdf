@@ -190,11 +190,12 @@ export default function Index() {
             <div className="container">
                 <div className="row justify-content-center align-items-center">
                     <div className="col-12 col-lg-9">
-                      <select onChange={handleChange} id="selectWebsite" className="form-select" style={{width: 'auto'}} defaultValue={url}>
+                      <select onChange={handleChange} id="selectWebsite" className="form-select" style={{width: 'auto'}} value={url}>
                         <option value="http://gsk-chatpdf-bexsero.jhldigital.com/">Bexsero</option>
                         <option value="http://gsk-chatpdf-shingrix.jhldigital.com/">Shingrix</option>
                         <option value="http://gsk-chatpdf-twinrix.jhldigital.com/">Twinrix</option>
                       </select>
+                      {/* <input type='hidden' value={url} /> */}
                         <div className="title mt-4">Introducing the <span>AIAnalyzer</span></div>
                         <main className={styles.main}>
                           <div className={styles.cloud} style={{width: '100%'}}>
