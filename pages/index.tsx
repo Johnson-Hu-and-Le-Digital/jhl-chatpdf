@@ -1,11 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Layout from '@/components/layout';
 import styles from '@/styles/Home.module.css';
+// import fonts from '@/styles/fonts.module.css';
+// import indexcss from '@/styles/index.module.css';
 import { Message } from '@/types/chat';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import LoadingDots from '@/components/ui/LoadingDots';
 import { Document } from 'langchain/document';
+
 import {
   Accordion,
   AccordionContent,
@@ -13,7 +17,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-export default function Home() {
+export default function Index() {
   const [query, setQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -119,152 +123,253 @@ export default function Home() {
       e.preventDefault();
     }
   };
+  
+  const router = useRouter();
+  const handleChange = (event: any) => {
+    // console.log(event.target.value);
+    router.push(event.target.value);
+  };
 
   return (
     <>
       <Layout>
-        <div className="mx-auto flex flex-col gap-4">
-          <h1 className="text-2xl font-bold leading-[1.1] tracking-tighter text-center">
-            Chat With Your Docs
-          </h1>
-          <main className={styles.main}>
-            <div className={styles.cloud}>
-              <div ref={messageListRef} className={styles.messagelist}>
-                {messages.map((message, index) => {
-                  let icon;
-                  let className;
-                  if (message.type === 'apiMessage') {
-                    icon = (
-                      <Image
-                        key={index}
-                        src="/bot-image.png"
-                        alt="AI"
-                        width="40"
-                        height="40"
-                        className={styles.boticon}
-                        priority
-                      />
-                    );
-                    className = styles.apimessage;
-                  } else {
-                    icon = (
-                      <Image
-                        key={index}
-                        src="/usericon.png"
-                        alt="Me"
-                        width="30"
-                        height="30"
-                        className={styles.usericon}
-                        priority
-                      />
-                    );
-                    // The latest message sent by the user will be animated while waiting for a response
-                    className =
-                      loading && index === messages.length - 1
-                        ? styles.usermessagewaiting
-                        : styles.usermessage;
-                  }
-                  return (
-                    <>
-                      <div key={`chatMessage-${index}`} className={className}>
-                        {icon}
-                        <div className={styles.markdownanswer}>
-                          <ReactMarkdown linkTarget="_blank">
-                            {message.message}
-                          </ReactMarkdown>
-                        </div>
+      <div id="page-top" className="index page">
+      <section className='left-panel pt-4 pb-5'>
+        <div className="container">
+            <div className="row justify-content-center align-items-center">
+                <div className="col-12 col-lg-11">
+                    <img src="/images/logo-2.svg" style={{width: '93px'}} />
+                </div>
+                <div className="col-12 col-lg-11 pt-5">
+                    <div className="font-size-16 font-Poppins-Medium text-line-height-20 color-purple-2">home / directory / directory1 /  directory2</div>
+                    <div className="form-check pt-4">
+                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label className="form-check-label">
+                            Include subdirectory content?
+                        </label>
+                    </div>
+                    <div className="font-size-16 font-Poppins-Regular text-line-height-20 color-purple-2 pt-4">Analyzing current director or upload your own PDF for analysis</div>
+                    <div className="font-size-16 font-Poppins-SemiBold text-line-height-20 color-blue pt-4">... / Directory 2 /</div>
+                    <div className="upDirectory">
+                        <hr />
+                        <div className="previous flist"><span className="before"></span> Up directory</div>
+                    </div>
+                    <div className="directoryList">
+                        <hr />
+                        <div className="directory flist"><span className="before"></span> Directory 3</div>
+                        
+                    </div>
+                    <div className='pdfListBox'>
+                      <div className="pdfList" id="filename_1">
+                          <hr />
+                          <div className="pdf-file flist"><span className="before"></span> pdf filename_1.pdf <span className="after delete-btn"></span></div>
                       </div>
-                      {message.sourceDocs && (
-                        <div
-                          className="p-5"
-                          key={`sourceDocsAccordion-${index}`}
-                        >
-                          <Accordion
-                            type="single"
-                            collapsible
-                            className="flex-col"
-                          >
-                            {message.sourceDocs.map((doc, index) => (
-                              <div key={`messageSourceDocs-${index}`}>
-                                <AccordionItem value={`item-${index}`}>
-                                  <AccordionTrigger>
-                                    <h3>Source {index + 1}</h3>
-                                  </AccordionTrigger>
-                                  <AccordionContent>
-                                    <ReactMarkdown linkTarget="_blank">
-                                      {doc.pageContent}
-                                    </ReactMarkdown>
-                                    <p className="mt-2">
-                                      <b>Source:</b> {doc.metadata.source}
-                                    </p>
-                                  </AccordionContent>
-                                </AccordionItem>
-                              </div>
-                            ))}
-                          </Accordion>
-                        </div>
-                      )}
-                    </>
-                  );
-                })}
-              </div>
-            </div>
-            <div className={styles.center}>
-              <div className={styles.cloudform}>
-                <form onSubmit={handleSubmit}>
-                  <textarea
-                    disabled={loading}
-                    onKeyDown={handleEnter}
-                    ref={textAreaRef}
-                    autoFocus={false}
-                    rows={1}
-                    maxLength={512}
-                    id="userInput"
-                    name="userInput"
-                    placeholder={
-                      loading
-                        ? 'Waiting for response...'
-                        : 'What is this legal case about?'
-                    }
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    className={styles.textarea}
-                  />
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className={styles.generatebutton}
-                  >
-                    {loading ? (
-                      <div className={styles.loadingwheel}>
-                        <LoadingDots color="#000" />
+                      <div className="pdfList" id="filename_2">
+                          <hr />
+                          <div className="pdf-file flist"><span className="before"></span> pdf filename_2.pdf <span className="after delete-btn"></span></div>
                       </div>
-                    ) : (
-                      // Send icon SVG in input field
-                      <svg
-                        viewBox="0 0 20 20"
-                        className={styles.svgicon}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                      </svg>
-                    )}
-                  </button>
-                </form>
-              </div>
+                    </div>
+                    <div className="mt-4" id="drop_area">Drag PDF to upload <br />to selected directory</div>
+                    <div className="form-check pt-4">
+                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label className="form-check-label">
+                            Override and upload to my personal directory user.documents
+                        </label>
+                    </div>
+                </div>
             </div>
-            {error && (
-              <div className="border border-red-400 rounded-md p-4">
-                <p className="text-red-500">{error}</p>
-              </div>
-            )}
-          </main>
         </div>
-        <footer className="m-auto p-4">
-          <a href="https://twitter.com/mayowaoshin">
-            Powered by LangChainAI. Demo built by Mayo (Twitter: @mayowaoshin).
-          </a>
-        </footer>
+      </section>
+      <section className="right-panel">
+        <div className="top-panel pt-5 pb-5">
+            <div className="container">
+                <div className="row justify-content-center align-items-center">
+                    <div className="col-12 col-lg-9">
+                      <select onChange={handleChange} id="selectWebsite" className="form-select" style={{width: 'auto'}} defaultValue='http://gsk-chatpdf-shingrix.jhldigital.com/'>
+                        <option value="http://gsk-chatpdf-bexsero.jhldigital.com/">Bexsero</option>
+                        <option value="http://gsk-chatpdf-shingrix.jhldigital.com/">Shingrix</option>
+                        <option value="http://gsk-chatpdf-twinrix.jhldigital.com/">Twinrix</option>
+                      </select>
+                        <div className="title mt-4">Introducing the <span>AIAnalyzer</span></div>
+                        <main className={styles.main}>
+                          <div className={styles.cloud} style={{width: '100%'}}>
+                            <div ref={messageListRef} className={styles.messagelist}>
+                              {messages.map((message, index) => {
+                                let icon;
+                                let className;
+                                if (message.type === 'apiMessage') {
+                                  icon = (
+                                    <Image
+                                      key={index}
+                                      src="/bot-image.svg"
+                                      alt="AI"
+                                      width="40"
+                                      height="40"
+                                      className={styles.boticon}
+                                      priority
+                                    />
+                                  );
+                                  className = styles.apimessage;
+                                } else {
+                                  icon = (
+                                    <Image
+                                      key={index}
+                                      src="/user-icon.svg"
+                                      alt="Me"
+                                      width="40"
+                                      height="40"
+                                      className={styles.usericon}
+                                      priority
+                                    />
+                                  );
+                                  // The latest message sent by the user will be animated while waiting for a response
+                                  className =
+                                    loading && index === messages.length - 1
+                                      ? styles.usermessagewaiting
+                                      : styles.usermessage;
+                                }
+                                return (
+                                  <>
+                                    <div key={`chatMessage-${index}`} className={className}>
+                                      {icon}
+                                      <div className={styles.markdownanswer}>
+                                        <ReactMarkdown linkTarget="_blank">
+                                          {message.message}
+                                        </ReactMarkdown>
+                                      </div>
+                                    </div>
+                                    {message.sourceDocs && (
+                                      <div
+                                        className="references-box"
+                                        key={`sourceDocsAccordion-${index}`}
+                                      >
+                                        <div className='references-title'>References: </div>
+                                          {message.sourceDocs.map((doc, index) => (
+                                            <div key={`messageSourceDocs-${index}`}>
+                                              <p className="mt-1">
+                                                {index + 1}. {doc.metadata.source}
+                                              </p>
+                                            </div>
+                                          ))}
+                                      </div>
+                                    )}
+                                  </>
+                                );
+                              })}
+                            </div>
+                          </div>
+                          <div className={styles.center} style={{width: '100%'}}>
+                            <div className={styles.cloudform} style={{width: '100%'}}>
+                              <form onSubmit={handleSubmit}>
+                                <textarea
+                                  disabled={loading}
+                                  onKeyDown={handleEnter}
+                                  ref={textAreaRef}
+                                  autoFocus={false}
+                                  rows={1}
+                                  maxLength={512}
+                                  id="userInput"
+                                  name="userInput"
+                                  placeholder={
+                                    loading
+                                      ? 'Waiting for response...'
+                                      : 'Message AIAnalyzer ...'
+                                  }
+                                  value={query}
+                                  onChange={(e) => setQuery(e.target.value)}
+                                  className={styles.textarea}
+                                  style={{width: '100%'}}
+                                />
+                                <button
+                                  type="submit"
+                                  disabled={loading}
+                                  className='form_generatebutton'
+                                >
+                                  {loading ? (
+                                    <div className={styles.loadingwheel}>
+                                      <LoadingDots color="#000" />
+                                    </div>
+                                  ) : (
+                                    // Send icon SVG in input field
+                                    // <svg
+                                    //   viewBox="0 0 20 20"
+                                    //   className={styles.svgicon}
+                                    //   xmlns="http://www.w3.org/2000/svg"
+                                    // >
+                                    //   <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                                    // </svg>
+                                    <span className='bor'></span>
+                                  )}
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                          {error && (
+                            <div className="border border-red-400 rounded-md p-4">
+                              <p className="text-red-500">{error}</p>
+                            </div>
+                          )}
+                        </main>
+                    </div>
+                </div>
+            </div>
+            <div className="pt-5"></div>
+        </div>
+        <div className="panel-form pt-5 pb-5">
+            <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-12 col-lg-11">
+                        <div className="title">Contact JHL Advanced</div>
+                    </div>
+                    <div className="col-12 col-lg-3 pt-4">
+                        <div className="form-group">
+                            <input type="text" className="form-control" id="yourname" placeholder="Your Name"  />
+                        </div>
+                        <div className="error-msg pt-3" id="your_name_error" style={{display: 'none'}}>Please fill your name.</div>
+                        
+                        <div className="form-group pt-4">
+                            <input type="text" className="form-control" id="phone_number" placeholder="Your Phone Number"  />
+                        </div>
+                        <div className="error-msg pt-3" id="phone_number_error" style={{display: 'none'}}>Please fill your phone number.</div>
+        
+                        <div className="form-group pt-4">
+                            <input type="text" className="form-control" id="email_address" placeholder="Your Email Address"  />
+                        </div>
+                        <div className="error-msg pt-3" id="email_error" style={{display: 'none'}}>Please fill your email address.</div>
+                    </div>
+                    <div className="col-12 col-lg-8 pt-4">
+                        <div className="font-Poppins-Medium font-size-16 text-line-height-18 color-white">I am interested in engaging JHL for:</div>
+                        <div className="pt-4">
+                            <a className="sel-item item-1" data-value="RX STRATEGY">RX STRATEGY</a>
+                            <a className="sel-item item-2" data-value="CLM">CLM</a>
+                            <a className="sel-item item-3" data-value="UI/UX DESIGN">UI/UX DESIGN</a>
+                            <a className="sel-item item-4" data-value="APPS">APPS</a>
+                            <a className="sel-item item-5" data-value="CONFERENCE STANDS">CONFERENCE STANDS</a>
+                            <a className="sel-item item-6" data-value="EMAIL MARKETING">EMAIL MARKETING</a>
+                            <a className="sel-item item-7" data-value="MARKETING MATERIALS">MARKETING MATERIALS</a>
+                            <a className="sel-item item-8" data-value="VIRTUAL REALITY">VIRTUAL REALITY</a>
+                            <a className="sel-item item-9" data-value="SOCIAL MEDIA CAMPAIGN">SOCIAL MEDIA CAMPAIGN</a>
+                            <a className="sel-item item-10" data-value="PATIENT KIT">PATIENT KIT</a>
+                        </div>
+                        <div className="row justify-content-center align-items-end">
+                            <div className="col-12 col-md-8">
+                                <div className="form-group pt-2">
+                                    <input type="text" className="form-control" id="other" placeholder="Other (please specify)" />
+                                </div>
+                            </div>
+                            <div className="col-12 col-md-4 text-end">
+                                <a className="btn send-btn font-uppercase mt-3" id="send">Send<span className="icon"></span></a>
+                            </div>
+                            <div className="col-12 text-end">
+                                <div className="success-msg pt-3 text-end" style={{display: 'none'}}>Submitted successfully.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
       </Layout>
     </>
   );
