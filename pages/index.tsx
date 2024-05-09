@@ -148,7 +148,7 @@ export default function Index() {
                 <div className="col-12 col-lg-11 pt-5">
                     <div className="font-size-16 font-Poppins-Medium text-line-height-20 color-purple-2">home / directory / directory1 /  directory2</div>
                     <div className="form-check pt-4">
-                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <input className="form-check-input" type="checkbox" value="" id="check_1" />
                         <label className="form-check-label">
                             Include subdirectory content?
                         </label>
@@ -176,7 +176,7 @@ export default function Index() {
                     </div>
                     <div className="mt-4" id="drop_area">Drag PDF to upload <br />to selected directory</div>
                     <div className="form-check pt-4">
-                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <input className="form-check-input" type="checkbox" value="" id="check_2" />
                         <label className="form-check-label">
                             Override and upload to my personal directory user.documents
                         </label>
