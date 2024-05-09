@@ -230,12 +230,15 @@ export default function Home() {
                                     {message.sourceDocs && (
                                       <div
                                         className="references-box"
+                                        key={`sourceDocsAccordion-${index}`}
                                       >
                                         <div className='references-title'>References: </div>
                                           {message.sourceDocs.map((doc, index) => (
+                                            <div key={`messageSourceDocs-${index}`}>
                                               <p className="mt-1">
                                                 {index + 1}. {doc.metadata.source}
                                               </p>
+                                            </div>
                                           ))}
                                       </div>
                                     )}
