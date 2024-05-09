@@ -8,6 +8,7 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import LoadingDots from '@/components/ui/LoadingDots';
 import { Document } from 'langchain/document';
+
 import {
   Accordion,
   AccordionContent,
@@ -122,6 +123,7 @@ export default function Home() {
     }
   };
 
+
   return (
     <>
       <Layout>
@@ -151,13 +153,15 @@ export default function Home() {
                         <div className="directory flist"><span className="before"></span> Directory 3</div>
                         
                     </div>
-                    <div className="pdfList" id="filename_1">
-                        <hr />
-                        <div className="pdf-file flist"><span className="before"></span> pdf filename_1.pdf <span className="after delete-btn"></span></div>
-                    </div>
-                    <div className="pdfList" id="filename_2">
-                        <hr />
-                        <div className="pdf-file flist"><span className="before"></span> pdf filename_2.pdf <span className="after delete-btn"></span></div>
+                    <div className='pdfListBox'>
+                      <div className="pdfList" id="filename_1">
+                          <hr />
+                          <div className="pdf-file flist"><span className="before"></span> pdf filename_1.pdf <span className="after delete-btn"></span></div>
+                      </div>
+                      <div className="pdfList" id="filename_2">
+                          <hr />
+                          <div className="pdf-file flist"><span className="before"></span> pdf filename_2.pdf <span className="after delete-btn"></span></div>
+                      </div>
                     </div>
                     <div className="mt-4" id="drop_area">Drag PDF to upload <br />to selected directory</div>
                     <div className="form-check pt-4">
@@ -174,24 +178,9 @@ export default function Home() {
         <div className="top-panel pt-5 pb-5">
             <div className="container">
                 <div className="row justify-content-center align-items-center">
-                    <div className="col-12 col-lg-10">
+                    <div className="col-12 col-lg-9">
                         <div className="title">Introducing the <span>AIAnalyzer</span></div>
-                        {/* <div className="chatpanel mt-5">
-                            <div className="mt-4 mb-5 message-box">
-                                <p>orem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan.</p>
-                                <p>orem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan.</p>
-                                <p>orem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan.</p>
-                                <p>orem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus pronin sapien nunc accuan.</p>
-                            </div>
-                            <div className="cloudform">
-                                <form>
-                                    <textarea rows={1} id="userInput" name="userInput" placeholder="Message AIAnalyzer ..." className="form_textarea"></textarea>
-                                    <button type="submit" className="form_generatebutton">
-                                        <span className="bor"></span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div> */}
+                        
                         <main className={styles.main}>
                           <div className={styles.cloud} style={{width: '100%'}}>
                             <div ref={messageListRef} className={styles.messagelist}>
@@ -202,7 +191,7 @@ export default function Home() {
                                   icon = (
                                     <Image
                                       key={index}
-                                      src="/bot-image.png"
+                                      src="/bot-image.svg"
                                       alt="AI"
                                       width="40"
                                       height="40"
@@ -215,7 +204,7 @@ export default function Home() {
                                   icon = (
                                     <Image
                                       key={index}
-                                      src="/usericon.png"
+                                      src="/user-icon.svg"
                                       alt="Me"
                                       width="30"
                                       height="30"
@@ -299,7 +288,7 @@ export default function Home() {
                                 <button
                                   type="submit"
                                   disabled={loading}
-                                  className={styles.generatebutton}
+                                  className='form_generatebutton'
                                 >
                                   {loading ? (
                                     <div className={styles.loadingwheel}>
@@ -307,13 +296,14 @@ export default function Home() {
                                     </div>
                                   ) : (
                                     // Send icon SVG in input field
-                                    <svg
-                                      viewBox="0 0 20 20"
-                                      className={styles.svgicon}
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                                    </svg>
+                                    // <svg
+                                    //   viewBox="0 0 20 20"
+                                    //   className={styles.svgicon}
+                                    //   xmlns="http://www.w3.org/2000/svg"
+                                    // >
+                                    //   <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                                    // </svg>
+                                    <span className='bor'></span>
                                   )}
                                 </button>
                               </form>

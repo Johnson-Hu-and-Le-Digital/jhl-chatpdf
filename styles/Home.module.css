@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
 
@@ -23,7 +23,7 @@
   position: relative;
   resize: none;
   font-size: 1.1rem;
-  padding: 1rem 2rem 1rem 2rem;
+  padding: 1rem 4rem 1rem 2rem;
   width: 75vw;
   border-radius: 0.5rem;
   border: 1px solid #d9d9e3;
@@ -96,8 +96,9 @@
 }
 
 .usermessage {
-  background: #ffffff;
-  padding: 1.5rem;
+  /* background: #ffffff; */
+  background-color: transparent;
+  padding: 1rem 0;
   color: #000;
 }
 
@@ -122,8 +123,9 @@
 }
 
 .apimessage {
-  background: #f9fafb;
-  padding: 1.5rem;
+  /* background: #f9fafb; */
+  background-color: transparent;
+  padding: 1rem 0;
   color: #000;
   animation: fadein 0.5s;
 }
@@ -145,6 +147,10 @@
 
 .markdownanswer {
   line-height: 1.75;
+  color: #ffffff;
+  font-family: 'Poppins-Regular';
+  font-size: 16px;
+  /* line-height: 19px; */
 }
 
 .markdownanswer a:hover {
@@ -192,9 +198,10 @@
 .cloud {
   width: 75vw;
   height: 65vh;
-  background: #ffffff;
+  /* background: #ffffff; */
+  background-color: transparent;
   border-radius: 0.5rem;
-  border: 1px solid #d9d9e3;
+  /* border: 1px solid #d9d9e3; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -229,7 +236,7 @@
 /* Mobile optimization */
 @media (max-width: 600px) {
   .main {
-    padding: 1rem;
+    padding: 1rem 0;
     max-height: 90vh;
   }
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clippath);
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        fill: #7f7ab8;
+      }
+
+      .cls-5 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-4 {
+        fill: #3e3a7d;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-2" width="40" height="40"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <circle class="cls-2" cx="20" cy="20" r="20"/>
+    </clipPath>
+  </defs>
+  <g class="cls-1">
+    <path class="cls-4" d="M20,40c11.05,0,20-8.95,20-20S31.05,0,20,0,0,8.95,0,20s8.95,20,20,20"/>
+  </g>
+  <g class="cls-5">
+    <path class="cls-3" d="M11.54,27.82h0c0-3.58,2.93-6.51,6.51-6.51h3.91c3.58,0,6.5,2.93,6.5,6.51,0,1.58-1.28,2.86-2.86,2.86h-11.2c-1.58,0-2.86-1.28-2.86-2.86"/>
+    <path class="cls-3" d="M25.29,14.61c0-2.92-2.37-5.29-5.29-5.29s-5.29,2.37-5.29,5.29,2.37,5.29,5.29,5.29,5.29-2.37,5.29-5.29"/>
+  </g>
+</svg>
