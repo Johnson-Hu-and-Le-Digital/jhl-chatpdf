@@ -130,6 +130,11 @@ export default function Index() {
     router.push(event.target.value);
   };
 
+  const [url, setUrl] = useState('');
+  useEffect(() => {
+    setUrl(window.location.href);
+  }, []);
+
   return (
     <>
       <Layout>
@@ -185,7 +190,7 @@ export default function Index() {
             <div className="container">
                 <div className="row justify-content-center align-items-center">
                     <div className="col-12 col-lg-9">
-                      <select onChange={handleChange} id="selectWebsite" className="form-select" style={{width: 'auto'}} defaultValue='http://gsk-chatpdf-shingrix.jhldigital.com/'>
+                      <select onChange={handleChange} id="selectWebsite" className="form-select" style={{width: 'auto'}} defaultValue={url}>
                         <option value="http://gsk-chatpdf-bexsero.jhldigital.com/">Bexsero</option>
                         <option value="http://gsk-chatpdf-shingrix.jhldigital.com/">Shingrix</option>
                         <option value="http://gsk-chatpdf-twinrix.jhldigital.com/">Twinrix</option>
