@@ -262,9 +262,7 @@ export default function Index() {
                                           ))} */}
                                           
                                           {message.sourceDocs.map((doc, index, array) => {
-                                            // const isLastItem = index === message.sourceDocs.length - 1;
                                             const ref = doc.metadata.source;
-                                            // console.log(refRrray);
                                             if(!refRrray.includes(ref)){
                                               refRrray.push(ref);
                                               refNum = refNum + 1;
