@@ -118,6 +118,10 @@
   font-family: 'Poppins-SemiBold' !important;
 }
 
+.font-Poppins-Bold {
+  font-family: 'Poppins-Bold' !important;
+}
+
 .font-PPNeueMachina-InktrapRegular {
   font-family: 'PPNeueMachina-InktrapRegular' !important;
 }
@@ -825,14 +829,19 @@ hr.hr-white {
   margin-left: 55px;
 }
 .references-box .references-title{
-  font-family: 'Poppins-SemiBold';
+  font-family: 'Poppins-Bold';
   font-size: 14px;
   line-height: 18px;
   color: #ffffff;
 }
 .references-box p{
-  font-family: 'Poppins-Regular';
+  font-family: 'Poppins-Light';
   font-size: 14px;
   line-height: 18px;
   color: #ffffff;
 }
+
+/* ::-webkit-scrollbar {
+  display: none;
+} */
+

@@ -154,7 +154,7 @@ export default function Index() {
                         </label>
                     </div>
                     <div className="font-size-16 font-Poppins-Regular text-line-height-20 color-purple-2 pt-4">Analyzing current director or upload your own PDF for analysis</div>
-                    <div className="font-size-16 font-Poppins-SemiBold text-line-height-20 color-blue pt-4">... / Directory 2 /</div>
+                    <div className="font-size-16 font-Poppins-Bold text-line-height-20 color-blue pt-4">... / Directory 2 /</div>
                     <div className="upDirectory">
                         <hr />
                         <div className="previous flist"><span className="before"></span> Up directory</div>
@@ -250,13 +250,29 @@ export default function Index() {
                                         key={`sourceDocsAccordion-${index}`}
                                       >
                                         <div className='references-title'>References: </div>
-                                          {message.sourceDocs.map((doc, index) => (
+                                          {/* {message.sourceDocs.map((doc, index) => (
                                             <div key={`messageSourceDocs-${index}`}>
                                               <p className="mt-1">
                                                 {index + 1}. {doc.metadata.source}
                                               </p>
                                             </div>
-                                          ))}
+                                          ))} */}
+
+                                          {message.sourceDocs.map((doc, index) => {
+                                            const res = doc.metadata.source;
+                                            let num = 0;
+                                            const array: any[] = new Array();
+
+                                            if(!array.includes(res)){
+                                              array.push(res);
+                                              num = num + 1;
+                                              return <div key={`messageSourceDocs-${index}`}>
+                                                <p className="mt-1">
+                                                  {num}. {doc.metadata.source}
+                                                </p>
+                                              </div>;
+                                            }
+                                          })}
                                       </div>
                                     )}
                                   </>

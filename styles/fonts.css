@@ -29,6 +29,20 @@
 }
 
 @font-face {
+    font-family: 'Poppins-Light';
+    src: url('fonts/Poppins-Light.eot'), url('fonts/Poppins-Light.woff') format('woff'), url('fonts/Poppins-Light.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'Poppins-Bold';
+    src: url('fonts/Poppins-Bold.eot'), url('fonts/Poppins-Bold.woff') format('woff'), url('fonts/Poppins-Bold.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
     font-family: 'Poppins-SemiBold';
     src: url('fonts/Poppins-SemiBold.eot'), url('fonts/Poppins-SemiBold.woff') format('woff'), url('fonts/Poppins-SemiBold.ttf') format('truetype');
     font-weight: 400;
@@ -41,3 +55,4 @@
     font-weight: 400;
     font-style: normal
 }
+
