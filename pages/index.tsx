@@ -135,6 +135,8 @@ export default function Index() {
     setUrl(window.location.href);
   }, []);
 
+  let refNum = 0;
+  const refRrray: any[] = new Array();
   return (
     <>
       <Layout>
@@ -257,22 +259,21 @@ export default function Index() {
                                               </p>
                                             </div>
                                           ))} */}
-
+                                          
                                           {message.sourceDocs.map((doc, index) => {
-                                            const res = doc.metadata.source;
-                                            let num = 0;
-                                            const array: any[] = new Array();
-
-                                            if(!array.includes(res)){
-                                              array.push(res);
-                                              num = num + 1;
+                                            const ref = doc.metadata.source;
+                                            console.log(refRrray);
+                                            if(!refRrray.includes(ref)){
+                                              refRrray.push(ref);
+                                              refNum = refNum + 1;
                                               return <div key={`messageSourceDocs-${index}`}>
                                                 <p className="mt-1">
-                                                  {num}. {doc.metadata.source}
+                                                  {refNum}. {doc.metadata.source}
                                                 </p>
                                               </div>;
                                             }
-                                          })}
+                                          })
+                                          }
                                       </div>
                                     )}
                                   </>
@@ -312,14 +313,6 @@ export default function Index() {
                                       <LoadingDots color="#000" />
                                     </div>
                                   ) : (
-                                    // Send icon SVG in input field
-                                    // <svg
-                                    //   viewBox="0 0 20 20"
-                                    //   className={styles.svgicon}
-                                    //   xmlns="http://www.w3.org/2000/svg"
-                                    // >
-                                    //   <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                                    // </svg>
                                     <span className='bor'></span>
                                   )}
                                 </button>
