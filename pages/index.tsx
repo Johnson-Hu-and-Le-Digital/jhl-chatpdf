@@ -136,7 +136,8 @@ export default function Index() {
   }, []);
 
   let refNum = 0;
-  const refRrray: any[] = new Array();
+  let refRrray: any[] = new Array();
+
   return (
     <>
       <Layout>
@@ -260,7 +261,12 @@ export default function Index() {
                                             </div>
                                           ))} */}
                                           
-                                          {message.sourceDocs.map((doc, index) => {
+                                          {message.sourceDocs.map((doc, index, array) => {
+                                            // const isLastItem = index === message.sourceDocs.length - 1;
+                                            if(array.at(-1) === doc){
+                                              refNum = 0;
+                                              refRrray = new Array();
+                                            }
                                             const ref = doc.metadata.source;
                                             console.log(refRrray);
                                             if(!refRrray.includes(ref)){
