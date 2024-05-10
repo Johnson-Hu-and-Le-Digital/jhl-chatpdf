@@ -29,7 +29,7 @@ export default function Index() {
   }>({
     messages: [
       {
-        message: 'Hi, what would you like to learn about this document?',
+        message: 'What would you like to learn about this library?',
         type: 'apiMessage',
       },
     ],
@@ -107,6 +107,7 @@ export default function Index() {
       setLoading(false);
 
       //scroll to bottom
+      // console.log(messageListRef.current.scrollHeight);
       messageListRef.current?.scrollTo(0, messageListRef.current.scrollHeight);
     } catch (error) {
       setLoading(false);
@@ -156,7 +157,7 @@ export default function Index() {
                             Include subdirectory content?
                         </label>
                     </div>
-                    <div className="font-size-16 font-Poppins-Regular text-line-height-20 color-purple-2 pt-4">Analyzing current director or upload your own PDF for analysis</div>
+                    <div className="font-size-16 font-Poppins-Regular text-line-height-20 color-purple-2 pt-4">Analyzing current directory or upload your own PDF for analysis</div>
                     <div className="font-size-16 font-Poppins-Bold text-line-height-20 color-blue pt-4">... / Directory 2 /</div>
                     <div className="upDirectory">
                         <hr />
@@ -199,10 +200,10 @@ export default function Index() {
                         <option value="http://gsk-chatpdf-twinrix.jhldigital.com/">Twinrix</option>
                       </select>
                       {/* <input type='hidden' value={url} /> */}
-                        <div className="title mt-4">Introducing the <span>AIAnalyzer</span></div>
+                        <div className="title mt-4">JHL <span>Literature Explorer</span></div>
                         <main className={styles.main}>
                           <div className={styles.cloud} style={{width: '100%'}}>
-                            <div ref={messageListRef} className={styles.messagelist}>
+                            <div ref={messageListRef} className={styles.messagelist} id='messageList'>
                               {messages.map((message, index) => {
                                 let icon;
                                 let className;
@@ -210,7 +211,7 @@ export default function Index() {
                                   icon = (
                                     <Image
                                       key={index}
-                                      src="/bot-image.svg"
+                                      src="/bot-image-3.png"
                                       alt="AI"
                                       width="40"
                                       height="40"
