@@ -146,7 +146,6 @@ export default function Index() {
   const [email, setEmail] = useState<string>('');
   const [isEmailError, setIsEmailError] = useState(false);
   const [otherMessage, setOtherMessage] = useState<string>('');
-  // const [selectedValues, setSelectedValues] = useState([]);
 
   function removeElement<T>(arr: T[], element: T): T[] {
     if (arr.includes(element)) {
@@ -154,18 +153,25 @@ export default function Index() {
     }
     return arr;
   }
-  
+
   let selectedValues: any[] = new Array();
   const handleSelectClick = (event: any) => {
-    const dataValue = event.target.getAttribute('data-value');
+    // const dataValue = event.target.getAttribute('data-value');
     if(event.target.classList.contains('active')){
       event.target.classList.remove('active');
-      selectedValues = removeElement(selectedValues, dataValue);
+      // selectedValues = removeElement(selectedValues, dataValue);
     }else{
       event.target.classList.add('active');
-      selectedValues.push(dataValue);
+      // selectedValues.push(dataValue);
     }
     // console.log(selectedValues);
+    // // console.log(selectedValues.join(','));
+
+    // var activeLinks = document.getElementsByClassName('sel-item active');
+    // // console.log(activeLinks);
+    // for(var item of activeLinks){
+    //   console.log(item.getAttribute('data-value'));
+    // }
   };
 
   const [isSendSuccess, setSendSuccess] = useState(false);
@@ -174,6 +180,8 @@ export default function Index() {
 
   async function handleSendEmail(e: any) {
     e.preventDefault();
+    setSendSuccess(false);
+    setSendError(false);
     setSendLoading(true);
 
     setIsNameError(false);
@@ -193,21 +201,22 @@ export default function Index() {
       setIsEmailError(true);
       flag = false;
     }
-    // console.log(yourname);
-    console.log(selectedValues);
-    // let interested_engaging = selectedValues;
-    // console.log(interested_engaging);
-    // interested_engaging.sort((a, b) => a.localeCompare(b));
+
+    let interested_engaging: any[] = new Array();
+    var activeLinks = document.getElementsByClassName('sel-item active');
+    for(var item of activeLinks){
+      var value = item.getAttribute('data-value');
+      interested_engaging.push(value);
+    }
     // console.log(interested_engaging);
     // console.log(interested_engaging.join(','));
-
     if(flag){
       try {
         const data = {
           yourname: yourname,
           phonenumber: phonenumber,
           email: email,
-          interested_engaging: selectedValues.join(','),
+          interested_engaging: interested_engaging.join(','),
           otherMessage: otherMessage
         }
         const res = await fetch('/api/contact', {
@@ -249,7 +258,14 @@ export default function Index() {
         <div className="container">
             <div className="row justify-content-center align-items-center">
                 <div className="col-12 col-lg-11">
-                    <img src="/images/logo-2.svg" style={{width: '93px'}} />
+                    {/* <img src="/images/logo-2.svg" style={{width: '93px'}} /> */}
+                    <Image
+                      src="/images/logo-2.svg"
+                      alt="JHL"
+                      width={0}
+                      height={0}
+                      style={{ width: '93px', height: 'auto' }}
+                    />
                 </div>
                 <div className="col-12 col-lg-11 pt-5">
                     <div className="font-size-16 font-Poppins-Medium text-line-height-20 color-purple-2">home / directory / directory1 /  directory2</div>
@@ -480,7 +496,6 @@ export default function Index() {
                             <a onClick={handleSelectClick} className="sel-item item-8" data-value="VIRTUAL REALITY">VIRTUAL REALITY</a>
                             <a onClick={handleSelectClick} className="sel-item item-9" data-value="SOCIAL MEDIA CAMPAIGN">SOCIAL MEDIA CAMPAIGN</a>
                             <a onClick={handleSelectClick} className="sel-item item-10" data-value="PATIENT KIT">PATIENT KIT</a>
-                            
                         </div>
                         <div className="row justify-content-center align-items-end">
                             <div className="col-12 col-md-8">
