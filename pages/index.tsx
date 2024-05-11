@@ -160,10 +160,10 @@ export default function Index() {
     const dataValue = event.target.getAttribute('data-value');
     if(event.target.classList.contains('active')){
       event.target.classList.remove('active');
-      // selectedValues = removeElement(selectedValues, dataValue);
+      selectedValues = removeElement(selectedValues, dataValue);
     }else{
       event.target.classList.add('active');
-      // selectedValues.push(dataValue);
+      selectedValues.push(dataValue);
     }
     // console.log(selectedValues);
   };
@@ -194,8 +194,7 @@ export default function Index() {
       flag = false;
     }
     // console.log(yourname);
-
-    // console.log(selectedValues);
+    console.log(selectedValues);
     // let interested_engaging = selectedValues;
     // console.log(interested_engaging);
     // interested_engaging.sort((a, b) => a.localeCompare(b));
