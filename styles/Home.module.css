@@ -116,7 +116,7 @@
 .usermessage {
   /* background: #ffffff; */
   background-color: transparent;
-  padding: 1rem 5px 1rem 0;
+  padding: 1rem 10px 1rem 0;
   color: #000;
 }
 
@@ -143,7 +143,7 @@
 .apimessage {
   /* background: #f9fafb; */
   background-color: transparent;
-  padding: 1rem 5px 1rem 0;
+  padding: 1rem 10px 1rem 0;
   color: #000;
   animation: fadein 0.5s;
 }
@@ -188,7 +188,7 @@
 
 .markdownanswer ol,
 .markdownanswer ul {
-  margin: 1rem 5px 1rem 0;
+  margin: 1rem 10px 1rem 0;
 }
 
 .markdownanswer ul li{
@@ -214,7 +214,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  padding: 1rem 5px 1rem 0;
+  padding: 1rem 10px 1rem 0;
   flex-direction: column;
 }
 
@@ -259,7 +259,7 @@
 /* Mobile optimization */
 @media (max-width: 600px) {
   .main {
-    padding: 1rem 5px 1rem 0;
+    padding: 1rem 10px 1rem 0;
     max-height: 90vh;
   }
 
