@@ -474,7 +474,7 @@ hr.hr-white {
 }
 
 .page-title {
-  font-family: "roc-grotesk-wide", sans-serif;
+  font-family: "Poppins-Regular", sans-serif;
   font-weight: 600;
   font-style: normal;
   font-size: 100px;
@@ -490,7 +490,7 @@ hr.hr-white {
 }
 
 .page-sub-title {
-  font-family: "roc-grotesk-wide", sans-serif;
+  font-family: "Poppins-Regular", sans-serif;
   font-weight: 600;
   font-style: normal;
   font-size: 24px;
@@ -557,7 +557,7 @@ hr.hr-white {
 
 .form-group input::placeholder {
   color: #ccf7ff;
-  font-family: 'roc-grotesk-wide',sans-serif;
+  font-family: 'Poppins-Regular',sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
@@ -566,7 +566,7 @@ hr.hr-white {
 
 .form-group .form-control {
   color: #ccf7ff;
-  font-family: 'roc-grotesk-wide',sans-serif;
+  font-family: 'Poppins-Regular',sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
