@@ -463,6 +463,12 @@ hr.hr-white {
   padding: 13px 30px 11px 12px;
 }
 
+.send-btn .loadingwheel{
+  position: absolute;
+  top: 0.5rem;
+  right: 2.25rem;
+}
+
 .bg-linear-gradient-2 {
   background: -webkit-linear-gradient(bottom right, #9181f6, #61b0f9, #60d1eb, #60cdc6, #65ca9b);
 }

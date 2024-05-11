@@ -139,6 +139,109 @@ export default function Index() {
   let refNum = 0;
   let refRrray: any[] = new Array();
 
+  const [yourname, setYourname] = useState<string>('');
+  const [isNameError, setIsNameError] = useState(false);
+  const [phonenumber, setPhonenumber] = useState<string>('');
+  const [isPhoneError, setIsPhoneError] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [isEmailError, setIsEmailError] = useState(false);
+  const [otherMessage, setOtherMessage] = useState<string>('');
+  // const [selectedValues, setSelectedValues] = useState([]);
+
+  function removeElement<T>(arr: T[], element: T): T[] {
+    if (arr.includes(element)) {
+        return arr.filter(e => e !== element);
+    }
+    return arr;
+  }
+  
+  let selectedValues: any[] = new Array();
+  const handleSelectClick = (event: any) => {
+    const dataValue = event.target.getAttribute('data-value');
+    if(event.target.classList.contains('active')){
+      event.target.classList.remove('active');
+      // selectedValues = removeElement(selectedValues, dataValue);
+    }else{
+      event.target.classList.add('active');
+      // selectedValues.push(dataValue);
+    }
+    // console.log(selectedValues);
+  };
+
+  const [isSendSuccess, setSendSuccess] = useState(false);
+  const [isSendError, setSendError] = useState(false);
+  const [sendLoading, setSendLoading] = useState<boolean>(false);
+
+  async function handleSendEmail(e: any) {
+    e.preventDefault();
+    setSendLoading(true);
+
+    setIsNameError(false);
+    setIsPhoneError(false);
+    setIsEmailError(false);
+
+    let flag = true;
+    if (!yourname) {
+      setIsNameError(true);
+      flag = false;
+    }
+    if (!phonenumber) {
+      setIsPhoneError(true);
+      flag = false;
+    }
+    if (!email) {
+      setIsEmailError(true);
+      flag = false;
+    }
+    // console.log(yourname);
+
+    // console.log(selectedValues);
+    // let interested_engaging = selectedValues;
+    // console.log(interested_engaging);
+    // interested_engaging.sort((a, b) => a.localeCompare(b));
+    // console.log(interested_engaging);
+    // console.log(interested_engaging.join(','));
+
+    if(flag){
+      try {
+        const data = {
+          yourname: yourname,
+          phonenumber: phonenumber,
+          email: email,
+          interested_engaging: selectedValues.join(','),
+          otherMessage: otherMessage
+        }
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+    
+        const body = await res.json();
+    
+        if (res.ok) {
+          // alert(`${body.message} 🚀`);
+          setSendSuccess(true);
+          setSendLoading(false);
+        }
+    
+        if (res.status === 400) {
+          // alert(`${body.message} 😢`);
+          setSendError(true);
+          setSendLoading(false);
+        }
+      } catch (err) {
+        setSendError(true);
+        setSendLoading(false);
+        console.log('Something went wrong: ', err);
+      }
+    }else{
+      setSendLoading(false);
+    }
+  }
+
   return (
     <>
       <Layout>
@@ -238,6 +341,7 @@ export default function Index() {
                                       ? styles.usermessagewaiting
                                       : styles.usermessage;
                                 }
+                                
                                 return (
                                   <>
                                     <div key={`chatMessage-${index}`} className={className}>
@@ -300,7 +404,7 @@ export default function Index() {
                                   name="userInput"
                                   placeholder={
                                     loading
-                                      ? 'Waiting for response...'
+                                      ? 'Ask me...'
                                       : 'Message AIAnalyzer ...'
                                   }
                                   value={query}
@@ -337,55 +441,76 @@ export default function Index() {
         </div>
         <div className="panel-form pt-5 pb-5">
             <div className="container">
+              <form onSubmit={handleSendEmail}>
                 <div className="row justify-content-center">
                     <div className="col-12 col-lg-11">
                         <div className="title">Contact JHL Advanced</div>
                     </div>
                     <div className="col-12 col-lg-3 pt-4">
                         <div className="form-group">
-                            <input type="text" className="form-control" id="yourname" placeholder="Your Name"  />
+                            <input type="text" className="form-control" id="yourname" placeholder="Your Name" autoComplete='off'
+                              value={yourname}
+                              onChange={(e) => setYourname(e.target.value)}  />
                         </div>
-                        <div className="error-msg pt-3" id="your_name_error" style={{display: 'none'}}>Please fill your name.</div>
+                        {isNameError && <div className="error-msg pt-3" id="your_name_error">Please fill your name.</div>}
                         
                         <div className="form-group pt-4">
-                            <input type="text" className="form-control" id="phone_number" placeholder="Your Phone Number"  />
+                            <input type="text" className="form-control" id="phone_number" placeholder="Your Phone Number" autoComplete='off'
+                              value={phonenumber}
+                              onChange={(e) => setPhonenumber(e.target.value)}  />
                         </div>
-                        <div className="error-msg pt-3" id="phone_number_error" style={{display: 'none'}}>Please fill your phone number.</div>
+                        {isPhoneError && <div className="error-msg pt-3" id="phone_number_error">Please fill your phone number.</div>}
         
                         <div className="form-group pt-4">
-                            <input type="text" className="form-control" id="email_address" placeholder="Your Email Address"  />
+                            <input type="text" className="form-control" id="email_address" placeholder="Your Email Address" autoComplete='off'
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}  />
                         </div>
-                        <div className="error-msg pt-3" id="email_error" style={{display: 'none'}}>Please fill your email address.</div>
+                        {isEmailError && <div className="error-msg pt-3" id="email_error">Please fill your email address.</div>}
                     </div>
                     <div className="col-12 col-lg-8 pt-4">
                         <div className="font-Poppins-Medium font-size-16 text-line-height-18 color-white">I am interested in engaging JHL for:</div>
                         <div className="pt-4">
-                            <a className="sel-item item-1" data-value="RX STRATEGY">RX STRATEGY</a>
-                            <a className="sel-item item-2" data-value="CLM">CLM</a>
-                            <a className="sel-item item-3" data-value="UI/UX DESIGN">UI/UX DESIGN</a>
-                            <a className="sel-item item-4" data-value="APPS">APPS</a>
-                            <a className="sel-item item-5" data-value="CONFERENCE STANDS">CONFERENCE STANDS</a>
-                            <a className="sel-item item-6" data-value="EMAIL MARKETING">EMAIL MARKETING</a>
-                            <a className="sel-item item-7" data-value="MARKETING MATERIALS">MARKETING MATERIALS</a>
-                            <a className="sel-item item-8" data-value="VIRTUAL REALITY">VIRTUAL REALITY</a>
-                            <a className="sel-item item-9" data-value="SOCIAL MEDIA CAMPAIGN">SOCIAL MEDIA CAMPAIGN</a>
-                            <a className="sel-item item-10" data-value="PATIENT KIT">PATIENT KIT</a>
+                            <a onClick={handleSelectClick} className="sel-item item-1" data-value="RX STRATEGY">RX STRATEGY</a>
+                            <a onClick={handleSelectClick} className="sel-item item-2" data-value="CLM">CLM</a>
+                            <a onClick={handleSelectClick} className="sel-item item-3" data-value="UI/UX DESIGN">UI/UX DESIGN</a>
+                            <a onClick={handleSelectClick} className="sel-item item-4" data-value="APPS">APPS</a>
+                            <a onClick={handleSelectClick} className="sel-item item-5" data-value="CONFERENCE STANDS">CONFERENCE STANDS</a>
+                            <a onClick={handleSelectClick} className="sel-item item-6" data-value="EMAIL MARKETING">EMAIL MARKETING</a>
+                            <a onClick={handleSelectClick} className="sel-item item-7" data-value="MARKETING MATERIALS">MARKETING MATERIALS</a>
+                            <a onClick={handleSelectClick} className="sel-item item-8" data-value="VIRTUAL REALITY">VIRTUAL REALITY</a>
+                            <a onClick={handleSelectClick} className="sel-item item-9" data-value="SOCIAL MEDIA CAMPAIGN">SOCIAL MEDIA CAMPAIGN</a>
+                            <a onClick={handleSelectClick} className="sel-item item-10" data-value="PATIENT KIT">PATIENT KIT</a>
+                            
                         </div>
                         <div className="row justify-content-center align-items-end">
                             <div className="col-12 col-md-8">
                                 <div className="form-group pt-2">
-                                    <input type="text" className="form-control" id="other" placeholder="Other (please specify)" />
+                                    <input type="text" className="form-control" id="other" placeholder="Other (please specify)" autoComplete='off'
+                                      value={otherMessage}
+                                      onChange={(e) => setOtherMessage(e.target.value)}  />
                                 </div>
                             </div>
                             <div className="col-12 col-md-4 text-end">
-                                <a className="btn send-btn font-uppercase mt-3" id="send">Send<span className="icon"></span></a>
+                                <button type='submit' className="btn send-btn font-uppercase mt-3" id="send"
+                                  disabled={sendLoading}>Send<span className="icon"></span>
+                                  {sendLoading ? (
+                                    <div className='loadingwheel'>
+                                      <LoadingDots color="#000" />
+                                    </div>
+                                  ) : (
+                                    <span className='bor'></span>
+                                  )}
+                                  </button>
                             </div>
                             <div className="col-12 text-end">
-                                <div className="success-msg pt-3 text-end" style={{display: 'none'}}>Submitted successfully.</div>
+                                {isSendSuccess && <div className="success-msg pt-3 text-end">Submitted successfully.</div>}
+                                {isSendError && <div className="error-msg pt-3 text-end">Something went wrong, Please try again later.</div>}
                             </div>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </section>
