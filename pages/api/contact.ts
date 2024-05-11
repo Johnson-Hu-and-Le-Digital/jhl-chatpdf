@@ -71,7 +71,7 @@ export default async function handler(
       ${interested_engaging_html}</p>
       <p>Other:<br>
       ${otherMessage}</p>
-      <p>JHL Formula System notification</p>`;
+      <p>JHL Advanced System Notification</p>`;
   // https://nodemailer.com/message/#common-fields
   const mailData = {
     from: process.env.SMTP_FROM,

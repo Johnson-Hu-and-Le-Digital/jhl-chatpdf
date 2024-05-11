@@ -403,8 +403,8 @@ export default function Index() {
                                   name="userInput"
                                   placeholder={
                                     loading
-                                      ? 'Ask me...'
-                                      : 'Message AIAnalyzer ...'
+                                      ? 'Waiting for response...'
+                                      : 'Ask me…'
                                   }
                                   value={query}
                                   onChange={(e) => setQuery(e.target.value)}
