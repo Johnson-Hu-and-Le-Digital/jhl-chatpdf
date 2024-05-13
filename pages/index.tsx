@@ -376,10 +376,15 @@ export default function Index() {
                                           
                                           {message.sourceDocs.map((doc, index, array) => {
                                             const ref = doc.metadata.source;
+                                            console.log('-----T-------');
                                             console.log(ref);
+                                            console.log(refRrray);
+                                            console.log(refRrray.includes(ref));
                                             if(!refRrray.includes(ref)){
+                                              console.log('num: -----'+refNum);
                                               refRrray.push(ref);
                                               refNum = refNum + 1;
+                                              console.log('num: ====='+refNum);
                                               return <div key={`messageSourceDocs-${index}`}>
                                                 <p className="mt-1">
                                                   {refNum}. {doc.metadata.source}
@@ -390,6 +395,9 @@ export default function Index() {
                                               refNum = 0;
                                               refRrray = new Array();
                                             }
+                                            console.log('result num: '+refNum);
+                                            console.log('result refRrray'+refRrray);
+                                            console.log('-----Te-------');
                                           })
                                           }
                                       </div>
