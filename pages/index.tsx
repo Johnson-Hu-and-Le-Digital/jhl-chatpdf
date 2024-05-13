@@ -385,8 +385,7 @@ export default function Index() {
                                                 </p>
                                               </div>;
                                             }
-                          
-                                            if(array.length == index-1){
+                                            if(array.length-1 == index){
                                               refNum = 0;
                                               refRrray = new Array();
                                             }
