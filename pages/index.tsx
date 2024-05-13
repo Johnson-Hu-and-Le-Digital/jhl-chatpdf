@@ -136,9 +136,6 @@ export default function Index() {
     setUrl(window.location.href);
   }, []);
 
-  let refNum = 0;
-  let refRrray: any[] = new Array();
-
   const [yourname, setYourname] = useState<string>('');
   const [isNameError, setIsNameError] = useState(false);
   const [phonenumber, setPhonenumber] = useState<string>('');
@@ -325,6 +322,8 @@ export default function Index() {
                               {messages.map((message, index) => {
                                 let icon;
                                 let className;
+                                let refNum = 0;
+                                let refRrray: any[] = new Array();
                                 if (message.type === 'apiMessage') {
                                   icon = (
                                     <Image
@@ -384,10 +383,6 @@ export default function Index() {
                                                   {refNum}. {doc.metadata.source}
                                                 </p>
                                               </div>;
-                                            }
-                                            if(array.length-1 == index){
-                                              refNum = 0;
-                                              refRrray = new Array();
                                             }
                                           })
                                           }
