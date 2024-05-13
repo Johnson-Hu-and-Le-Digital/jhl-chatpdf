@@ -195,6 +195,10 @@
   margin-bottom: 8px;
 }
 
+.markdownanswer p{
+  margin-bottom: 8px;
+}
+
 .boticon,
 .usericon {
   margin-right: 1rem;
