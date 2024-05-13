@@ -373,37 +373,23 @@ export default function Index() {
                                         key={`sourceDocsAccordion-${index}`}
                                       >
                                         <div className='references-title'>References: </div>
-                                          
+
                                           {message.sourceDocs.map((doc, index, array) => {
                                             const ref = doc.metadata.source;
-                                            console.log('-----T-------');
-                                            console.log(ref);
-                                            console.log(refRrray);
-                                            console.log(refRrray.includes(ref));
                                             if(!refRrray.includes(ref)){
-                                              console.log('num: -----'+refNum);
                                               refRrray.push(ref);
                                               refNum = refNum + 1;
-                                              console.log('num: ====='+refNum);
                                               return <div key={`messageSourceDocs-${index}`}>
                                                 <p className="mt-1">
                                                   {refNum}. {doc.metadata.source}
                                                 </p>
                                               </div>;
                                             }
-
-                                            console.log('是否最后一个：');
-                                            console.log('最后：'+array.at(-1));
-                                            console.log('最：'+doc);
-                                            console.log(array.at(-1) === doc);
-                                            console.log('最后一个=====');
+                                    
                                             if(array.at(-1) === doc){
                                               refNum = 0;
                                               refRrray = new Array();
                                             }
-                                            console.log('result num: '+refNum);
-                                            console.log('result refRrray'+refRrray);
-                                            console.log('-----Te-------');
                                           })
                                           }
                                       </div>
