@@ -373,16 +373,10 @@ export default function Index() {
                                         key={`sourceDocsAccordion-${index}`}
                                       >
                                         <div className='references-title'>References: </div>
-                                          {/* {message.sourceDocs.map((doc, index) => (
-                                            <div key={`messageSourceDocs-${index}`}>
-                                              <p className="mt-1">
-                                                {index + 1}. {doc.metadata.source}
-                                              </p>
-                                            </div>
-                                          ))} */}
                                           
                                           {message.sourceDocs.map((doc, index, array) => {
                                             const ref = doc.metadata.source;
+                                            console.log(ref);
                                             if(!refRrray.includes(ref)){
                                               refRrray.push(ref);
                                               refNum = refNum + 1;
