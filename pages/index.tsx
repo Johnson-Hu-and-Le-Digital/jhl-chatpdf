@@ -391,6 +391,12 @@ export default function Index() {
                                                 </p>
                                               </div>;
                                             }
+
+                                            console.log('是否最后一个：');
+                                            console.log('最后：'+array.at(-1));
+                                            console.log('最：'+doc);
+                                            console.log(array.at(-1) === doc);
+                                            console.log('最后一个=====');
                                             if(array.at(-1) === doc){
                                               refNum = 0;
                                               refRrray = new Array();
