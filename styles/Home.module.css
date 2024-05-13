@@ -193,6 +193,10 @@
   margin: 1rem 0;
 }
 
+.markdownanswer ul{
+  list-style: disc;
+  padding-left: 17px;
+}
 .markdownanswer ul li{
   margin-bottom: 8px;
 }
