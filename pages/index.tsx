@@ -1,14 +1,21 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/layout';
 import styles from '@/styles/Home.module.css';
+import path from 'path';
 // import fonts from '@/styles/fonts.module.css';
 // import indexcss from '@/styles/index.module.css';
+// import fs from 'fs';
 import { Message } from '@/types/chat';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import LoadingDots from '@/components/ui/LoadingDots';
 import { Document } from 'langchain/document';
+import fs from "node:fs/promises";
+import { useDropzone } from 'react-dropzone';
+// import React, { useCallback } from 'react';
+// import DropZone from '../components/DropZone';
+// import FormData from 'form-data';
 
 import {
   Accordion,
@@ -16,6 +23,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Coming_Soon } from 'next/font/google';
 
 export default function Index() {
   const [query, setQuery] = useState<string>('');
@@ -48,16 +56,12 @@ export default function Index() {
   //handle form submission
   async function handleSubmit(e: any) {
     e.preventDefault();
-
     setError(null);
-
     if (!query) {
       alert('Please input a question');
       return;
     }
-
     const question = query.trim();
-
     setMessageState((state) => ({
       ...state,
       messages: [
@@ -103,9 +107,7 @@ export default function Index() {
         }));
       }
       console.log('messageState', messageState);
-
       setLoading(false);
-
       //scroll to bottom
       // console.log(messageListRef.current.scrollHeight);
       messageListRef.current?.scrollTo(0, messageListRef.current.scrollHeight);
@@ -127,13 +129,13 @@ export default function Index() {
   
   const router = useRouter();
   const handleChange = (event: any) => {
-    // console.log(event.target.value);
     router.push(event.target.value);
   };
 
   const [url, setUrl] = useState('');
   useEffect(() => {
     setUrl(window.location.href);
+    handleDirectoryList();
   }, []);
 
   const [yourname, setYourname] = useState<string>('');
@@ -151,30 +153,20 @@ export default function Index() {
     return arr;
   }
 
+
+  //===== Send Email =====
   let selectedValues: any[] = new Array();
   const handleSelectClick = (event: any) => {
-    // const dataValue = event.target.getAttribute('data-value');
     if(event.target.classList.contains('active')){
       event.target.classList.remove('active');
-      // selectedValues = removeElement(selectedValues, dataValue);
     }else{
       event.target.classList.add('active');
-      // selectedValues.push(dataValue);
     }
-    // console.log(selectedValues);
-    // // console.log(selectedValues.join(','));
-
-    // var activeLinks = document.getElementsByClassName('sel-item active');
-    // // console.log(activeLinks);
-    // for(var item of activeLinks){
-    //   console.log(item.getAttribute('data-value'));
-    // }
   };
 
   const [isSendSuccess, setSendSuccess] = useState(false);
   const [isSendError, setSendError] = useState(false);
   const [sendLoading, setSendLoading] = useState<boolean>(false);
-
   async function handleSendEmail(e: any) {
     e.preventDefault();
     setSendSuccess(false);
@@ -205,8 +197,7 @@ export default function Index() {
       var value = item.getAttribute('data-value');
       interested_engaging.push(value);
     }
-    // console.log(interested_engaging);
-    // console.log(interested_engaging.join(','));
+    
     if(flag){
       try {
         const data = {
@@ -227,13 +218,11 @@ export default function Index() {
         const body = await res.json();
     
         if (res.ok) {
-          // alert(`${body.message} 🚀`);
           setSendSuccess(true);
           setSendLoading(false);
         }
     
         if (res.status === 400) {
-          // alert(`${body.message} 😢`);
           setSendError(true);
           setSendLoading(false);
         }
@@ -246,6 +235,232 @@ export default function Index() {
       setSendLoading(false);
     }
   }
+  //===== Send Email End =====
+
+  //===== Add Directory =====
+  const [addDirButton, setAddDirButton] = useState(false);
+  async function handleClickAddDir(e: any) {
+    e.preventDefault();
+    if(addDirButton){
+      setAddDirButton(false);
+    }else{
+      setAddDirButton(true);
+    }
+  }
+
+  const [directoryname, setDirectoryname] = useState<string>('');
+  async function handleAddDirectory(e: any) {
+    e.preventDefault();
+    try {
+      const data = {
+        directoryname: directoryname,
+        pdfDirectory: pdfDirectory
+      }
+      const res = await fetch('/api/addDirectory', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      const body = await res.json();
+  
+      if (res.ok) {
+        // alert(`${body.message} 🚀`);
+        handleDirectoryList();
+        setDirectoryname('');
+        setAddDirButton(false);
+      }
+  
+      if (res.status === 400) {
+        alert(`${body.message} 😢`);
+      }
+    } catch (err) {
+      console.log('Something went wrong: ', err);
+    }
+    
+  }
+  //===== Add Directory End =====
+
+  //===== Show Directory =====
+  const [pdfDirectory, setPdfDirectory] = useState<string>('');
+  const [nowdirectory, setNowdirectory] = useState<string>('');
+  const [directorys, setDirectorys] = useState<string[]>([]);
+  const [files, setFiles] = useState<string[]>([]);
+  // const [searchDir, setSearchDir] = useState<string>('');
+  let clickDir = '';
+  async function handleDirectoryList() {
+    try {
+      const data = {
+        directoryname: clickDir,
+        pdfDirectory: pdfDirectory
+      }
+      const res = await fetch('/api/directorylist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const body = await res.json();
+      if (res.ok) {
+        setPdfDirectory(body.message);
+        setNowdirectory(body.nowdirectory);
+        setDirectorys(body.directorys);
+        setFiles(body.files);
+      }
+  
+      if (res.status === 400) {
+        alert(`${body.message} 😢`);
+      }
+    } catch (err) {
+      console.log('Something went wrong: ', err);
+    }
+    
+  }
+  //===== Show Directory End =====
+
+  //===== Double Click Directory =====
+  const handleDoubleDirClick = (event: any) => {
+    clickDir = event.target.getAttribute('data-dir');
+    handleDirectoryList();
+  };
+  //===== Double Click Directory End =====
+
+  //===== Double Click Return Previous =====
+  async function handleReturnPrevious(e: any) {
+    e.preventDefault();
+    try {
+      let nowaddress = e.target.getAttribute('data-nowaddress');
+      const data = {
+        nowaddress: nowaddress
+      }
+      const res = await fetch('/api/returnPrevious', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      const body = await res.json();
+  
+      if (res.ok) {
+        // alert(`${body.message} 🚀`);
+        setPdfDirectory(body.message);
+        setNowdirectory(body.nowdirectory);
+        setDirectorys(body.directorys);
+        setFiles(body.files);
+      }
+  
+      if (res.status === 400) {
+        alert(`${body.message} 😢`);
+      }
+    } catch (err) {
+      console.log('Something went wrong: ', err);
+    }
+    
+  }
+  //===== Double Click Return Previous End =====
+
+  //===== Upload File =====
+  const [file, setFile] = useState<string>();
+  const [fileEnter, setFileEnter] = useState(false);
+  const onFileUpload = async (file: File) => {
+    // console.log(pdfDirectory);
+    const formData = new FormData();
+      formData.append('file', file);
+      formData.append('filepath', pdfDirectory);
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        // },
+        body: formData,
+        // body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        handleDirectoryList();
+      } else {
+        console.error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Error while uploading file:', error);
+    }
+  };
+  //===== Upload File End =====
+
+  interface Props {
+    onFileUpload: (file: File) => void;
+  }
+   
+  const DropZone: React.FC<Props> = ({ onFileUpload }) => {
+    const onDrop = useCallback((acceptedFiles: any) => {
+      if (acceptedFiles.length > 0) {
+        onFileUpload(acceptedFiles[0]);
+      }
+    }, []);
+   
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+   
+    return (
+      <div 
+        onDragOver={(e) => {
+          e.preventDefault();
+          setFileEnter(true);
+        }}
+        onDragLeave={(e) => {
+          setFileEnter(false);
+        }}
+        onDragEnd={(e) => {
+          e.preventDefault();
+          setFileEnter(false);
+        }} 
+        id="drop_area" {...getRootProps()} 
+        // data-dir={pdfDirectory}
+        className={`${
+          fileEnter ? "drag-enter" : ""
+        }"`}>
+        <input {...getInputProps()} />
+        <p>Drag PDF to upload <br />to selected directory</p>
+      </div>
+    );
+  };
+
+  //===== Delete PDF =====
+  async function  handleDeleteFile(e: any) {
+    e.preventDefault();
+    try {
+      let url = e.target.getAttribute('data-url');
+
+      const data = {
+        pdfurl: url
+      }
+      const res = await fetch('/api/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      const body = await res.json();
+  
+      if (res.ok) {
+        handleDirectoryList();
+      }
+  
+      if (res.status === 400) {
+        alert(`${body.message} 😢`);
+      }
+    } catch (err) {
+      console.log('Something went wrong: ', err);
+    }
+  };
+  //===== Delete PDF End =====
 
   return (
     <>
@@ -265,7 +480,18 @@ export default function Index() {
                     />
                 </div>
                 <div className="col-12 col-lg-11 pt-5">
-                    <div className="font-size-16 font-Poppins-Medium text-line-height-20 color-purple-2">home / directory / directory1 /  directory2</div>
+                    <div id="pdfDirectory" className="font-size-16 font-Poppins-Medium text-line-height-20 color-purple-2">{pdfDirectory} <span className='add-directory' onClick={handleClickAddDir}>{addDirButton ? ( '-') : ( '+' )}</span></div>
+                    
+                    {addDirButton ? (
+                      <div className='pt-4'>
+                        <input className='form-control' placeholder="Enter your directory name" id="dirName"
+                          autoComplete='off'
+                          value={directoryname}
+                          onChange={(e) => setDirectoryname(e.target.value)} />
+                        <button type="button" className="btn font-uppercase max-width-125 mt-3" id="add_Dir" onClick={handleAddDirectory}>Add<span className="icon"></span><span className="bor"></span></button>
+                      </div>
+                    ) : ( '' )}
+                    
                     <div className="form-check pt-4">
                         <input className="form-check-input" type="checkbox" value="" id="check_1" />
                         <label className="form-check-label">
@@ -273,33 +499,40 @@ export default function Index() {
                         </label>
                     </div>
                     <div className="font-size-16 font-Poppins-Regular text-line-height-20 color-purple-2 pt-4">Analyzing current directory or upload your own PDF for analysis</div>
-                    <div className="font-size-16 font-Poppins-Bold text-line-height-20 color-blue pt-4">... / Directory 2 /</div>
+                    <div className="font-size-16 font-Poppins-Bold text-line-height-20 color-blue pt-4">... / {nowdirectory} /</div>
                     <div className="upDirectory">
                         <hr />
-                        <div className="previous flist"><span className="before"></span> Up directory</div>
+                        <div className="previous flist" onDoubleClick={handleReturnPrevious}><span className="before" data-nowaddress={pdfDirectory}></span> Up directory</div>
                     </div>
                     <div className="directoryList">
-                        <hr />
-                        <div className="directory flist"><span className="before"></span> Directory 3</div>
-                        
+                        {directorys.map((item, index) => (
+                          <>
+                          <hr />
+                          <div className="directory flist" key={index}><span className="before" id={`directory-${index}`} onDoubleClick={handleDoubleDirClick} data-dir={item}></span>{item}</div>
+                          </>
+                        ))}
                     </div>
                     <div className='pdfListBox'>
-                      <div className="pdfList" id="filename_1">
-                          <hr />
-                          <div className="pdf-file flist"><span className="before"></span> pdf filename_1.pdf <span className="after delete-btn"></span></div>
-                      </div>
-                      <div className="pdfList" id="filename_2">
-                          <hr />
-                          <div className="pdf-file flist"><span className="before"></span> pdf filename_2.pdf <span className="after delete-btn"></span></div>
-                      </div>
+                    {files.map((item, index) => (
+                          <>
+                          <div className="pdfList" id="" key={index}>
+                              <hr />
+                              <div className="pdf-file flist"><span className="before"></span>{item}<span className="after delete-btn" data-url={`${pdfDirectory}/${item}`} onClick={handleDeleteFile}></span></div>
+                          </div>
+                          </>
+                        ))}
                     </div>
-                    <div className="mt-4" id="drop_area">Drag PDF to upload <br />to selected directory</div>
+                    <div className='pt-4'></div>
+                    <DropZone onFileUpload={onFileUpload} />
+                    
                     <div className="form-check pt-4">
                         <input className="form-check-input" type="checkbox" value="" id="check_2" />
                         <label className="form-check-label">
                             Override and upload to my personal directory user.documents
                         </label>
                     </div>
+                    
+                    
                 </div>
             </div>
         </div>
@@ -521,3 +754,5 @@ export default function Index() {
     </>
   );
 }
+
+

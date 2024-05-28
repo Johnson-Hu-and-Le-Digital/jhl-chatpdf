@@ -38,7 +38,7 @@ export default async function handler(
   //     .json({ message: 'Please fill out the necessary fields' });
   // }
 
-  console.log(req.body);
+  // console.log(req.body);
 
   const { yourname, phonenumber, email, interested_engaging, otherMessage } = req.body;
 

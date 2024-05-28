@@ -85,43 +85,43 @@
     // });
 
 
-    var dropArea = $('#drop_area');
-    dropArea.on('dragenter', function(e){
-        e.stopPropagation();
-        e.preventDefault();
-        dropArea.addClass('drag-enter');
-    })
-    .on('dragleave', function(e){
-        e.preventDefault();
-        dropArea.removeClass('drag-enter');
-    })
-    .on('dragover', function(e){
-        e.stopPropagation();
-        e.preventDefault();
-    })
-    .on('drop', function(e){
-        e.stopPropagation();
-        e.preventDefault();
-        dropArea.removeClass('drag-enter');
+    // var dropArea = $('#drop_area');
+    // dropArea.on('dragenter', function(e){
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //     dropArea.addClass('drag-enter');
+    // })
+    // .on('dragleave', function(e){
+    //     e.preventDefault();
+    //     dropArea.removeClass('drag-enter');
+    // })
+    // .on('dragover', function(e){
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    // })
+    // .on('drop', function(e){
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //     dropArea.removeClass('drag-enter');
 
-        var file = e.originalEvent.dataTransfer.files[0];
-        var fileName = file.name;
-        // console.log(file.name);
-        var formData = new FormData(); 
-        formData.append('file', file); 
-        // console.log(formData);
+    //     var file = e.originalEvent.dataTransfer.files[0];
+    //     var fileName = file.name;
+    //     // console.log(file.name);
+    //     var formData = new FormData(); 
+    //     formData.append('file', file); 
+    //     // console.log(formData);
         
-        var html = '<div class="pdfList" id="'+fileName+'">'+
-                '<hr />'+
-                '<div class="pdf-file flist"><span class="before"></span> '+fileName+' <span class="after delete-btn"></span></div>'+
-            '</div>';
-        $('.pdfListBox').append(html);
-    });
+    //     var html = '<div class="pdfList" id="'+fileName+'">'+
+    //             '<hr />'+
+    //             '<div class="pdf-file flist"><span class="before"></span> '+fileName+' <span class="after delete-btn"></span></div>'+
+    //         '</div>';
+    //     $('.pdfListBox').append(html);
+    // });
 
-    $('body').on('click', '.pdfList .delete-btn', function(){
-        console.log('delete');
-        $(this).parent().parent().remove();
-    });
+    // $('body').on('click', '.pdfList .delete-btn', function(){
+    //     console.log('delete');
+    //     $(this).parent().parent().remove();
+    // });
 
     
 })(jQuery)
