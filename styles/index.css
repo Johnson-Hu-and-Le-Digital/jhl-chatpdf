@@ -625,6 +625,10 @@ hr.hr-white {
   align-items: center;
 }
 
+.flist .txt{
+  word-break: break-word;
+}
+
 .flist .before {
   content: '';
   display: inline-block;

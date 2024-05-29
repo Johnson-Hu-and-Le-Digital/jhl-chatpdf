@@ -517,7 +517,10 @@ export default function Index() {
                           <>
                           <div className="pdfList" id="" key={index}>
                               <hr />
-                              <div className="pdf-file flist"><span className="before"></span>{item}<span className="after delete-btn" data-url={`${pdfDirectory}/${item}`} onClick={handleDeleteFile}></span></div>
+                              <div className="pdf-file flist">
+                                <span className="before"></span>
+                                <span className='txt'>{item}</span>
+                                <span className="after delete-btn" data-url={`${pdfDirectory}/${item}`} onDoubleClick={handleDeleteFile}></span></div>
                           </div>
                           </>
                         ))}
