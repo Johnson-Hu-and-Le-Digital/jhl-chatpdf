@@ -3,9 +3,6 @@ import { useRouter } from 'next/router';
 import Layout from '@/components/layout';
 import styles from '@/styles/Home.module.css';
 import path from 'path';
-// import fonts from '@/styles/fonts.module.css';
-// import indexcss from '@/styles/index.module.css';
-// import fs from 'fs';
 import { Message } from '@/types/chat';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
@@ -13,9 +10,6 @@ import LoadingDots from '@/components/ui/LoadingDots';
 import { Document } from 'langchain/document';
 import fs from "node:fs/promises";
 import { useDropzone } from 'react-dropzone';
-// import React, { useCallback } from 'react';
-// import DropZone from '../components/DropZone';
-// import FormData from 'form-data';
 
 import {
   Accordion,
@@ -49,9 +43,9 @@ export default function Index() {
   const messageListRef = useRef<HTMLDivElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    textAreaRef.current?.focus();
-  }, []);
+  // useEffect(() => {
+  //   textAreaRef.current?.focus();
+  // }, []);
 
   //handle form submission
   async function handleSubmit(e: any) {
@@ -134,9 +128,10 @@ export default function Index() {
 
   const [url, setUrl] = useState('');
   useEffect(() => {
+    textAreaRef.current?.focus();
     setUrl(window.location.href);
     handleDirectoryList();
-  }, []);
+  }, []);// eslint-disable-line
 
   const [yourname, setYourname] = useState<string>('');
   const [isNameError, setIsNameError] = useState(false);
@@ -318,7 +313,7 @@ export default function Index() {
       console.log('Something went wrong: ', err);
     }
     
-  }
+  }// eslint-disable-line
   //===== Show Directory End =====
 
   //===== Double Click Directory =====
@@ -379,8 +374,7 @@ export default function Index() {
         // headers: {
         //   'Content-Type': 'multipart/form-data',
         // },
-        body: formData,
-        // body: JSON.stringify(data),
+        body: formData
       });
       if (response.ok) {
         handleDirectoryList();
@@ -402,7 +396,7 @@ export default function Index() {
       if (acceptedFiles.length > 0) {
         onFileUpload(acceptedFiles[0]);
       }
-    }, []);
+    }, [onFileUpload]);
    
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
    
