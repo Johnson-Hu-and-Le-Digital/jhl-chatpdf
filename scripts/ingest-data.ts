@@ -1,6 +1,9 @@
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
-import { PineconeStore } from 'langchain/vectorstores/pinecone';
+// import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+// import { PineconeStore } from 'langchain/vectorstores/pinecone';
+import { OpenAIEmbeddings } from '@langchain/openai';
+import { PineconeStore } from '@langchain/pinecone';
+
 import { pinecone } from '@/utils/pinecone-client';
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
