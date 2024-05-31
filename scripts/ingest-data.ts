@@ -9,7 +9,7 @@ import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 /* Name of directory to retrieve your files from 
    Make sure to add your PDF files inside the 'docs' folder
 */
-const filePath = 'docs';
+const filePath = '/home/gsk/lib/shingrix';
 
 export const run = async () => {
   try {
