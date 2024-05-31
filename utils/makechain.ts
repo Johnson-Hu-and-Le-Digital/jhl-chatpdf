@@ -1,9 +1,14 @@
-import { ChatOpenAI } from 'langchain/chat_models/openai';
-import { ChatPromptTemplate } from 'langchain/prompts';
-import { RunnableSequence } from 'langchain/schema/runnable';
-import { StringOutputParser } from 'langchain/schema/output_parser';
+// import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { ChatOpenAI } from '@langchain/openai';
+// import { ChatPromptTemplate } from 'langchain/prompts';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+// import { RunnableSequence } from 'langchain/schema/runnable';
+import { RunnableSequence } from '@langchain/core/runnables';
+// import { StringOutputParser } from 'langchain/schema/output_parser';
+import { StringOutputParser } from '@langchain/core/output_parsers';
 import type { Document } from 'langchain/document';
-import type { VectorStoreRetriever } from 'langchain/vectorstores/base';
+// import type { VectorStoreRetriever } from 'langchain/vectorstores/base';
+import type { VectorStoreRetriever } from '@langchain/core/vectorstores';
 
 const CONDENSE_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
@@ -29,7 +34,7 @@ If the question is not related to the context or chat history, politely respond 
 Question: {question}
 Helpful answer in markdown:`;
 
-const combineDocumentsFn = (docs: Document[], separator = '\n\n') => {
+const combineDocumentsFn = (docs: Document[], separator = '\n\n' as any) => {
   const serializedDocs = docs.map((doc) => doc.pageContent);
   return serializedDocs.join(separator);
 };
