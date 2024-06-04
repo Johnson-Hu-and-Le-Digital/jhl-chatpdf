@@ -7,9 +7,9 @@ export default async function handler(
     res: NextApiResponse
   ) {
 
-    const { directoryname, pdfDirectory } = req.body;
+    const { directoryname } = req.body;
 
-    const directoryPath = pdfDirectory+'/'+directoryname;
+    const directoryPath = process.env.PDF_DIRECTORY+'/'+directoryname;
 
     // Check if the directory exists
     if (!fs.existsSync(directoryPath)) {

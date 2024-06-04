@@ -857,10 +857,14 @@ hr.hr-white {
 } */
 
 #pdfDirectory{
+  padding-right: 40px;
+  position: relative;
+}
+.dir-group{
   padding-right: 50px;
   position: relative;
 }
-#pdfDirectory .add-directory{
+.dir-group .add-directory{
   width: 30px;
   height: 30px;
   font-family: 'Poppins-Regular';
@@ -868,11 +872,46 @@ hr.hr-white {
   line-height: 30px;
   text-align: center;
   position: absolute;
-  display: inline;
+  display: inline-block;
   right: 0;
+  top: 8px;
   cursor: pointer;
   border: 1px solid #716da3;
+  color: #716da3;
   /* padding: 3px; */
   border-radius: 50%;
 }
 
+
+.dirLibBtn{
+  font-family: 'Poppins-Medium';
+  color: #716da3;
+  line-height: 20px;
+  display: inline-block;
+  cursor: pointer;
+  /* margin-right: 20px; */
+  padding: 15px 15px 15px 40px;
+  position: relative;
+}
+/* .dirLibBtn:checked{
+  color: red;
+} */
+.btn-check:checked+.dirLibBtn, .dirLibBtn.active, .dirLibBtn.show, .dirLibBtn:first-child:active, :not(.btn-check)+.dirLibBtn:active {
+  color: red;
+  background-color: var(--bs-btn-active-bg);
+  border-color: var(--bs-btn-active-border-color);
+}
+
+.dirLibBtn::before{
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 22.27px;
+  background-image: url(/images/directory-icon.svg);
+  background-size: 30px 22.27px;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+}

@@ -130,7 +130,9 @@ export default function Index() {
   useEffect(() => {
     textAreaRef.current?.focus();
     setUrl(window.location.href);
-    handleDirectoryList();
+    // handleDirectoryList();
+    handleDirList();
+    handleGetPDFList();
   }, []);// eslint-disable-line
 
   const [yourname, setYourname] = useState<string>('');
@@ -249,9 +251,9 @@ export default function Index() {
     try {
       const data = {
         directoryname: directoryname,
-        pdfDirectory: pdfDirectory
+        // pdfDirectory: pdfDirectory
       }
-      const res = await fetch('/api/addDirectory', {
+      const res = await fetch('/api/filemanagement/addDirectory', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -263,7 +265,9 @@ export default function Index() {
   
       if (res.ok) {
         // alert(`${body.message} 🚀`);
-        handleDirectoryList();
+        // handleDirectoryList();
+        // clickDir = directoryname;
+        handleDirList();
         setDirectoryname('');
         setAddDirButton(false);
       }
@@ -278,13 +282,90 @@ export default function Index() {
   }
   //===== Add Directory End =====
 
+
+  //=====Directory List=====
+  const [dirList, setDirList] = useState<string[]>([]);
+  async function handleDirList() {
+    try {
+      const data = {
+        directoryname: clickDir
+      }
+      const res = await fetch('/api/filemanagement/directory', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const body = await res.json();
+      if (res.ok) {
+        // console.log(body.directorys);
+        setDirList(body.directorys);
+      }
+  
+      if (res.status === 400) {
+        alert(`${body.message} 😢`);
+      }
+    } catch (err) {
+      console.log('Something went wrong: ', err);
+    }
+  }
+  //===== Directory List End =====
+
+  //===== PDF List =====
+  let clickDir = '';
+  const [clickDir2, setClickDir2] = useState<string>('');
+  const [files, setFiles] = useState<string[]>([]);
+  async function handleGetPDFList() {
+    console.log(clickDir);
+    if(clickDir == ''){
+      clickDir = 'Mylib1';
+      setClickDir2('Mylib1');
+    }
+    // console.log(clickDir);
+    try {
+      const data = {
+        directoryname: clickDir
+      }
+      const res = await fetch('/api/filemanagement/pdflist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const body = await res.json();
+      if (res.ok) {
+        // console.log(body);
+        // console.log(body.files);
+        setFiles(body.files);
+      }
+  
+      if (res.status === 400) {
+        alert(`${body.message} 😢`);
+      }
+    } catch (err) {
+      console.log('Something went wrong: ', err);
+    }
+  };
+  //===== PDF List End =====
+
+  //===== Click Directory =====
+  const handleDoubleDirClick = (event: any) => {
+    clickDir = event.target.getAttribute('value');
+    setClickDir2(event.target.getAttribute('value'));
+    handleGetPDFList();
+  };
+  //===== Double Click Directory End =====
+
+
+
   //===== Show Directory =====
   const [pdfDirectory, setPdfDirectory] = useState<string>('');
   const [nowdirectory, setNowdirectory] = useState<string>('');
   const [directorys, setDirectorys] = useState<string[]>([]);
-  const [files, setFiles] = useState<string[]>([]);
   // const [searchDir, setSearchDir] = useState<string>('');
-  let clickDir = '';
+  // let clickDir = '';
   async function handleDirectoryList() {
     try {
       const data = {
@@ -316,12 +397,7 @@ export default function Index() {
   }// eslint-disable-line
   //===== Show Directory End =====
 
-  //===== Double Click Directory =====
-  const handleDoubleDirClick = (event: any) => {
-    clickDir = event.target.getAttribute('data-dir');
-    handleDirectoryList();
-  };
-  //===== Double Click Directory End =====
+  
 
   //===== Double Click Return Previous =====
   async function handleReturnPrevious(e: any) {
@@ -359,25 +435,28 @@ export default function Index() {
   }
   //===== Double Click Return Previous End =====
 
+
   //===== Upload File =====
   const [file, setFile] = useState<string>();
   const [fileEnter, setFileEnter] = useState(false);
   const onFileUpload = async (file: File) => {
-    // console.log(pdfDirectory);
+    // console.log(clickDir2);
     const formData = new FormData();
       formData.append('file', file);
-      formData.append('filepath', pdfDirectory);
+      formData.append('filepath', clickDir2);
 
     try {
-      const response = await fetch('/api/upload', {
+      const response = await fetch('/api/filemanagement/upload', {
         method: 'POST',
-        // headers: {
-        //   'Content-Type': 'multipart/form-data',
-        // },
         body: formData
       });
+
+      const body = await response.json();
       if (response.ok) {
-        handleDirectoryList();
+        // handleDirectoryList();
+        console.log(body);
+        clickDir = body.filepath;
+        handleGetPDFList();
       } else {
         console.error('Upload failed');
       }
@@ -414,7 +493,7 @@ export default function Index() {
           setFileEnter(false);
         }} 
         id="drop_area" {...getRootProps()} 
-        // data-dir={pdfDirectory}
+        data-dir={clickDir2}
         className={`${
           fileEnter ? "drag-enter" : ""
         }"`}>
@@ -428,12 +507,16 @@ export default function Index() {
   async function  handleDeleteFile(e: any) {
     e.preventDefault();
     try {
-      let url = e.target.getAttribute('data-url');
+      let pdfname = e.target.getAttribute('data-pdfname');
+      let delDir = e.target.getAttribute('data-dir');
+      console.log(pdfname);
+      console.log(delDir);
 
       const data = {
-        pdfurl: url
+        pdfname: pdfname,
+        delDir: delDir
       }
-      const res = await fetch('/api/delete', {
+      const res = await fetch('/api/filemanagement/delete', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -444,7 +527,9 @@ export default function Index() {
       const body = await res.json();
   
       if (res.ok) {
-        handleDirectoryList();
+        // handleDirectoryList();
+        clickDir = body.delDir;
+        handleGetPDFList();
       }
   
       if (res.status === 400) {
@@ -463,6 +548,7 @@ export default function Index() {
       <section className='left-panel pt-4 pb-5'>
         <div className="container">
             <div className="row justify-content-center align-items-center">
+                
                 <div className="col-12 col-lg-11">
                     {/* <img src="/images/logo-2.svg" style={{width: '93px'}} /> */}
                     <Image
@@ -473,11 +559,30 @@ export default function Index() {
                       style={{ width: '93px', height: 'auto' }}
                     />
                 </div>
-                <div className="col-12 col-lg-11 pt-5">
-                    <div id="pdfDirectory" className="font-size-16 font-Poppins-Medium text-line-height-20 color-purple-2">{pdfDirectory} <span className='add-directory' onClick={handleClickAddDir}>{addDirButton ? ( '-') : ( '+' )}</span></div>
-                    
+                <div className='col-12 col-lg-11 pt-5'>
+                  {/* <input type='text' value={clickDir2} id="checkedDir" /> */}
+                  <div className="dir-group" role="group" aria-label="Basic radio toggle button group">
+                    {dirList.map((item, index) => {
+                      let isChecked = '';
+                      if(index == 0){
+                        isChecked = 'checked';
+                      }
+                      return (
+                          <>
+                          {/* <div className="directoryTabButton" key={index}><span className="before" id={`directory-${index}`} onDoubleClick={handleDoubleDirClick} data-dir={item}></span>{item}</div> */}
+                          <input type="radio" className="btn-check" name="dirLibRadio" id={`directory-${index}`} defaultChecked={item === clickDir2} onChange={handleDoubleDirClick} data-dir={item} value={item} />
+                          <label className="dirLibBtn" htmlFor={`directory-${index}`}>{item}</label>
+                          </>
+                      );
+                    })}
+
+                    <span className='add-directory' onClick={handleClickAddDir}>{addDirButton ? ( '-') : ( '+' )}</span>
+                  </div>
+                </div>
+                <div className='col-12 col-lg-11'>
+                  {/* <div id="pdfDirectory" className="font-size-16 font-Poppins-Medium text-line-height-20 color-purple-2">{pdfDirectory} <span className='add-directory' onClick={handleClickAddDir}>{addDirButton ? ( '-') : ( '+' )}</span></div> */}
                     {addDirButton ? (
-                      <div className='pt-4'>
+                      <div className='pt-3'>
                         <input className='form-control' placeholder="Enter your directory name" id="dirName"
                           autoComplete='off'
                           value={directoryname}
@@ -485,27 +590,34 @@ export default function Index() {
                         <button type="button" className="btn font-uppercase max-width-125 mt-3" id="add_Dir" onClick={handleAddDirectory}>Add<span className="icon"></span><span className="bor"></span></button>
                       </div>
                     ) : ( '' )}
-                    
-                    <div className="form-check pt-4">
+                </div>
+                {/* <div className='col-12 col-lg-11 pt-5'>
+                  <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
+
+                    <input type="radio" className="btn-check" name="btnradio" id="btnradio1" />
+                    <label className="btn btn-outline-primary" htmlFor="btnradio1">Radio 1</label>
+
+                    <input type="radio" className="btn-check" name="btnradio" id="btnradio2" />
+                    <label className="btn btn-outline-primary" htmlFor="btnradio2">Radio 2</label>
+
+                    <input type="radio" className="btn-check" name="btnradio" id="btnradio3"/>
+                    <label className="btn btn-outline-primary" htmlFor="btnradio3">Radio 3</label>
+                  </div>
+                </div> */}
+                <div className="col-12 col-lg-11 pt-3">
+                    {/* <div className="form-check pt-4">
                         <input className="form-check-input" type="checkbox" value="" id="check_1" />
                         <label className="form-check-label">
                             Include subdirectory content?
                         </label>
-                    </div>
-                    <div className="font-size-16 font-Poppins-Regular text-line-height-20 color-purple-2 pt-4">Analyzing current directory or upload your own PDF for analysis</div>
-                    <div className="font-size-16 font-Poppins-Bold text-line-height-20 color-blue pt-4">... / {nowdirectory} /</div>
-                    <div className="upDirectory">
+                    </div> */}
+                    {/* <div className="font-size-16 font-Poppins-Regular text-line-height-20 color-purple-2 pt-4">Analyzing current directory or upload your own PDF for analysis</div>
+                    <div className="font-size-16 font-Poppins-Bold text-line-height-20 color-blue pt-4">... / {nowdirectory} /</div> */}
+                    {/* <div className="upDirectory">
                         <hr />
                         <div className="previous flist" onDoubleClick={handleReturnPrevious}><span className="before" data-nowaddress={pdfDirectory}></span> Up directory</div>
-                    </div>
-                    <div className="directoryList">
-                        {directorys.map((item, index) => (
-                          <>
-                          <hr />
-                          <div className="directory flist" key={index}><span className="before" id={`directory-${index}`} onDoubleClick={handleDoubleDirClick} data-dir={item}></span>{item}</div>
-                          </>
-                        ))}
-                    </div>
+                    </div> */}
+                    
                     <div className='pdfListBox'>
                     {files.map((item, index) => (
                           <>
@@ -514,7 +626,7 @@ export default function Index() {
                               <div className="pdf-file flist">
                                 <span className="before"></span>
                                 <span className='txt'>{item}</span>
-                                <span className="after delete-btn" data-url={`${pdfDirectory}/${item}`} onDoubleClick={handleDeleteFile}></span></div>
+                                <span className="after delete-btn" data-pdfname={item} data-dir={clickDir2} onDoubleClick={handleDeleteFile}></span></div>
                           </div>
                           </>
                         ))}
@@ -539,10 +651,26 @@ export default function Index() {
             <div className="container">
                 <div className="row justify-content-center align-items-center">
                     <div className="col-12 col-lg-9">
-                      <select onChange={handleChange} id="selectWebsite" className="form-select" style={{width: 'auto'}} value={url}>
+                      {/* <select onChange={handleChange} id="selectWebsite" className="form-select" style={{width: 'auto'}} value={url}>
                         <option value="http://gsk-chatpdf-bexsero.jhldigital.com/">Bexsero</option>
                         <option value="http://gsk-chatpdf-shingrix.jhldigital.com/">Shingrix</option>
                         <option value="http://gsk-chatpdf-twinrix.jhldigital.com/">Twinrix</option>
+                      </select> */}
+
+                      <select id="selecteDir" className="form-select" style={{width: 'auto'}} >
+                        {dirList.map((item, index) => {
+                          let isChecked = '';
+                          if(index == 0){
+                            isChecked = 'checked';
+                          }
+                          return (
+                              <>
+                              <option value={item}>{item}</option>
+                              {/* <input type="radio" className="btn-check" name="dirLibRadio" id={`directory-${index}`} defaultChecked={index === 0} onClick={handleDoubleDirClick} data-dir={item} />
+                              <label className="dirLibBtn" htmlFor={`directory-${index}`}>{item}</label> */}
+                              </>
+                          );
+                        })}
                       </select>
                       {/* <input type='hidden' value={url} /> */}
                         <div className="title mt-4">JHL <span>Literature Explorer</span></div>
