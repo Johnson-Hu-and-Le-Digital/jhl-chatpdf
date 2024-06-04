@@ -16,7 +16,7 @@ export default async function handler(
         // If it doesn't exist, create the directory
         fs.mkdirSync(directoryPath);
         // console.log(`Directory '${directoryPath}' created.`);
-        res.status(200).json({ message: `Directory '${directoryPath}' created.` });
+        res.status(200).json({ message: `Directory '${directoryPath}' created.`, directoryname: directoryname });
     } else {
         // console.log(`Directory '${directoryPath}' already exists.`);
         fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {

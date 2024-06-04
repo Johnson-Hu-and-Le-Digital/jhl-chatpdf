@@ -264,6 +264,8 @@ export default function Index() {
       const body = await res.json();
   
       if (res.ok) {
+        clickDir = body.directoryname;
+        setClickDir2(directoryname);
         handleDirList();
         setDirectoryname('');
         setAddDirButton(false);
@@ -320,12 +322,11 @@ export default function Index() {
   const [clickDir2, setClickDir2] = useState<string>('');
   const [files, setFiles] = useState<string[]>([]);
   async function handleGetPDFList() {
-    console.log(clickDir);
+    // console.log(clickDir);
     // if(clickDir == ''){
     //   clickDir = 'Mylib1';
     //   setClickDir2('Mylib1');
     // }
-    
     try {
       const data = {
         directoryname: clickDir
