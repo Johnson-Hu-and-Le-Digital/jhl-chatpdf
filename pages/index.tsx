@@ -132,7 +132,7 @@ export default function Index() {
     setUrl(window.location.href);
     // handleDirectoryList();
     handleDirList();
-    handleGetPDFList();
+    // handleGetPDFList();
   }, []);// eslint-disable-line
 
   const [yourname, setYourname] = useState<string>('');
@@ -264,9 +264,6 @@ export default function Index() {
       const body = await res.json();
   
       if (res.ok) {
-        // alert(`${body.message} 🚀`);
-        // handleDirectoryList();
-        // clickDir = directoryname;
         handleDirList();
         setDirectoryname('');
         setAddDirButton(false);
@@ -301,6 +298,11 @@ export default function Index() {
       if (res.ok) {
         // console.log(body.directorys);
         setDirList(body.directorys);
+        if(clickDir == ''){
+          clickDir = body.directorys[0];
+          setClickDir2(body.directorys[0]);
+        }
+        handleGetPDFList();
       }
   
       if (res.status === 400) {
@@ -314,15 +316,16 @@ export default function Index() {
 
   //===== PDF List =====
   let clickDir = '';
+  // let clickDirIndex = 0;
   const [clickDir2, setClickDir2] = useState<string>('');
   const [files, setFiles] = useState<string[]>([]);
   async function handleGetPDFList() {
     console.log(clickDir);
-    if(clickDir == ''){
-      clickDir = 'Mylib1';
-      setClickDir2('Mylib1');
-    }
-    // console.log(clickDir);
+    // if(clickDir == ''){
+    //   clickDir = 'Mylib1';
+    //   setClickDir2('Mylib1');
+    // }
+    
     try {
       const data = {
         directoryname: clickDir
@@ -336,8 +339,6 @@ export default function Index() {
       });
       const body = await res.json();
       if (res.ok) {
-        // console.log(body);
-        // console.log(body.files);
         setFiles(body.files);
       }
   
@@ -454,7 +455,7 @@ export default function Index() {
       const body = await response.json();
       if (response.ok) {
         // handleDirectoryList();
-        console.log(body);
+        // console.log(body);
         clickDir = body.filepath;
         handleGetPDFList();
       } else {
