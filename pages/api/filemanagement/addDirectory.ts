@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Pinecone } from '@pinecone-database/pinecone';
 
 export default async function handler(
     req: NextApiRequest,
@@ -15,6 +16,26 @@ export default async function handler(
     if (!fs.existsSync(directoryPath)) {
         // If it doesn't exist, create the directory
         fs.mkdirSync(directoryPath);
+
+        const pinecone = new Pinecone({
+          apiKey: process.env.PINECONE_API_KEY ?? '',
+        });
+
+        let indexname = directoryname.toLowerCase();
+        indexname = indexname.replaceAll(' ', '-');
+        console.log(indexname);
+        await pinecone.createIndex({
+          name: indexname,
+          dimension: 1536,
+          metric: 'cosine',
+          spec: {
+            serverless: {
+              cloud: 'aws',
+              region: 'us-east-1'
+            }
+          }
+        });
+
         // console.log(`Directory '${directoryPath}' created.`);
         res.status(200).json({ message: `Directory '${directoryPath}' created.`, directoryname: directoryname });
     } else {

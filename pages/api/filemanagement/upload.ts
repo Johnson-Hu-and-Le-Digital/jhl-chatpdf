@@ -3,6 +3,17 @@ import { promises as fs } from "fs";
 import path from "path";
 import { File } from 'formidable';
 import * as formidable from 'formidable';
+import { exec } from 'child_process';
+
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import { OpenAIEmbeddings } from '@langchain/openai';
+import { PineconeStore } from '@langchain/pinecone';
+import { pinecone } from '@/utils/pinecone-client';
+// import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
+import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
+import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
+import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
+// import { DirectoryLoader } from '@langchain/community/document_loaders/fs/pdf';
 
 export const config = {
     api: {
@@ -48,6 +59,55 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         for (const file of files) {
             const tempPath = file[1].filepath;
             await fs.rename(tempPath, targetPath + file[1].originalFilename);
+
+            // exec('yarn run ingest', (error, stdout, stderr) => {
+            //     if (error) {
+            //       console.error(`执行出错: ${error}`);
+            //       return;
+            //     }
+            //     console.log(`stdout: ${stdout}`);
+            //     console.error(`stderr: ${stderr}`);
+            // });
+
+            let fileDir = req.body.filepath;
+            fileDir = fileDir[0];
+            fileDir = fileDir.toLowerCase();
+            fileDir = fileDir.replaceAll(' ', '-');
+            const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
+
+            try {
+                /*load raw docs from the all files in the directory */
+                const directoryLoader = new DirectoryLoader(importPath, {
+                  '.pdf': (path) => new PDFLoader(path),
+                });
+            
+                // const loader = new PDFLoader(filePath);
+                const rawDocs = await directoryLoader.load();
+            
+                /* Split text into chunks */
+                const textSplitter = new RecursiveCharacterTextSplitter({
+                  chunkSize: 1000,
+                  chunkOverlap: 200,
+                });
+            
+                const docs = await textSplitter.splitDocuments(rawDocs);
+                console.log('split docs', docs);
+            
+                console.log('creating vector store...');
+                /*create and store the embeddings in the vectorStore*/
+                const embeddings = new OpenAIEmbeddings();
+                const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
+            
+                //embed the PDF documents
+                await PineconeStore.fromDocuments(docs, embeddings, {
+                  pineconeIndex: index,
+                  namespace: PINECONE_NAME_SPACE,
+                  textKey: 'text',
+                });
+              } catch (error) {
+                console.log('error', error);
+                throw new Error('Failed to ingest your data');
+              }
         }
 
         resultBody = { status: 'ok', message: 'Files were uploaded successfully', filepath: req.body.filepath};

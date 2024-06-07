@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Pinecone } from '@pinecone-database/pinecone';
 
 export default async function handler(
     req: NextApiRequest,
@@ -17,8 +18,16 @@ export default async function handler(
     fs.unlink(pdfurl, (err) => {
     if (err) throw err;
         console.log('文件已删除');
+
+        // const pinecone = new Pinecone({
+        //   apiKey: process.env.PINECONE_API_KEY ?? '',
+        // });
+        // pinecone.deleteIndex('test-library-index');
+
         res.status(200).json({ message: `PDF deleted successfully.`, delDir: delDir});
     });
+
+    
 
     return;
 }
