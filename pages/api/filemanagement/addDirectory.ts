@@ -23,7 +23,7 @@ export default async function handler(
 
         let indexname = directoryname.toLowerCase();
         indexname = indexname.replaceAll(' ', '-');
-        console.log(indexname);
+        // console.log(indexname);
         await pinecone.createIndex({
           name: indexname,
           dimension: 1536,

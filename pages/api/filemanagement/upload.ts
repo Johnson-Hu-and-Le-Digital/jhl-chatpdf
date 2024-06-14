@@ -71,8 +71,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
-            fileDir = fileDir.toLowerCase();
-            fileDir = fileDir.replaceAll(' ', '-');
+            let fileDirLo = fileDir.toLowerCase();
+            // fileDir = fileDirLo.replaceAll(' ', '-');
+            let index_name = fileDirLo.replaceAll(' ', '-');
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
 
             try {
@@ -91,12 +92,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 });
             
                 const docs = await textSplitter.splitDocuments(rawDocs);
-                console.log('split docs', docs);
+                // console.log('split docs', docs);
             
                 console.log('creating vector store...');
                 /*create and store the embeddings in the vectorStore*/
                 const embeddings = new OpenAIEmbeddings();
-                const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
+
+
+                // const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
+                const index = pinecone.Index(index_name);
             
                 //embed the PDF documents
                 await PineconeStore.fromDocuments(docs, embeddings, {
