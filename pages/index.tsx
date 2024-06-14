@@ -614,7 +614,7 @@ export default function Index() {
                           value={directoryname}
                           onChange={(e) => setDirectoryname(e.target.value)} />
 
-                          {!dirNameFlg && <div className="error-msg pt-3" id="dir_name_error">Start and end with an alphanumeric character, and consist only of case alphanumeric characters or '-'.</div>}
+                          {!dirNameFlg && <div className="error-msg pt-3" id="dir_name_error">Start and end with an alphanumeric character, and consist only of case alphanumeric characters or &apos;-&apos;.</div>}
                         <button type="button" className="btn font-uppercase max-width-125 mt-3" id="add_Dir" onClick={handleAddDirectory}>Add<span className="icon"></span><span className="bor"></span></button>
                       </div>
                     ) : ( '' )}
