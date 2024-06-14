@@ -409,7 +409,7 @@ export default function Index() {
   const DropZone: React.FC<Props> = ({ onFileUpload }) => {
     const onDrop = useCallback((acceptedFiles: any) => {
       if (acceptedFiles.length > 0) {
-        // onFileUpload(acceptedFiles[0]);
+        onFileUpload(acceptedFiles[0]);
       }
     }, [onFileUpload]);
    
