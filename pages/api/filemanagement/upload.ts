@@ -73,7 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             fileDir = fileDir[0];
             let fileDirLo = fileDir.toLowerCase();
             // fileDir = fileDirLo.replaceAll(' ', '-');
-            let index_name = fileDirLo.replaceAll(' ', '-');
+            let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
 
             try {

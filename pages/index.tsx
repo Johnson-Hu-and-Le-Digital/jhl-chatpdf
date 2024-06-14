@@ -435,7 +435,7 @@ export default function Index() {
         id="drop_area" {...getRootProps()} 
         data-dir={clickDir2}
         className={`${
-          fileEnter ? "drag-enter" : "aa"
+          fileEnter ? "drag-enter" : ""
         }`}
         // className='drag-enter'
         >
@@ -614,7 +614,7 @@ export default function Index() {
                           value={directoryname}
                           onChange={(e) => setDirectoryname(e.target.value)} />
 
-                          {!dirNameFlg && <div className="error-msg pt-3" id="dir_name_error">The name of the index. Resource name must be 1-45 characters long, start and end with an alphanumeric character, and consist only of lower case alphanumeric characters or '-'.</div>}
+                          {!dirNameFlg && <div className="error-msg pt-3" id="dir_name_error">Start and end with an alphanumeric character, and consist only of case alphanumeric characters or '-'.</div>}
                         <button type="button" className="btn font-uppercase max-width-125 mt-3" id="add_Dir" onClick={handleAddDirectory}>Add<span className="icon"></span><span className="bor"></span></button>
                       </div>
                     ) : ( '' )}
