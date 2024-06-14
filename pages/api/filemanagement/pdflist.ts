@@ -22,6 +22,8 @@ export default async function handler(
     fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {
       if (err) {
         console.error(err);
+
+        res.status(500).json({ message: err});
         return;
       }
 

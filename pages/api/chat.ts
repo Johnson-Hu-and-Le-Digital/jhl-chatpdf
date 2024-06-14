@@ -12,10 +12,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { question, history } = req.body;
+  const { question, history, selectIndex } = req.body;
 
   console.log('question', question);
   console.log('history', history);
+  console.log('selectIndex', selectIndex);
 
   //only accept post requests
   if (req.method !== 'POST') {
@@ -30,7 +31,10 @@ export default async function handler(
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
 
   try {
-    const index = pinecone.Index(PINECONE_INDEX_NAME);
+    // const index = pinecone.Index(PINECONE_INDEX_NAME);
+
+    let fileDirLo = selectIndex.toLowerCase();
+    const index = fileDirLo.replaceAll(' ', '-');
 
     /* create vectorstore*/
     const vectorStore = await PineconeStore.fromExistingIndex(

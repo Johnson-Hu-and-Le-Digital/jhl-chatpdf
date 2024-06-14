@@ -828,7 +828,7 @@ hr.hr-white {
 }
 
 .drag-enter {
-  background-color: #cccccc;
+  background-color: #cccccc !important;
 }
 
 .references-box{

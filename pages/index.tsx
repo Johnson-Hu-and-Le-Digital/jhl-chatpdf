@@ -18,6 +18,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Coming_Soon } from 'next/font/google';
+import { dir } from 'console';
 
 export default function Index() {
   const [query, setQuery] = useState<string>('');
@@ -42,98 +43,12 @@ export default function Index() {
 
   const messageListRef = useRef<HTMLDivElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
-  // useEffect(() => {
-  //   textAreaRef.current?.focus();
-  // }, []);
-
-  //handle form submission
-  async function handleSubmit(e: any) {
-    e.preventDefault();
-    setError(null);
-    if (!query) {
-      alert('Please input a question');
-      return;
-    }
-    const question = query.trim();
-    setMessageState((state) => ({
-      ...state,
-      messages: [
-        ...state.messages,
-        {
-          type: 'userMessage',
-          message: question,
-        },
-      ],
-    }));
-
-    setLoading(true);
-    setQuery('');
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          question,
-          history,
-        }),
-      });
-      const data = await response.json();
-      console.log('data', data);
-
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setMessageState((state) => ({
-          ...state,
-          messages: [
-            ...state.messages,
-            {
-              type: 'apiMessage',
-              message: data.text,
-              sourceDocs: data.sourceDocuments,
-            },
-          ],
-          history: [...state.history, [question, data.text]],
-        }));
-      }
-      console.log('messageState', messageState);
-      setLoading(false);
-      //scroll to bottom
-      // console.log(messageListRef.current.scrollHeight);
-      messageListRef.current?.scrollTo(0, messageListRef.current.scrollHeight);
-    } catch (error) {
-      setLoading(false);
-      setError('An error occurred while fetching the data. Please try again.');
-      console.log('error', error);
-    }
-  }
-
-  //prevent empty submissions
-  const handleEnter = (e: any) => {
-    if (e.key === 'Enter' && query) {
-      handleSubmit(e);
-    } else if (e.key == 'Enter') {
-      e.preventDefault();
-    }
-  };
   
-  const router = useRouter();
-  const handleChange = (event: any) => {
-    router.push(event.target.value);
-  };
-
-  const [url, setUrl] = useState('');
-  useEffect(() => {
-    textAreaRef.current?.focus();
-    setUrl(window.location.href);
-    // handleDirectoryList();
-    handleDirList();
-    // handleGetPDFList();
-  }, []);// eslint-disable-line
+  // const router = useRouter();
+  // const handleChange = (event: any) => {
+  //   router.push(event.target.value);
+  // };
+  
 
   const [yourname, setYourname] = useState<string>('');
   const [isNameError, setIsNameError] = useState(false);
@@ -246,44 +161,63 @@ export default function Index() {
   }
 
   const [directoryname, setDirectoryname] = useState<string>('');
+  const [dirNameFlg, setDirNameFlg] = useState(true);
   async function handleAddDirectory(e: any) {
     e.preventDefault();
-    try {
-      const data = {
-        directoryname: directoryname,
-        // pdfDirectory: pdfDirectory
-      }
-      const res = await fetch('/api/filemanagement/addDirectory', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-  
-      const body = await res.json();
-  
-      if (res.ok) {
-        clickDir = body.directoryname;
-        setClickDir2(directoryname);
-        handleDirList();
-        setDirectoryname('');
-        setAddDirButton(false);
-      }
-  
-      if (res.status === 400) {
-        alert(`${body.message} 😢`);
-      }
-    } catch (err) {
-      console.log('Something went wrong: ', err);
+    const regex = /^[a-zA-Z0-9\s_-]+$/;
+    // console.log(regex.test(directoryname));
+    let flg = true;
+    if(regex.test(directoryname)){
+      setDirNameFlg(true);
+      flg = true;
+    }else{
+      setDirNameFlg(false);
+      flg = false;
     }
+
+    if(flg){
+      try {
+        const data = {
+          directoryname: directoryname,
+          // pdfDirectory: pdfDirectory
+        }
+        const res = await fetch('/api/filemanagement/addDirectory', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
     
+        const body = await res.json();
+    
+        if (res.ok) {
+          clickDir = body.directoryname;
+          setClickDir2(directoryname);
+          handleDirList();
+          setDirectoryname('');
+          setAddDirButton(false);
+        }
+    
+        if (res.status === 400) {
+          alert(`${body.message} 😢`);
+        }
+      } catch (err) {
+        console.log('Something went wrong: ', err);
+      }
+    }
   }
   //===== Add Directory End =====
 
 
   //=====Directory List=====
   const [dirList, setDirList] = useState<string[]>([]);
+  const [selecteDirValue, setSelecteDirValue] = useState(dirList[0]);
+
+  const handleSelecteDirValue = (event: any) => {
+    setSelecteDirValue(event.target.value);
+  };
+
   async function handleDirList() {
     try {
       const data = {
@@ -475,7 +409,7 @@ export default function Index() {
   const DropZone: React.FC<Props> = ({ onFileUpload }) => {
     const onDrop = useCallback((acceptedFiles: any) => {
       if (acceptedFiles.length > 0) {
-        onFileUpload(acceptedFiles[0]);
+        // onFileUpload(acceptedFiles[0]);
       }
     }, [onFileUpload]);
    
@@ -485,20 +419,30 @@ export default function Index() {
       <div 
         onDragOver={(e) => {
           e.preventDefault();
+          alert(1);
+          setFileEnter(true);
+        }}
+        onDragEnter={(e) => {
+          e.preventDefault();
+          alert(3);
           setFileEnter(true);
         }}
         onDragLeave={(e) => {
+          alert(2);
           setFileEnter(false);
         }}
         onDragEnd={(e) => {
           e.preventDefault();
+          alert(4);
           setFileEnter(false);
         }} 
         id="drop_area" {...getRootProps()} 
         data-dir={clickDir2}
         className={`${
-          fileEnter ? "drag-enter" : ""
-        }"`}>
+          fileEnter ? "drag-enter" : "aa"
+        }`}
+        // className='drag-enter'
+        >
         <input {...getInputProps()} />
         <p>Drag PDF to upload <br />to selected directory</p>
       </div>
@@ -543,6 +487,94 @@ export default function Index() {
   };
   //===== Delete PDF End =====
 
+
+
+  //handle form submission
+  async function handleSubmit(e: any) {
+    e.preventDefault();
+
+    let sDV = selecteDirValue;
+    if(selecteDirValue == undefined || selecteDirValue == ''){
+      sDV = dirList[0];
+    }
+    
+    setError(null);
+    if (!query) {
+      alert('Please input a question');
+      return;
+    }
+    const question = query.trim();
+    setMessageState((state) => ({
+      ...state,
+      messages: [
+        ...state.messages,
+        {
+          type: 'userMessage',
+          message: question,
+        },
+      ],
+    }));
+
+    setLoading(true);
+    setQuery('');
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question,
+          history,
+          selectIndex: sDV
+        }),
+      });
+      const data = await response.json();
+      console.log('data', data);
+
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setMessageState((state) => ({
+          ...state,
+          messages: [
+            ...state.messages,
+            {
+              type: 'apiMessage',
+              message: data.text,
+              sourceDocs: data.sourceDocuments,
+            },
+          ],
+          history: [...state.history, [question, data.text]],
+        }));
+      }
+      // console.log('messageState', messageState);
+      setLoading(false);
+      //scroll to bottom
+      // console.log(messageListRef.current.scrollHeight);
+      messageListRef.current?.scrollTo(0, messageListRef.current.scrollHeight);
+    } catch (error) {
+      setLoading(false);
+      setError('An error occurred while fetching the data. Please try again.');
+      console.log('error', error);
+    }
+  }
+
+  //prevent empty submissions
+  const handleEnter = (e: any) => {
+    if (e.key === 'Enter' && query) {
+      handleSubmit(e);
+    } else if (e.key == 'Enter') {
+      e.preventDefault();
+    }
+  };
+
+  useEffect(() => {
+    textAreaRef.current?.focus();
+    handleDirList();
+  }, []);// eslint-disable-line
+
   return (
     <>
       <Layout>
@@ -565,10 +597,6 @@ export default function Index() {
                   {/* <input type='text' value={clickDir2} id="checkedDir" /> */}
                   <div className="dir-group" role="group" aria-label="Basic radio toggle button group">
                     {dirList.map((item, index) => {
-                      let isChecked = '';
-                      if(index == 0){
-                        isChecked = 'checked';
-                      }
                       return (
                           <>
                           {/* <div className="directoryTabButton" key={index}><span className="before" id={`directory-${index}`} onDoubleClick={handleDoubleDirClick} data-dir={item}></span>{item}</div> */}
@@ -589,6 +617,8 @@ export default function Index() {
                           autoComplete='off'
                           value={directoryname}
                           onChange={(e) => setDirectoryname(e.target.value)} />
+
+                          {!dirNameFlg && <div className="error-msg pt-3" id="dir_name_error">The name of the index. Resource name must be 1-45 characters long, start and end with an alphanumeric character, and consist only of lower case alphanumeric characters or '-'.</div>}
                         <button type="button" className="btn font-uppercase max-width-125 mt-3" id="add_Dir" onClick={handleAddDirectory}>Add<span className="icon"></span><span className="bor"></span></button>
                       </div>
                     ) : ( '' )}
@@ -653,21 +683,16 @@ export default function Index() {
             <div className="container">
                 <div className="row justify-content-center align-items-center">
                     <div className="col-12 col-lg-9">
-                      {/* <select onChange={handleChange} id="selectWebsite" className="form-select" style={{width: 'auto'}} value={url}>
-                        <option value="http://gsk-chatpdf-bexsero.jhldigital.com/">Bexsero</option>
-                        <option value="http://gsk-chatpdf-shingrix.jhldigital.com/">Shingrix</option>
-                        <option value="http://gsk-chatpdf-twinrix.jhldigital.com/">Twinrix</option>
-                      </select> */}
-
-                      <select id="selecteDir" className="form-select" style={{width: 'auto'}} >
+                      
+                      <select id="selecteDir" className="form-select" style={{width: 'auto'}} onChange={handleSelecteDirValue}>
                         {dirList.map((item, index) => {
-                          let isChecked = '';
-                          if(index == 0){
-                            isChecked = 'checked';
-                          }
                           return (
                               <>
-                              <option value={item}>{item}</option>
+                              <option 
+                                key={index}
+                                value={item}
+                                // selected={index === 0}
+                                >{item}</option>
                               {/* <input type="radio" className="btn-check" name="dirLibRadio" id={`directory-${index}`} defaultChecked={index === 0} onClick={handleDoubleDirClick} data-dir={item} />
                               <label className="dirLibBtn" htmlFor={`directory-${index}`}>{item}</label> */}
                               </>
