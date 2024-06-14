@@ -419,21 +419,17 @@ export default function Index() {
       <div 
         onDragOver={(e) => {
           e.preventDefault();
-          alert(1);
           setFileEnter(true);
         }}
         onDragEnter={(e) => {
           e.preventDefault();
-          alert(3);
           setFileEnter(true);
         }}
         onDragLeave={(e) => {
-          alert(2);
           setFileEnter(false);
         }}
         onDragEnd={(e) => {
           e.preventDefault();
-          alert(4);
           setFileEnter(false);
         }} 
         id="drop_area" {...getRootProps()} 
