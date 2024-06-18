@@ -18,6 +18,8 @@ export default async function handler(
     //   apiKey: process.env.PINECONE_API_KEY ?? '',
     // });
 
+    console.log('pdfurl: '+pdfurl);
+
     deleteFile(pdfurl);
 
     const pinecone = new Pinecone({
@@ -30,7 +32,7 @@ export default async function handler(
 
     const index = pinecone.index(index_name);
     // pinecone.deleteIndex('test-library-index');
-
+    
     await index.deleteMany({
       source: pdfurl,
     });
@@ -69,12 +71,11 @@ export default async function handler(
 
 async function deleteFile(filePath: any) {
   try {
-      // 使用 await 等待操作完成
       await fs.unlink(filePath, (err) => {
 
       });
-      console.log('文件删除成功');
+      console.log('delete success');
   } catch (error) {
-      console.error('文件删除失败:', error);
+      console.error('delete error:', error);
   }
 }
