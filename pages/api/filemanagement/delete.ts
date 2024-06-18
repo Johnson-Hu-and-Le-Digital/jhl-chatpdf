@@ -34,7 +34,7 @@ export default async function handler(
     // pinecone.deleteIndex('test-library-index');
     
     await index.deleteMany({
-      source: pdfurl,
+      sourceDocuments: pdfurl,
     });
 
     
