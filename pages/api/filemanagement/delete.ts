@@ -13,21 +13,68 @@ export default async function handler(
     // 文件路径
     // const filePath = 'example.txt';
     const pdfurl = process.env.PDF_DIRECTORY+'/'+delDir+'/'+pdfname;
-    
-    // 删除文件
-    fs.unlink(pdfurl, (err) => {
-    if (err) throw err;
-        console.log('文件已删除');
 
-        // const pinecone = new Pinecone({
-        //   apiKey: process.env.PINECONE_API_KEY ?? '',
-        // });
-        // pinecone.deleteIndex('test-library-index');
+    // const pinecone = new Pinecone({
+    //   apiKey: process.env.PINECONE_API_KEY ?? '',
+    // });
 
-        res.status(200).json({ message: `PDF deleted successfully.`, delDir: delDir});
+    deleteFile(pdfurl);
+
+    const pinecone = new Pinecone({
+      apiKey: process.env.PINECONE_API_KEY ?? '',
+    });
+
+    let fileDirLo = delDir.toLowerCase();
+    const index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
+    console.log("index name: "+index_name);
+
+    const index = pinecone.index(index_name);
+    // pinecone.deleteIndex('test-library-index');
+
+    await index.deleteMany({
+      source: pdfurl,
     });
 
     
+    // 删除文件
+    // fs.unlink(pdfurl, (err) => {
+
+    //   try{
+    //     const pinecone = new Pinecone({
+    //       apiKey: process.env.PINECONE_API_KEY ?? '',
+    //     });
+    //     const index = pinecone.index("pinecone-index");
+    //     // pinecone.deleteIndex('test-library-index');
+  
+    //     await index.deleteMany({
+    //       source: pdfurl,
+    //     });
+
+    //     res.status(200).json({ message: `PDF deleted successfully.`, delDir: delDir});
+
+    //   }catch(err){
+
+    //       // console.log(err);
+    //       res.status(400).json({ message: err});
+    //   }
+    //   // if (err) throw err;
+    //   // console.log('文件已删除');
+
+    // });
+
+    res.status(200).json({ message: `PDF deleted successfully.`, delDir: delDir});
 
     return;
+}
+
+async function deleteFile(filePath: any) {
+  try {
+      // 使用 await 等待操作完成
+      await fs.unlink(filePath, (err) => {
+
+      });
+      console.log('文件删除成功');
+  } catch (error) {
+      console.error('文件删除失败:', error);
+  }
 }
