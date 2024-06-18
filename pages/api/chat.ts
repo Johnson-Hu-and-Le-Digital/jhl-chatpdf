@@ -34,7 +34,10 @@ export default async function handler(
     // const index = pinecone.Index(PINECONE_INDEX_NAME);
 
     let fileDirLo = selectIndex.toLowerCase();
-    const index = fileDirLo.replaceAll(' ', '-');
+    const index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
+    console.log("index name: "+index_name);
+
+    const index = pinecone.Index(index_name);
 
     /* create vectorstore*/
     const vectorStore = await PineconeStore.fromExistingIndex(
