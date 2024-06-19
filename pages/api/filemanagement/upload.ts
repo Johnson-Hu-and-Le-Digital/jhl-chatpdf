@@ -58,6 +58,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         /* Move uploaded files to directory */
         for (const file of files) {
             const tempPath = file[1].filepath;
+
+            console.log(tempPath);
+            console.log(file[1].originalFilename);
+
             await fs.rename(tempPath, targetPath + file[1].originalFilename);
 
             // exec('yarn run ingest', (error, stdout, stderr) => {
@@ -75,6 +79,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             // fileDir = fileDirLo.replaceAll(' ', '-');
             let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
+
+            const namespace = file[1].originalFilename;
+            console.log(namespace);
+
 
             try {
                 /*load raw docs from the all files in the directory */
@@ -97,7 +105,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 console.log('creating vector store...');
                 /*create and store the embeddings in the vectorStore*/
                 const embeddings = new OpenAIEmbeddings();
-
 
                 // const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
                 const index = pinecone.Index(index_name);
