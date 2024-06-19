@@ -33,7 +33,7 @@ export default async function handler(
     const index = pinecone.index(index_name);
     // pinecone.deleteIndex('test-library-index');
     
-    await index.namespace('example-namespace').deleteAll();
+    await index.namespace(pdfname).deleteAll();
 
     // await index.deleteMany({
     //   'source': pdfurl,
