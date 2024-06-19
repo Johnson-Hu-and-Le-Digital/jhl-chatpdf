@@ -59,9 +59,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         for (const file of files) {
             const tempPath = file[1].filepath;
 
-            console.log(tempPath);
-            console.log(file[1].originalFilename);
-
             await fs.rename(tempPath, targetPath + file[1].originalFilename);
 
             // exec('yarn run ingest', (error, stdout, stderr) => {
@@ -80,9 +77,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
 
-            const namespace = file[1].originalFilename;
-            console.log(namespace);
-
+            const names_pace = file[1].originalFilename;
+            // if(file[1].originalFilename != ''){
+            //   names_pace = file[1].originalFilename;
+            // }
+            // console.log(names_pace);
 
             try {
                 /*load raw docs from the all files in the directory */
@@ -112,7 +111,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 //embed the PDF documents
                 await PineconeStore.fromDocuments(docs, embeddings, {
                   pineconeIndex: index,
-                  namespace: PINECONE_NAME_SPACE,
+                  namespace: names_pace?.toString(),
                   textKey: 'text',
                 });
               } catch (error) {
