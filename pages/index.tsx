@@ -176,7 +176,7 @@ export default function Index() {
       setDirNameFlg(false);
       flg = false;
     }
-return;
+
     if(flg){
       try {
         const data = {
