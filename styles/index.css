@@ -465,8 +465,18 @@ hr.hr-white {
 
 .send-btn .loadingwheel{
   position: absolute;
+  top: 0.8rem;
+  right: 3rem;
+}
+
+#add_Dir .loadingwheel{
+  position: absolute;
   top: 0.5rem;
   right: 2.25rem;
+}
+
+#drop_area .loadingwheel{
+  position: absolute;
 }
 
 .bg-linear-gradient-2 {
@@ -828,7 +838,7 @@ hr.hr-white {
 }
 
 .drag-enter {
-  background-color: #cccccc !important;
+  background-color: #f1f1f1f1 !important;
 }
 
 .references-box{

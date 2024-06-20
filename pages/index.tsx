@@ -162,8 +162,10 @@ export default function Index() {
 
   const [directoryname, setDirectoryname] = useState<string>('');
   const [dirNameFlg, setDirNameFlg] = useState(true);
+  const [addDirLoading, setAddDirLoading] = useState<boolean>(false);
   async function handleAddDirectory(e: any) {
     e.preventDefault();
+    setAddDirLoading(true);
     const regex = /^[a-zA-Z0-9\s_-]+$/;
     // console.log(regex.test(directoryname));
     let flg = true;
@@ -174,7 +176,7 @@ export default function Index() {
       setDirNameFlg(false);
       flg = false;
     }
-
+return;
     if(flg){
       try {
         const data = {
@@ -197,14 +199,19 @@ export default function Index() {
           handleDirList();
           setDirectoryname('');
           setAddDirButton(false);
+          setAddDirLoading(false);
         }
     
         if (res.status === 400) {
+          setAddDirLoading(false);
           alert(`${body.message} 😢`);
         }
       } catch (err) {
+        setAddDirLoading(false);
         console.log('Something went wrong: ', err);
       }
+    }else{
+      setAddDirLoading(false);
     }
   }
   //===== Add Directory End =====
@@ -375,6 +382,7 @@ export default function Index() {
   //===== Upload File =====
   const [file, setFile] = useState<string>();
   const [fileEnter, setFileEnter] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
   const onFileUpload = async (file: File) => {
     // console.log(clickDir2);
     const formData = new FormData();
@@ -393,10 +401,16 @@ export default function Index() {
         // console.log(body);
         clickDir = body.filepath;
         handleGetPDFList();
+        setFileEnter(false);
+        setUploadLoading(false);
       } else {
+        setFileEnter(false);
+        setUploadLoading(false);
         console.error('Upload failed');
       }
     } catch (error) {
+      setFileEnter(false);
+      setUploadLoading(false);
       console.error('Error while uploading file:', error);
     }
   };
@@ -410,6 +424,8 @@ export default function Index() {
     const onDrop = useCallback((acceptedFiles: any) => {
       if (acceptedFiles.length > 0) {
         onFileUpload(acceptedFiles[0]);
+        setFileEnter(true);
+        setUploadLoading(true);
       }
     }, [onFileUpload]);
    
@@ -432,15 +448,24 @@ export default function Index() {
           e.preventDefault();
           setFileEnter(false);
         }} 
-        id="drop_area" {...getRootProps()} 
+        id="drop_area" 
+        {...getRootProps()} 
         data-dir={clickDir2}
         className={`${
           fileEnter ? "drag-enter" : ""
         }`}
-        // className='drag-enter'
         >
-        <input {...getInputProps()} />
+        {!uploadLoading ? ( <input {...getInputProps()} />) : (
+          ''
+        )}
         <p>Drag PDF to upload <br />to selected directory</p>
+        {uploadLoading ? (
+          <div className='loadingwheel'>
+            <LoadingDots color="#000" />
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     );
   };
@@ -451,8 +476,6 @@ export default function Index() {
     try {
       let pdfname = e.target.getAttribute('data-pdfname');
       let delDir = e.target.getAttribute('data-dir');
-      console.log(pdfname);
-      console.log(delDir);
 
       const data = {
         pdfname: pdfname,
@@ -482,8 +505,6 @@ export default function Index() {
     }
   };
   //===== Delete PDF End =====
-
-
 
   //handle form submission
   async function handleSubmit(e: any) {
@@ -615,36 +636,21 @@ export default function Index() {
                           onChange={(e) => setDirectoryname(e.target.value)} />
 
                           {!dirNameFlg && <div className="error-msg pt-3" id="dir_name_error">Start and end with an alphanumeric character, and consist only of case alphanumeric characters or &apos;-&apos;.</div>}
-                        <button type="button" className="btn font-uppercase max-width-125 mt-3" id="add_Dir" onClick={handleAddDirectory}>Add<span className="icon"></span><span className="bor"></span></button>
+                        <button type="button" className="btn font-uppercase max-width-125 mt-3" id="add_Dir" 
+                          disabled={addDirLoading} onClick={handleAddDirectory}>Add<span className="icon"></span>
+                          {addDirLoading ? (
+                            <div className='loadingwheel'>
+                              <LoadingDots color="#000" />
+                            </div>
+                          ) : (
+                            <span className='bor'></span>
+                          )}
+                          
+                          </button>
                       </div>
                     ) : ( '' )}
                 </div>
-                {/* <div className='col-12 col-lg-11 pt-5'>
-                  <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
-
-                    <input type="radio" className="btn-check" name="btnradio" id="btnradio1" />
-                    <label className="btn btn-outline-primary" htmlFor="btnradio1">Radio 1</label>
-
-                    <input type="radio" className="btn-check" name="btnradio" id="btnradio2" />
-                    <label className="btn btn-outline-primary" htmlFor="btnradio2">Radio 2</label>
-
-                    <input type="radio" className="btn-check" name="btnradio" id="btnradio3"/>
-                    <label className="btn btn-outline-primary" htmlFor="btnradio3">Radio 3</label>
-                  </div>
-                </div> */}
                 <div className="col-12 col-lg-11 pt-3">
-                    {/* <div className="form-check pt-4">
-                        <input className="form-check-input" type="checkbox" value="" id="check_1" />
-                        <label className="form-check-label">
-                            Include subdirectory content?
-                        </label>
-                    </div> */}
-                    {/* <div className="font-size-16 font-Poppins-Regular text-line-height-20 color-purple-2 pt-4">Analyzing current directory or upload your own PDF for analysis</div>
-                    <div className="font-size-16 font-Poppins-Bold text-line-height-20 color-blue pt-4">... / {nowdirectory} /</div> */}
-                    {/* <div className="upDirectory">
-                        <hr />
-                        <div className="previous flist" onDoubleClick={handleReturnPrevious}><span className="before" data-nowaddress={pdfDirectory}></span> Up directory</div>
-                    </div> */}
                     
                     <div className='pdfListBox'>
                     {files.map((item, index) => (
@@ -668,7 +674,6 @@ export default function Index() {
                             Override and upload to my personal directory user.documents
                         </label>
                     </div>
-                    
                     
                 </div>
             </div>
