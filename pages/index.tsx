@@ -149,6 +149,48 @@ export default function Index() {
   }
   //===== Send Email End =====
 
+  //=====Directory List=====
+  const [dirList, setDirList] = useState<string[]>([]);
+  const [selecteDirValue, setSelecteDirValue] = useState(dirList[0]);
+
+  const handleSelecteDirValue = (event: any) => {
+    setSelecteDirValue(event.target.value);
+  };
+
+  async function handleDirList() {
+    try {
+      const data = {
+        directoryname: clickDir
+      }
+      const res = await fetch('/api/filemanagement/directory', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const body = await res.json();
+      if (res.ok) {
+        // console.log(body.directorys);
+        setDirList(body.directorys);
+        if(clickDir == ''){
+          clickDir = body.directorys[0];
+          // console.log(clickDir);
+          setClickDir2(clickDir);
+        }
+        handleGetPDFList();
+      }
+  
+      if (res.status === 400) {
+        alert(`${body.message} 😢`);
+      }
+    } catch (err) {
+      console.log('Something went wrong: ', err);
+    }
+  }
+  //===== Directory List End =====
+
+
   //===== Add Directory =====
   const [addDirButton, setAddDirButton] = useState(false);
   async function handleClickAddDir(e: any) {
@@ -194,12 +236,13 @@ export default function Index() {
         const body = await res.json();
     
         if (res.ok) {
+          setAddDirButton(false);
+          setAddDirLoading(false);
           clickDir = body.directoryname;
+          console.log(clickDir);
           setClickDir2(directoryname);
           handleDirList();
           setDirectoryname('');
-          setAddDirButton(false);
-          setAddDirLoading(false);
         }
     
         if (res.status === 400) {
@@ -216,58 +259,13 @@ export default function Index() {
   }
   //===== Add Directory End =====
 
-
-  //=====Directory List=====
-  const [dirList, setDirList] = useState<string[]>([]);
-  const [selecteDirValue, setSelecteDirValue] = useState(dirList[0]);
-
-  const handleSelecteDirValue = (event: any) => {
-    setSelecteDirValue(event.target.value);
-  };
-
-  async function handleDirList() {
-    try {
-      const data = {
-        directoryname: clickDir
-      }
-      const res = await fetch('/api/filemanagement/directory', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      const body = await res.json();
-      if (res.ok) {
-        // console.log(body.directorys);
-        setDirList(body.directorys);
-        if(clickDir == ''){
-          clickDir = body.directorys[0];
-          setClickDir2(body.directorys[0]);
-        }
-        handleGetPDFList();
-      }
-  
-      if (res.status === 400) {
-        alert(`${body.message} 😢`);
-      }
-    } catch (err) {
-      console.log('Something went wrong: ', err);
-    }
-  }
-  //===== Directory List End =====
-
   //===== PDF List =====
   let clickDir = '';
   // let clickDirIndex = 0;
   const [clickDir2, setClickDir2] = useState<string>('');
   const [files, setFiles] = useState<string[]>([]);
   async function handleGetPDFList() {
-    // console.log(clickDir);
-    // if(clickDir == ''){
-    //   clickDir = 'Mylib1';
-    //   setClickDir2('Mylib1');
-    // }
+    
     try {
       const data = {
         directoryname: clickDir
@@ -383,10 +381,16 @@ export default function Index() {
   const [file, setFile] = useState<string>();
   const [fileEnter, setFileEnter] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
-  const onFileUpload = async (file: File) => {
+  const onFileUpload = async (file: any) => {
     // console.log(clickDir2);
+    // console.log(file);
     const formData = new FormData();
-      formData.append('file', file);
+
+    for (let i = 0; i < file.length; i++) {
+      // console.log(file[i]);
+      formData.append('file', file[i]);
+    }
+      // formData.append('file', file);
       formData.append('filepath', clickDir2);
 
     try {
@@ -422,8 +426,9 @@ export default function Index() {
    
   const DropZone: React.FC<Props> = ({ onFileUpload }) => {
     const onDrop = useCallback((acceptedFiles: any) => {
+      // console.log(acceptedFiles);
       if (acceptedFiles.length > 0) {
-        onFileUpload(acceptedFiles[0]);
+        onFileUpload(acceptedFiles);
         setFileEnter(true);
         setUploadLoading(true);
       }

@@ -33,22 +33,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const form = new formidable.IncomingForm();
         const files: ProcessedFiles = [];
         form.on('file', function (field, file) {
-            files.push([field, file]);
+          files.push([field, file]);
         })
         form.on('end', () => resolve(files));
         form.on('error', err => reject(err));
         form.parse(req, (fields, files) => {
-        //   console.log(files.filepath);
+          // console.log(files);
           req.body = files;
         });
 
     }).catch(e => {
-        // console.log(e);
         status = 500;
         resultBody = {
             status: 'fail', message: 'Upload error', filepath: ''
         }
     });
+
+    // console.log(files?.length);
 
     if (files?.length) {
         /* Create directory for uploads */
@@ -57,6 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const targetPath = process.env.PDF_DIRECTORY+'/'+req.body.filepath+'/';
         /* Move uploaded files to directory */
         for (const file of files) {
+          
             const tempPath = file[1].filepath;
 
             await fs.rename(tempPath, targetPath + file[1].originalFilename);
