@@ -7,6 +7,7 @@ import { PineconeStore } from '@langchain/pinecone';
 import { makeChain } from '@/utils/makechain';
 import { pinecone } from '@/utils/pinecone-client';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
+import * as fs from 'fs';
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,6 +34,13 @@ export default async function handler(
   try {
     // const index = pinecone.Index(PINECONE_INDEX_NAME);
 
+    const filePath = process.env.PDF_DIRECTORY+'/'+selectIndex+'/';
+    const files = fs.readdirSync(filePath);
+    const firstFileName = files[0];
+    console.log('firstFileName', firstFileName);
+
+    const index_name_space = firstFileName ? firstFileName : '';
+
     let fileDirLo = selectIndex.toLowerCase();
     const index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
     console.log("index name: "+index_name);
@@ -46,8 +54,8 @@ export default async function handler(
         pineconeIndex: index,
         textKey: 'text',
         // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
-        namespace: 'Archer BN;Medical Journal of Australia;2017;207;382-387.pdf',
-        // namespace: ''
+        // namespace: 'Archer BN;Medical Journal of Australia;2017;207;382-387.pdf',
+        namespace: index_name_space
       },
     );
 
@@ -57,7 +65,6 @@ export default async function handler(
     // Use a callback to get intermediate sources from the middle of the chain
     let resolveWithDocuments: (value: Document[]) => void;
     const documentPromise = new Promise<Document[]>((resolve) => {
-      console.log('resolve', resolve);
       resolveWithDocuments = resolve;
     });
     const retriever = vectorStore.asRetriever({
