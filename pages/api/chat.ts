@@ -54,12 +54,14 @@ export default async function handler(
     // Use a callback to get intermediate sources from the middle of the chain
     let resolveWithDocuments: (value: Document[]) => void;
     const documentPromise = new Promise<Document[]>((resolve) => {
+      console.log('resolve', resolve);
       resolveWithDocuments = resolve;
     });
     const retriever = vectorStore.asRetriever({
       callbacks: [
         {
           handleRetrieverEnd(documents) {
+            console.log('documents', documents);
             resolveWithDocuments(documents);
           },
         },

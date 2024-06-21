@@ -63,27 +63,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             await fs.rename(tempPath, targetPath + file[1].originalFilename);
 
-            // exec('yarn run ingest', (error, stdout, stderr) => {
-            //     if (error) {
-            //       console.error(`执行出错: ${error}`);
-            //       return;
-            //     }
-            //     console.log(`stdout: ${stdout}`);
-            //     console.error(`stderr: ${stderr}`);
-            // });
-
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
             let fileDirLo = fileDir.toLowerCase();
-            // fileDir = fileDirLo.replaceAll(' ', '-');
             let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
 
             const names_pace = file[1].originalFilename;
-            // if(file[1].originalFilename != ''){
-            //   names_pace = file[1].originalFilename;
-            // }
-            // console.log(names_pace);
 
             try {
                 /*load raw docs from the all files in the directory */
