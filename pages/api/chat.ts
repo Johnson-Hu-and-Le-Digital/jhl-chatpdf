@@ -46,6 +46,7 @@ export default async function handler(
         pineconeIndex: index,
         textKey: 'text',
         // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
+        namespace: 'Bexsero;Australian Product Information;May;2019;1-23.pdf',
       },
     );
 
@@ -83,6 +84,7 @@ export default async function handler(
     const sourceDocuments = await documentPromise;
 
     console.log('response', response);
+    console.log('sourceDocuments', sourceDocuments);
     res.status(200).json({ text: response, sourceDocuments });
   } catch (error: any) {
     console.log('error', error);
