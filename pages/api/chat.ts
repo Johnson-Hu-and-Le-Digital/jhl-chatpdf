@@ -46,7 +46,7 @@ export default async function handler(
         pineconeIndex: index,
         textKey: 'text',
         // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
-        namespace: 'Bexsero;Australian Product Information;May;2019;1-23.pdf',
+        namespace: 'Archer BN;Medical Journal of Australia;2017;207;382-387.pdf',
         // namespace: ''
       },
     );
