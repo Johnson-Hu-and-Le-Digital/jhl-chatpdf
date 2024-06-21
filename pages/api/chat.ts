@@ -51,6 +51,9 @@ export default async function handler(
       },
     );
 
+    // vectorStore.similaritySearch();
+    console.log('vectorStore', vectorStore);
+
     // Use a callback to get intermediate sources from the middle of the chain
     let resolveWithDocuments: (value: Document[]) => void;
     const documentPromise = new Promise<Document[]>((resolve) => {
