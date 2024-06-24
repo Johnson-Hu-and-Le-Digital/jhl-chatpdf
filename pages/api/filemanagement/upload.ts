@@ -118,7 +118,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               } catch (error) {
                 console.log('error', error);
                 // throw new Error('Failed to ingest your data');
-                resultBody = { status: 'no', message: 'Files were upload Error.', filepath: req.body.filepath};
+                // resultBody = { status: 'no', message: 'Files were upload Error.', filepath: req.body.filepath};
+                continue;
               }
         }
 
