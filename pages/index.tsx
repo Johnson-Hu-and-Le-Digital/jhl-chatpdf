@@ -417,6 +417,7 @@ export default function Index() {
         setFileEnter(false);
         setUploadLoading(false);
       } else {
+        alert(body.message);
         setFileEnter(false);
         setUploadLoading(false);
         console.error('Upload failed');
