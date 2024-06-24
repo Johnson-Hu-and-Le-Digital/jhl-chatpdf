@@ -426,6 +426,7 @@ export default function Index() {
       setFileEnter(false);
       setUploadLoading(false);
       console.error('Error while uploading file:', error);
+      alert('Error, message length too large, the limit is: 4194304 bytes.');
     }
   };
   //===== Upload File End =====
