@@ -86,7 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   chunkOverlap: 200,
                 });
 
-                const BATCH_SIZE = 100; // Adjust this value as needed
+                const BATCH_SIZE = 500; // Adjust this value as needed
             
                 const docs = await textSplitter.splitDocuments(rawDocs);
                 // console.log('split docs', docs);
@@ -106,15 +106,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 // });
 
                 // Split docs into batches
-                for (let i = 0; i < docs.length; i += BATCH_SIZE) {
-                  const batch = docs.slice(i, i + BATCH_SIZE);
-                  // Embed and upsert each batch separately
-                  await PineconeStore.fromDocuments(batch, embeddings, {
-                    pineconeIndex: index,
-                    namespace: names_pace?.toString(),
-                    textKey: 'text',
-                  });
-                }
+                // for (let i = 0; i < docs.length; i += BATCH_SIZE) {
+                //   const batch = docs.slice(i, i + BATCH_SIZE);
+                //   // Embed and upsert each batch separately
+                //   await PineconeStore.fromDocuments(batch, embeddings, {
+                //     pineconeIndex: index,
+                //     namespace: names_pace?.toString(),
+                //     textKey: 'text',
+                //   });
+                // }
               } catch (error) {
                 console.log('error', error);
                 // throw new Error('Failed to ingest your data');
