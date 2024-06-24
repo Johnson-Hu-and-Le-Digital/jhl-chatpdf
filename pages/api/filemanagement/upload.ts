@@ -82,8 +82,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             
                 /* Split text into chunks */
                 const textSplitter = new RecursiveCharacterTextSplitter({
-                  chunkSize: 1000,
-                  chunkOverlap: 500,
+                  chunkSize: 201,
+                  chunkOverlap: 200,
                 });
 
                 const BATCH_SIZE = 500; // Adjust this value as needed
