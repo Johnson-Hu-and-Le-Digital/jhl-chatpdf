@@ -82,7 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             
                 /* Split text into chunks */
                 const textSplitter = new RecursiveCharacterTextSplitter({
-                  chunkSize: 400,
+                  chunkSize: 200,
                   chunkOverlap: 200,
                 });
 
