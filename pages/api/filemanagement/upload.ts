@@ -82,11 +82,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             
                 /* Split text into chunks */
                 const textSplitter = new RecursiveCharacterTextSplitter({
-                  chunkSize: 500,
+                  chunkSize: 100,
                   chunkOverlap: 200,
                 });
 
-                const BATCH_SIZE = 100; // Adjust this value as needed
+                const BATCH_SIZE = 50; // Adjust this value as needed
             
                 const docs = await textSplitter.splitDocuments(rawDocs);
                 // console.log('split docs', docs);
