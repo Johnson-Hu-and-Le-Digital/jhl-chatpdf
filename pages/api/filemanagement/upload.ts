@@ -106,15 +106,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 // });
 
                 // Split docs into batches
-                // for (let i = 0; i < docs.length; i += BATCH_SIZE) {
-                //   const batch = docs.slice(i, i + BATCH_SIZE);
-                //   // Embed and upsert each batch separately
-                //   await PineconeStore.fromDocuments(batch, embeddings, {
-                //     pineconeIndex: index,
-                //     namespace: names_pace?.toString(),
-                //     textKey: 'text',
-                //   });
-                // }
+                for (let i = 0; i < docs.length; i += BATCH_SIZE) {
+                  const batch = docs.slice(i, i + BATCH_SIZE);
+                  // Embed and upsert each batch separately
+                  await PineconeStore.fromDocuments(batch, embeddings, {
+                    pineconeIndex: index,
+                    namespace: names_pace?.toString(),
+                    textKey: 'text',
+                  });
+                }
               } catch (error) {
                 console.log('error', error);
                 // throw new Error('Failed to ingest your data');
