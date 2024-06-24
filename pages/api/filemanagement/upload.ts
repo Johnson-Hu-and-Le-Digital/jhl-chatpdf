@@ -82,7 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             
                 /* Split text into chunks */
                 const textSplitter = new RecursiveCharacterTextSplitter({
-                  chunkSize: 1000,
+                  chunkSize: 500,
                   chunkOverlap: 200,
                 });
 
@@ -104,7 +104,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 //   namespace: names_pace?.toString(),
                 //   textKey: 'text',
                 // });
-
 
                 // Split docs into batches
                 for (let i = 0; i < docs.length; i += BATCH_SIZE) {
