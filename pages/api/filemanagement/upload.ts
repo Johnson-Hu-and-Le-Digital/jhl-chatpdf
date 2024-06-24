@@ -99,11 +99,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 const index = pinecone.Index(index_name);
             
                 //embed the PDF documents
-                // await PineconeStore.fromDocuments(docs, embeddings, {
-                //   pineconeIndex: index,
-                //   namespace: names_pace?.toString(),
-                //   textKey: 'text',
-                // });
+                await PineconeStore.fromDocuments(docs, embeddings, {
+                  pineconeIndex: index,
+                  namespace: names_pace?.toString(),
+                  textKey: 'text',
+                });
 
                 // Split docs into batches
                 // for (let i = 0; i < docs.length; i += BATCH_SIZE) {
