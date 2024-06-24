@@ -155,7 +155,15 @@ export default function Index() {
 
   const handleSelecteDirValue = (event: any) => {
     setSelecteDirValue(event.target.value);
+
+    clickDir = event.target.value;
+    setClickDir2(event.target.value);
+
+    handleGetPDFList();
   };
+
+  
+
 
   async function handleDirList() {
     try {
@@ -239,7 +247,7 @@ export default function Index() {
           setAddDirButton(false);
           setAddDirLoading(false);
           clickDir = body.directoryname;
-          console.log(clickDir);
+          // console.log(clickDir);
           setClickDir2(directoryname);
           handleDirList();
           setDirectoryname('');
@@ -264,6 +272,7 @@ export default function Index() {
   // let clickDirIndex = 0;
   const [clickDir2, setClickDir2] = useState<string>('');
   const [files, setFiles] = useState<string[]>([]);
+
   async function handleGetPDFList() {
     
     try {
@@ -295,6 +304,9 @@ export default function Index() {
   const handleDoubleDirClick = (event: any) => {
     clickDir = event.target.getAttribute('value');
     setClickDir2(event.target.getAttribute('value'));
+
+
+
     handleGetPDFList();
   };
   //===== Double Click Directory End =====
@@ -382,12 +394,9 @@ export default function Index() {
   const [fileEnter, setFileEnter] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
   const onFileUpload = async (file: any) => {
-    // console.log(clickDir2);
-    // console.log(file);
     const formData = new FormData();
 
     for (let i = 0; i < file.length; i++) {
-      // console.log(file[i]);
       formData.append('file', file[i]);
     }
       // formData.append('file', file);
@@ -616,13 +625,12 @@ export default function Index() {
                     />
                 </div>
                 <div className='col-12 col-lg-11 pt-5'>
-                  {/* <input type='text' value={clickDir2} id="checkedDir" /> */}
                   <div className="dir-group" role="group" aria-label="Basic radio toggle button group">
                     {dirList.map((item, index) => {
                       return (
                           <>
                           {/* <div className="directoryTabButton" key={index}><span className="before" id={`directory-${index}`} onDoubleClick={handleDoubleDirClick} data-dir={item}></span>{item}</div> */}
-                          <input type="radio" className="btn-check" name="dirLibRadio" id={`directory-${index}`} defaultChecked={item === clickDir2} onChange={handleDoubleDirClick} data-dir={item} value={item} />
+                          <input type="radio" className="btn-check" name="dirLibRadio" id={`directory-${index}`} checked={clickDir2 === item} onChange={handleDoubleDirClick} data-dir={item} value={item} />
                           <label className="dirLibBtn" htmlFor={`directory-${index}`}>{item}</label>
                           </>
                       );
@@ -690,7 +698,7 @@ export default function Index() {
                 <div className="row justify-content-center align-items-center">
                     <div className="col-12 col-lg-9">
                       
-                      <select id="selecteDir" className="form-select" style={{width: 'auto'}} onChange={handleSelecteDirValue}>
+                      <select id="selecteDir" className="form-select" style={{width: 'auto'}} onChange={handleSelecteDirValue} value={clickDir2}>
                         {dirList.map((item, index) => {
                           return (
                               <>

@@ -906,7 +906,7 @@ hr.hr-white {
 /* .dirLibBtn:checked{
   color: red;
 } */
-.btn-check:checked+.dirLibBtn, .dirLibBtn.active, .dirLibBtn.show, .dirLibBtn:first-child:active, :not(.btn-check)+.dirLibBtn:active {
+.btn-check:checked+.dirLibBtn{
   color: red;
   background-color: var(--bs-btn-active-bg);
   border-color: var(--bs-btn-active-border-color);
