@@ -69,6 +69,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
 
+            const pdfImportPath = process.env.PDF_DIRECTORY+'/'+fileDir+'/'+file[1].originalFilename;
+            console.log('pdfImportPath', pdfImportPath);
+
             const names_pace = file[1].originalFilename;
 
             try {
@@ -76,9 +79,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 const directoryLoader = new DirectoryLoader(importPath, {
                   '.pdf': (path) => new PDFLoader(path),
                 });
-            
-                // const loader = new PDFLoader(filePath);
-                const rawDocs = await directoryLoader.load();
+          
+                // const rawDocs = await directoryLoader.load();
+
+                const loader = new PDFLoader(pdfImportPath);
+                const rawDocs = await loader.load();
             
                 /* Split text into chunks */
                 const textSplitter = new RecursiveCharacterTextSplitter({
