@@ -89,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 const BATCH_SIZE = 500; // Adjust this value as needed
             
                 const docs = await textSplitter.splitDocuments(rawDocs);
-                // console.log('split docs', docs);
+                console.log('split docs', docs);
             
                 console.log('creating vector store...');
                 /*create and store the embeddings in the vectorStore*/
