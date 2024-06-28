@@ -412,6 +412,7 @@ export default function Index() {
       if (response.ok) {
         // handleDirectoryList();
         // console.log(body);
+        console.log(body);
         clickDir = body.filepath;
         handleGetPDFList();
         setFileEnter(false);

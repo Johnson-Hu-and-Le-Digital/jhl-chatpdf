@@ -61,6 +61,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           
             const tempPath = file[1].filepath;
 
+            await fs.rename(tempPath, targetPath + file[1].originalFilename);
+
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
             let fileDirLo = fileDir.toLowerCase();
@@ -109,9 +111,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   textKey: 'text',
                 });
 
-
-                await fs.rename(tempPath, targetPath + file[1].originalFilename);
-
                 // Split docs into batches
                 // for (let i = 0; i < docs.length; i += BATCH_SIZE) {
                 //   const batch = docs.slice(i, i + BATCH_SIZE);
@@ -123,6 +122,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 //   });
                 // }
               } catch (error) {
+
+                const filePath = targetPath + file[1].originalFilename;
+
+                await fs.unlink(filePath);
+
                 console.log('error', error);
                 // throw new Error('Failed to ingest your data');
                 // resultBody = { status: 'no', message: 'Files were upload Error.', filepath: req.body.filepath};
