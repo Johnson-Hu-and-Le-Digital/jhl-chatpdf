@@ -76,9 +76,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             try {
                 /*load raw docs from the all files in the directory */
-                const directoryLoader = new DirectoryLoader(importPath, {
-                  '.pdf': (path) => new PDFLoader(path),
-                });
+                // const directoryLoader = new DirectoryLoader(importPath, {
+                //   '.pdf': (path) => new PDFLoader(path),
+                // });
           
                 // const rawDocs = await directoryLoader.load();
 
@@ -87,13 +87,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             
                 /* Split text into chunks */
                 const textSplitter = new RecursiveCharacterTextSplitter({
-                  chunkSize: 1000,
+                  chunkSize: 500,
                   chunkOverlap: 200,
                 });
 
                 const BATCH_SIZE = 500; // Adjust this value as needed
             
                 const docs = await textSplitter.splitDocuments(rawDocs);
+              
                 console.log('split docs', docs);
             
                 console.log('creating vector store...');
