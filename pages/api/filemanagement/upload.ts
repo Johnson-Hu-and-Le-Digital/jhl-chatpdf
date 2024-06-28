@@ -91,7 +91,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   chunkOverlap: 200,
                 });
 
-                const BATCH_SIZE = 500; // Adjust this value as needed
+                const BATCH_SIZE = 50; // Adjust this value as needed
             
                 const docs = await textSplitter.splitDocuments(rawDocs);
               
@@ -117,25 +117,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 for (let i = 0; i < docs.length; i += BATCH_SIZE) {
                   console.log('docs '+i+' :', docs[i]);
                   // console.log('metadata pdf : ', docs[i]['metadata']['pdf']);
-                  console.log('metadata loc',docs[i]['metadata']['loc']);
 
+                  // console.log('metadata loc',docs[i]['metadata']['loc']);
                   const docsMetadataPDF = docs[i]['metadata']['pdf'];
                   console.log('metadata : ',docsMetadataPDF);
-                  // const rDocs = 'metadata';
-                  // const newArray = docsMetadataPDF.map((obj: any) => {
-                  //   const { [rDocs]: _, ...rest } = obj;
-                  //   return rest;
-                  // });
                   delete docsMetadataPDF.metadata;
 
                   docs[i]['metadata']['pdf'] = docsMetadataPDF;
-                  console.log('new docs metadata pdf : ', docsMetadataPDF);
-
-                  console.log('new docs : ', docs[i]);
+                  console.log('new docs '+[i]+' metadata pdf : ', docsMetadataPDF);
+                  console.log('new docs '+[i]+' : ', docs[i]);
 
                   const batch = docs.slice(i, i + BATCH_SIZE);
-                  // console.log('batch ',batch);
-                  // console.log('batch', batch);
                   // Embed and upsert each batch separately
                   await PineconeStore.fromDocuments(batch, embeddings, {
                     pineconeIndex: index,
