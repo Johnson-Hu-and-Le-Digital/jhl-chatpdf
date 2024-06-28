@@ -116,8 +116,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 // Split docs into batches
                 for (let i = 0; i < docs.length; i += BATCH_SIZE) {
                   console.log('docs '+i+' :', docs[i]);
-                  console.log('metadata pdf : ', docs[i]['metadata']['pdf']);
-                  console.log('metadata loc',docs[i]['metadata']['local']);
+                  // console.log('metadata pdf : ', docs[i]['metadata']['pdf']);
+                  console.log('metadata loc',docs[i]['metadata']['loc']);
+
+                  const docsI = docs[i]['metadata'];
+                  console.log('metadata : ',docsI);
+                  const rDocs = 'pdf';
+                  const newArray = docsI.map((obj: any) => {
+                    const { [rDocs]: _, ...rest } = obj;
+                    return rest;
+                  });
+                  console.log('newArray : ', newArray);
+
                   const batch = docs.slice(i, i + BATCH_SIZE);
                   // console.log('batch ',batch);
                   // console.log('batch', batch);
