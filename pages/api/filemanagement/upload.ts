@@ -127,7 +127,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   //   return rest;
                   // });
                   delete docsMetadataPDF.metadata;
-                  console.log('newArray : ', docsMetadataPDF);
+
+                  docs[i]['metadata']['pdf'] = docsMetadataPDF;
+                  console.log('new docs metadata pdf : ', docsMetadataPDF);
+
+
+                  console.log('new docs : ', docs);
 
                   const batch = docs.slice(i, i + BATCH_SIZE);
                   // console.log('batch ',batch);
