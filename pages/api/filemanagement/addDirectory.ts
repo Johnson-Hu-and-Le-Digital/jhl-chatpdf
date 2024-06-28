@@ -36,7 +36,7 @@ export default async function handler(
           }
         });
 
-        await pinecone.configureIndex(indexname, { podType: 's1.x2' });
+        // await pinecone.configureIndex(indexname, { podType: 's1.x2' });
 
         // console.log(`Directory '${directoryPath}' created.`);
         res.status(200).json({ message: `Directory '${directoryPath}' created.`, directoryname: directoryname });
