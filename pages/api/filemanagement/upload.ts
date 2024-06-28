@@ -131,8 +131,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   docs[i]['metadata']['pdf'] = docsMetadataPDF;
                   console.log('new docs metadata pdf : ', docsMetadataPDF);
 
-
-                  console.log('new docs : ', docs);
+                  console.log('new docs : ', docs[i]);
 
                   const batch = docs.slice(i, i + BATCH_SIZE);
                   // console.log('batch ',batch);
