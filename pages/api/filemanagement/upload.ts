@@ -87,7 +87,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             
                 /* Split text into chunks */
                 const textSplitter = new RecursiveCharacterTextSplitter({
-                  chunkSize: 300,
+                  chunkSize: 1000,
                   chunkOverlap: 200,
                 });
 
@@ -111,10 +111,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 //   textKey: 'text',
                 // });
 
+                console.log('docs length', docs.length);
+
                 // Split docs into batches
                 for (let i = 0; i < docs.length; i += BATCH_SIZE) {
+                  console.log('docs '+i+' :', docs);
                   const batch = docs.slice(i, i + BATCH_SIZE);
-                  console.log('batch', batch);
+                  // console.log('batch', batch);
                   // Embed and upsert each batch separately
                   await PineconeStore.fromDocuments(batch, embeddings, {
                     pineconeIndex: index,
