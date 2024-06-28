@@ -61,8 +61,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           
             const tempPath = file[1].filepath;
 
-            await fs.rename(tempPath, targetPath + file[1].originalFilename);
-
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
             let fileDirLo = fileDir.toLowerCase();
@@ -110,6 +108,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   namespace: names_pace?.toString(),
                   textKey: 'text',
                 });
+
+
+                await fs.rename(tempPath, targetPath + file[1].originalFilename);
 
                 // Split docs into batches
                 // for (let i = 0; i < docs.length; i += BATCH_SIZE) {

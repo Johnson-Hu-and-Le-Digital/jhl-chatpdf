@@ -517,6 +517,7 @@ export default function Index() {
         alert(`${body.message} 😢`);
       }
     } catch (err) {
+      handleGetPDFList();
       console.log('Something went wrong: ', err);
     }
   };
