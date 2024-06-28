@@ -114,6 +114,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 // Split docs into batches
                 for (let i = 0; i < docs.length; i += BATCH_SIZE) {
                   const batch = docs.slice(i, i + BATCH_SIZE);
+                  console.log('batch', batch);
                   // Embed and upsert each batch separately
                   await PineconeStore.fromDocuments(batch, embeddings, {
                     pineconeIndex: index,
