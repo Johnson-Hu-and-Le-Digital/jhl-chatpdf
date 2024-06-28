@@ -119,14 +119,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   // console.log('metadata pdf : ', docs[i]['metadata']['pdf']);
                   console.log('metadata loc',docs[i]['metadata']['loc']);
 
-                  const docsI = docs[i]['metadata'];
-                  console.log('metadata : ',docsI);
-                  const rDocs = 'pdf';
-                  const newArray = docsI.map((obj: any) => {
-                    const { [rDocs]: _, ...rest } = obj;
-                    return rest;
-                  });
-                  console.log('newArray : ', newArray);
+                  const docsMetadataPDF = docs[i]['metadata']['pdf'];
+                  console.log('metadata : ',docsMetadataPDF);
+                  // const rDocs = 'metadata';
+                  // const newArray = docsMetadataPDF.map((obj: any) => {
+                  //   const { [rDocs]: _, ...rest } = obj;
+                  //   return rest;
+                  // });
+                  delete docsMetadataPDF.metadata;
+                  console.log('newArray : ', docsMetadataPDF);
 
                   const batch = docs.slice(i, i + BATCH_SIZE);
                   // console.log('batch ',batch);
