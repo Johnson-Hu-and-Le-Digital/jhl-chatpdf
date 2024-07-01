@@ -121,7 +121,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 //embed the PDF documents
                 await PineconeStore.fromDocuments(newDocs, embeddings, {
                   pineconeIndex: index,
-                  namespace: names_pace?.toString(),
+                  // namespace: names_pace?.toString(),
+                  namespace: PINECONE_NAME_SPACE,
                   textKey: 'text',
                 });
 
