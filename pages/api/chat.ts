@@ -55,7 +55,7 @@ export default async function handler(
         textKey: 'text',
         // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
         // namespace: 'Archer BN;Medical Journal of Australia;2017;207;382-387.pdf',
-        // namespace: index_name_space
+        namespace: index_name_space
       },
     );
 
