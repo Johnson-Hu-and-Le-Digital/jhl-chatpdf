@@ -104,22 +104,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 // const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
                 const index = pinecone.Index(index_name);
 
-                const newDocs = docs.map(doc => {
+                // const newDocs = docs.map(doc => {
 
-                  const docsMetadataPDF = doc['metadata']['pdf'];
-                  delete docsMetadataPDF.metadata;
-                  doc['metadata']['pdf'] = docsMetadataPDF;
+                //   const docsMetadataPDF = doc['metadata']['pdf'];
+                //   delete docsMetadataPDF.metadata;
+                //   doc['metadata']['pdf'] = docsMetadataPDF;
 
-                  return {
-                    pageContent: doc.pageContent,
-                    metadata: doc.metadata
-                  };
-                });
+                //   return {
+                //     pageContent: doc.pageContent,
+                //     metadata: doc.metadata
+                //   };
+                // });
 
                 // console.log('new docs : ', newDocs);
 
                 //embed the PDF documents
-                await PineconeStore.fromDocuments(newDocs, embeddings, {
+                await PineconeStore.fromDocuments(docs, embeddings, {
                   pineconeIndex: index,
                   namespace: names_pace?.toString(),
                   textKey: 'text',
