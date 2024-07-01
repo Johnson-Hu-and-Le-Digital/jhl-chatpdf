@@ -54,13 +54,13 @@ export default async function handler(
         pineconeIndex: index,
         textKey: 'text',
         // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
-        // namespace: 'Archer BN;Medical Journal of Australia;2017;207;382-387.pdf',
-        namespace: index_name_space
+        // namespace: index_name_space
+        namespace: '',
       },
     );
 
     // vectorStore.similaritySearch();
-    console.log('vectorStore', vectorStore);
+    console.log('vectorStore : ', vectorStore);
 
     // Use a callback to get intermediate sources from the middle of the chain
     let resolveWithDocuments: (value: Document[]) => void;
@@ -71,7 +71,7 @@ export default async function handler(
       callbacks: [
         {
           handleRetrieverEnd(documents) {
-            console.log('documents', documents);
+            console.log('documents : ', documents);
             resolveWithDocuments(documents);
           },
         },
@@ -86,7 +86,7 @@ export default async function handler(
         return [`Human: ${message[0]}`, `Assistant: ${message[1]}`].join('\n');
       })
       .join('\n');
-    console.log(pastMessages);
+    console.log('pastMessages : ', pastMessages);
 
     //Ask a question using chat history
     const response = await chain.invoke({
@@ -96,8 +96,8 @@ export default async function handler(
 
     const sourceDocuments = await documentPromise;
 
-    console.log('response', response);
-    console.log('sourceDocuments', sourceDocuments);
+    console.log('response : ', response);
+    console.log('sourceDocuments : ', sourceDocuments);
     res.status(200).json({ text: response, sourceDocuments });
   } catch (error: any) {
     console.log('error', error);
