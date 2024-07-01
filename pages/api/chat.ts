@@ -57,7 +57,7 @@ export default async function handler(
         textKey: 'text',
         // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
         // namespace: index_name_space
-        namespace: 'Bexsero;Australian Product Information;May;2019;1-23.pdf,CDC;2022;1;Meningococcal Disease Causes and How It Spreads.pdf,Nolan_Vaccine_2019- Published version.pdf',
+        namespace: 'default',
       },
     );
 
