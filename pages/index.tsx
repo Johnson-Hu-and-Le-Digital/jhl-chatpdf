@@ -505,7 +505,7 @@ export default function Index() {
       });
   
       const body = await res.json();
-  
+      console.log(body);
       if (res.ok) {
         // handleDirectoryList();
         clickDir = body.delDir;

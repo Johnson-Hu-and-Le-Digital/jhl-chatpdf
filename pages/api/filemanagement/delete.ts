@@ -34,7 +34,7 @@ export default async function handler(
     console.log('delete url : ', pdfurl);
     await index.deleteMany(
       {
-        "filter" :{
+        "metadata" :{
           'source': pdfurl,
         }
       }
