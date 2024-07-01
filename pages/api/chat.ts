@@ -15,9 +15,9 @@ export default async function handler(
 ) {
   const { question, history, selectIndex } = req.body;
 
-  console.log('question', question);
-  console.log('history', history);
-  console.log('selectIndex', selectIndex);
+  console.log('question : ', question);
+  console.log('history : ', '');
+  console.log('selectIndex : ', selectIndex);
 
   //only accept post requests
   if (req.method !== 'POST') {
@@ -37,7 +37,7 @@ export default async function handler(
     const filePath = process.env.PDF_DIRECTORY+'/'+selectIndex+'/';
     const files = fs.readdirSync(filePath);
     const firstFileName = files[0];
-    console.log('firstFileName', firstFileName);
+    console.log('firstFileName : ', firstFileName);
 
     const index_name_space = firstFileName ? firstFileName : '';
 
@@ -46,6 +46,8 @@ export default async function handler(
     console.log("index name: "+index_name);
 
     const index = pinecone.Index(index_name);
+
+    const namespace = [];
 
     /* create vectorstore*/
     const vectorStore = await PineconeStore.fromExistingIndex(
@@ -65,6 +67,7 @@ export default async function handler(
     // Use a callback to get intermediate sources from the middle of the chain
     let resolveWithDocuments: (value: Document[]) => void;
     const documentPromise = new Promise<Document[]>((resolve) => {
+      console.log('resolve : ',resolve);
       resolveWithDocuments = resolve;
     });
     const retriever = vectorStore.asRetriever({
