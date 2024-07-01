@@ -558,7 +558,7 @@ export default function Index() {
         },
         body: JSON.stringify({
           question,
-          history,
+          history: [],
           selectIndex: sDV
         }),
       });

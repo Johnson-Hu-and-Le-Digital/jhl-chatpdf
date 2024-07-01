@@ -16,7 +16,7 @@ export default async function handler(
   const { question, history, selectIndex } = req.body;
 
   console.log('question : ', question);
-  console.log('history : ', '');
+  console.log('history : ', history);
   console.log('selectIndex : ', selectIndex);
 
   //only accept post requests
