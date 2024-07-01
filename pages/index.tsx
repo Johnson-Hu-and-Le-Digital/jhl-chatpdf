@@ -150,6 +150,8 @@ export default function Index() {
   //===== Send Email End =====
 
   //=====Directory List=====
+  const [clickDir2, setClickDir2] = useState<string>('');
+
   const [dirList, setDirList] = useState<string[]>([]);
   const [selecteDirValue, setSelecteDirValue] = useState(dirList[0]);
 
@@ -161,9 +163,6 @@ export default function Index() {
 
     handleGetPDFList();
   };
-
-  
-
 
   async function handleDirList() {
     try {
@@ -270,7 +269,7 @@ export default function Index() {
   //===== PDF List =====
   let clickDir = '';
   // let clickDirIndex = 0;
-  const [clickDir2, setClickDir2] = useState<string>('');
+  
   const [files, setFiles] = useState<string[]>([]);
 
   async function handleGetPDFList() {
@@ -304,8 +303,6 @@ export default function Index() {
   const handleDoubleDirClick = (event: any) => {
     clickDir = event.target.getAttribute('value');
     setClickDir2(event.target.getAttribute('value'));
-
-
 
     handleGetPDFList();
   };
@@ -528,8 +525,8 @@ export default function Index() {
   async function handleSubmit(e: any) {
     e.preventDefault();
 
-    let sDV = selecteDirValue;
-    if(selecteDirValue == undefined || selecteDirValue == ''){
+    let sDV = clickDir2;
+    if(clickDir2 == undefined || clickDir2 == ''){
       sDV = dirList[0];
     }
     
@@ -702,7 +699,7 @@ export default function Index() {
                 <div className="row justify-content-center align-items-center">
                     <div className="col-12 col-lg-9">
                       
-                      <select id="selecteDir" className="form-select" style={{width: 'auto'}} onChange={handleSelecteDirValue} value={clickDir2}>
+                      <select id="selecteDir" className="form-select" style={{width: 'auto'}} onChange={handleSelecteDirValue} value={clickDir2} data-value={clickDir2}>
                         {dirList.map((item, index) => {
                           return (
                               <>
