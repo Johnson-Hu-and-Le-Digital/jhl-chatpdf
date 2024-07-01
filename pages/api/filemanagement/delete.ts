@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as fs from 'fs';
 import * as path from 'path';
+
 import { Pinecone } from '@pinecone-database/pinecone';
+import { PineconeStore } from '@langchain/pinecone';
+import { OpenAIEmbeddings } from '@langchain/openai';
 
 export default async function handler(
     req: NextApiRequest,
@@ -31,16 +34,29 @@ export default async function handler(
     
     // await index.namespace(pdfname).deleteAll();
 
-    console.log('delete url : ', pdfurl);
-    await index.deleteMany(
+    const vectorStore = await PineconeStore.fromExistingIndex(
+      new OpenAIEmbeddings({}),
       {
-        "metadata" :{
+        pineconeIndex: index,
+        textKey: 'text',
+        filter: {
           'source': pdfurl,
         }
-      }
+      },
     );
 
-    deleteFile(pdfurl);
+    console.log('vectorStore : ', vectorStore);
+
+    // console.log('delete url : ', pdfurl);
+    // await index.deleteMany(
+    //   {
+    //     "metadata" :{
+    //       'source': pdfurl,
+    //     }
+    //   }
+    // );
+
+    // deleteFile(pdfurl);
 
     // 删除文件
     // fs.unlink(pdfurl, (err) => {
