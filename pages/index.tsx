@@ -275,6 +275,7 @@ export default function Index() {
   async function handleGetPDFList() {
     
     try {
+      console.log('serach dir: ', clickDir);
       const data = {
         directoryname: clickDir
       }
@@ -508,6 +509,7 @@ export default function Index() {
       if (res.ok) {
         // handleDirectoryList();
         clickDir = body.delDir;
+        console.log('delete dir: ', clickDir);
         handleGetPDFList();
       }
   
