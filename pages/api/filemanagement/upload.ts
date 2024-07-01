@@ -95,7 +95,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             
                 const docs = await textSplitter.splitDocuments(rawDocs);
               
-                console.log('split docs', docs);
+                // console.log('split docs', docs);
             
                 console.log('creating vector store...');
                 /*create and store the embeddings in the vectorStore*/
@@ -116,7 +116,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   };
                 });
 
-                console.log('new docs : ', newDocs);
+                // console.log('new docs : ', newDocs);
 
                 //embed the PDF documents
                 await PineconeStore.fromDocuments(newDocs, embeddings, {
@@ -125,7 +125,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   textKey: 'text',
                 });
 
-                console.log('docs length', newDocs.length);
+                // console.log('docs length', newDocs.length);
 
                 // Split docs into batches
                 // for (let i = 0; i < docs.length; i += BATCH_SIZE) {
