@@ -32,9 +32,13 @@ export default async function handler(
     // await index.namespace(pdfname).deleteAll();
 
     console.log('delete url : ', pdfurl);
-    await index.deleteMany({
-      'source': pdfurl,
-    });
+    await index.deleteMany(
+      {
+        "matadata" :{
+          'source': pdfurl,
+        }
+      }
+    );
 
     deleteFile(pdfurl);
 
