@@ -18,10 +18,6 @@ export default async function handler(
     //   apiKey: process.env.PINECONE_API_KEY ?? '',
     // });
 
-    console.log('pdfurl: '+pdfurl);
-
-    deleteFile(pdfurl);
-
     const pinecone = new Pinecone({
       apiKey: process.env.PINECONE_API_KEY ?? '',
     });
@@ -33,13 +29,15 @@ export default async function handler(
     const index = pinecone.index(index_name);
     // pinecone.deleteIndex('test-library-index');
     
-    await index.namespace(pdfname).deleteAll();
+    // await index.namespace(pdfname).deleteAll();
 
-    // await index.deleteMany({
-    //   'source': pdfurl,
-    // });
+    console.log('delete url : ', pdfurl);
+    await index.deleteMany({
+      'source': pdfurl,
+    });
 
-    
+    deleteFile(pdfurl);
+
     // 删除文件
     // fs.unlink(pdfurl, (err) => {
 
