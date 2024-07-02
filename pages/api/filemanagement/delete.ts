@@ -5,6 +5,7 @@ import * as path from 'path';
 import { Pinecone } from '@pinecone-database/pinecone';
 import { PineconeStore } from '@langchain/pinecone';
 import { OpenAIEmbeddings } from '@langchain/openai';
+import type { Document } from 'langchain/document';
 
 export default async function handler(
     req: NextApiRequest,
@@ -46,11 +47,29 @@ export default async function handler(
     );
     console.log('vectorStore : ', vectorStore);
 
+
+    // Use a callback to get intermediate sources from the middle of the chain
+    let resolveWithDocuments: (value: Document[]) => void;
+    const documentPromise = new Promise<Document[]>((resolve) => {
+      console.log('resolve : ',resolve);
+      resolveWithDocuments = resolve;
+    });
+
     const retriever = vectorStore.asRetriever({
       filter: {
         'source': pdfurl,
-      }
+      },
+      callbacks: [
+        {
+          handleRetrieverEnd(documents) {
+            console.log('documents : ', documents);
+            resolveWithDocuments(documents);
+          },
+        },
+      ],
     });
+
+    console.log('retriever : ', retriever);
 
 
 
