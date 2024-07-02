@@ -50,9 +50,11 @@ export default async function handler(
     console.log('vectorStore : ', vectorStore);
 
     vectorStore.delete({
+      // deleteAll: true,
       filter: {
         'source': pdfurl,
       },
+      namespace: PINECONE_NAME_SPACE
     });
 
 
