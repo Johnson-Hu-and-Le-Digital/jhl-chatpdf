@@ -78,7 +78,7 @@ export default async function handler(
     // console.log('delete url : ', pdfurl);
     await index.deleteMany(
       {
-        'source': "/home/gsk/lib/shingrix/YunTest/Nolan_Vaccine_2019- Published version.pdf",
+        'source': "/home/gsk/lib/shingrix/YunPengTest/Ballalai I;Expert review of medicines;2023;22;457-467.pdf",
       }
     );
 
