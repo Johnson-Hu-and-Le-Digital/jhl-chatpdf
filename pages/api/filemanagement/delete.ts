@@ -36,11 +36,25 @@ export default async function handler(
     
     // await index.namespace(pdfname).deleteAll();
 
-    await index.namespace(PINECONE_NAME_SPACE).deleteMany({
-      filter: {
-        'source': pdfurl,
-      }
+
+    const innerObject = {
+      namespace: PINECONE_NAME_SPACE,
+      "filter": {
+        "source": { $eq: pdfurl },
+      },
+    }
+
+    const deleteIndex = await index.deleteMany({
+      deleteRequest: innerObject
     });
+
+    console.log('deleteIndex', deleteIndex);
+
+    // await index.namespace(PINECONE_NAME_SPACE).deleteMany({
+    //   filter: {
+    //     'source': pdfurl,
+    //   }
+    // });
 
     // const vectorStore = await PineconeStore.fromExistingIndex(
     //   new OpenAIEmbeddings({}),
