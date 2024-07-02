@@ -55,9 +55,9 @@ export default async function handler(
       {
         pineconeIndex: index,
         textKey: 'text',
-        // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
+        namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
         // namespace: index_name_space
-        namespace: 'Bexsero;Australian Product Information;May;2019;1-23.pdf,CDC;2022;1;Meningococcal Disease Causes and How It Spreads.pdf,Nolan_Vaccine_2019- Published version.pdf,Pelton SI. Journal of Adolescent Health. 2010;46-S9-S15.pdf,Viner RM;The Lancet Neurology;2012;11;774-783.pdf',
+        // namespace: 'Bexsero;Australian Product Information;May;2019;1-23.pdf,CDC;2022;1;Meningococcal Disease Causes and How It Spreads.pdf,Nolan_Vaccine_2019- Published version.pdf,Pelton SI. Journal of Adolescent Health. 2010;46-S9-S15.pdf,Viner RM;The Lancet Neurology;2012;11;774-783.pdf',
       },
     );
 
