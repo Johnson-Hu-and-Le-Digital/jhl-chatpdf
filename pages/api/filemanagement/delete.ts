@@ -36,51 +36,32 @@ export default async function handler(
     
     // await index.namespace(pdfname).deleteAll();
 
-    const vectorStore = await PineconeStore.fromExistingIndex(
-      new OpenAIEmbeddings({}),
-      {
-        pineconeIndex: index,
-        textKey: 'text',
-        // filter: {
-        //   'source': pdfurl,
-        // }
-        namespace: PINECONE_NAME_SPACE,
-      },
-    );
-    console.log('vectorStore : ', vectorStore);
-
-    vectorStore.delete({
-      // deleteAll: true,
+    await index.namespace(PINECONE_NAME_SPACE).deleteMany({
       filter: {
         'source': pdfurl,
-      },
-      namespace: PINECONE_NAME_SPACE
+      }
     });
 
+    // const vectorStore = await PineconeStore.fromExistingIndex(
+    //   new OpenAIEmbeddings({}),
+    //   {
+    //     pineconeIndex: index,
+    //     textKey: 'text',
+    //     // filter: {
+    //     //   'source': pdfurl,
+    //     // }
+    //     namespace: PINECONE_NAME_SPACE,
+    //   },
+    // );
+    // // console.log('vectorStore : ', vectorStore);
 
-    // Use a callback to get intermediate sources from the middle of the chain
-    // let resolveWithDocuments: (value: Document[]) => void;
-    // const documentPromise = new Promise<Document[]>((resolve) => {
-    //   console.log('resolve : ',resolve);
-    //   resolveWithDocuments = resolve;
-    // });
-
-    // const retriever = vectorStore.asRetriever({
+    // vectorStore.delete({
+    //   // deleteAll: true,
     //   filter: {
     //     'source': pdfurl,
     //   },
-    //   callbacks: [
-    //     {
-    //       handleRetrieverEnd(documents) {
-    //         console.log('documents : ', documents);
-    //         resolveWithDocuments(documents);
-    //       },
-    //     },
-    //   ],
+    //   namespace: PINECONE_NAME_SPACE
     // });
-
-    // console.log('retriever : ', retriever);
-
 
 
     // console.log('delete url : ', pdfurl);
