@@ -57,7 +57,7 @@ export default async function handler(
         textKey: 'text',
         // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
         // namespace: index_name_space
-        namespace: 'Archer BN;Medical Journal of Australia;2017;207;382-387.pdf,Australian Government;2022;1-8;National Immunisation Program Schedule.pdf,Australian Immunisation Handbook;2022;1-47;Meningococcal disease.pdf,Ballalai I;Expert review of medicines;2023;22;457-467.pdf,Bexsero;Australian Product Information;May;2019;1-23.pdf',
+        namespace: 'Bexsero;Australian Product Information;May;2019;1-23.pdf,CDC;2022;1;Meningococcal Disease Causes and How It Spreads.pdf,Nolan_Vaccine_2019- Published version.pdf,Pelton SI. Journal of Adolescent Health. 2010;46-S9-S15.pdf,Viner RM;The Lancet Neurology;2012;11;774-783.pdf',
       },
     );
 
