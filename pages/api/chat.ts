@@ -55,9 +55,9 @@ export default async function handler(
       {
         pineconeIndex: index,
         textKey: 'text',
-        namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
+        // namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
         // namespace: index_name_space
-        // namespace: 'default',
+        namespace: 'Archer BN;Medical Journal of Australia;2017;207;382-387.pdf,Australian Government;2022;1-8;National Immunisation Program Schedule.pdf,Australian Immunisation Handbook;2022;1-47;Meningococcal disease.pdf,Ballalai I;Expert review of medicines;2023;22;457-467.pdf,Bexsero;Australian Product Information;May;2019;1-23.pdf',
       },
     );
 
