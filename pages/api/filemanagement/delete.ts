@@ -39,13 +39,20 @@ export default async function handler(
       {
         pineconeIndex: index,
         textKey: 'text',
-        filter: {
-          'source': pdfurl,
-        }
+        // filter: {
+        //   'source': pdfurl,
+        // }
       },
     );
-
     console.log('vectorStore : ', vectorStore);
+
+    const retriever = vectorStore.asRetriever({
+      filter: {
+        'source': pdfurl,
+      }
+    });
+
+
 
     // console.log('delete url : ', pdfurl);
     // await index.deleteMany(
