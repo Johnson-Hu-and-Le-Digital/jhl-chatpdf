@@ -49,38 +49,44 @@ export default async function handler(
     );
     console.log('vectorStore : ', vectorStore);
 
-
-    // Use a callback to get intermediate sources from the middle of the chain
-    let resolveWithDocuments: (value: Document[]) => void;
-    const documentPromise = new Promise<Document[]>((resolve) => {
-      console.log('resolve : ',resolve);
-      resolveWithDocuments = resolve;
-    });
-
-    const retriever = vectorStore.asRetriever({
+    vectorStore.delete({
       filter: {
         'source': pdfurl,
       },
-      callbacks: [
-        {
-          handleRetrieverEnd(documents) {
-            console.log('documents : ', documents);
-            resolveWithDocuments(documents);
-          },
-        },
-      ],
     });
 
-    console.log('retriever : ', retriever);
+
+    // Use a callback to get intermediate sources from the middle of the chain
+    // let resolveWithDocuments: (value: Document[]) => void;
+    // const documentPromise = new Promise<Document[]>((resolve) => {
+    //   console.log('resolve : ',resolve);
+    //   resolveWithDocuments = resolve;
+    // });
+
+    // const retriever = vectorStore.asRetriever({
+    //   filter: {
+    //     'source': pdfurl,
+    //   },
+    //   callbacks: [
+    //     {
+    //       handleRetrieverEnd(documents) {
+    //         console.log('documents : ', documents);
+    //         resolveWithDocuments(documents);
+    //       },
+    //     },
+    //   ],
+    // });
+
+    // console.log('retriever : ', retriever);
 
 
 
     // console.log('delete url : ', pdfurl);
-    await index.deleteMany(
-      {
-        'source': "/home/gsk/lib/shingrix/YunPengTest/Ballalai I;Expert review of medicines;2023;22;457-467.pdf",
-      }
-    );
+    // await index.deleteMany(
+    //   {
+    //     'source': "/home/gsk/lib/shingrix/YunPengTest/Ballalai I;Expert review of medicines;2023;22;457-467.pdf",
+    //   }
+    // );
 
     // deleteFile(pdfurl);
 
