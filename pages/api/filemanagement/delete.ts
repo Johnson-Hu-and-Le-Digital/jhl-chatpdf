@@ -6,6 +6,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { PineconeStore } from '@langchain/pinecone';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import type { Document } from 'langchain/document';
+import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 
 export default async function handler(
     req: NextApiRequest,
@@ -43,6 +44,7 @@ export default async function handler(
         // filter: {
         //   'source': pdfurl,
         // }
+        namespace: PINECONE_NAME_SPACE,
       },
     );
     console.log('vectorStore : ', vectorStore);
@@ -74,13 +76,11 @@ export default async function handler(
 
 
     // console.log('delete url : ', pdfurl);
-    // await index.deleteMany(
-    //   {
-    //     "metadata" :{
-    //       'source': pdfurl,
-    //     }
-    //   }
-    // );
+    await index.deleteMany(
+      {
+        'source': "/home/gsk/lib/shingrix/YunTest/Nolan_Vaccine_2019- Published version.pdf",
+      }
+    );
 
     // deleteFile(pdfurl);
 
