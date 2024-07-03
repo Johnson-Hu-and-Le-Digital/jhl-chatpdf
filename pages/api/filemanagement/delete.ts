@@ -52,9 +52,11 @@ export default async function handler(
     console.log('PINECONE_NAME_SPACE : ', PINECONE_NAME_SPACE);
 
     await index.namespace(PINECONE_NAME_SPACE).deleteMany({
-      // filter: {
-        'source': pdfurl,
-      // }
+      filter: {
+        'metadata': {
+          'source': pdfurl,
+        }
+      }
     });
 
 
