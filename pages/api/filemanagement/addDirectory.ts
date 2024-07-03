@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Pinecone } from '@pinecone-database/pinecone';
+import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE, PINECONE_ENVIRONMENT } from '@/config/pinecone';
 
 export default async function handler(
     req: NextApiRequest,
@@ -30,8 +31,8 @@ export default async function handler(
           metric: 'cosine',
           spec: {
             serverless: {
-              cloud: 'aws',
-              region: 'us-west-2'
+              cloud: 'gcp',
+              region: PINECONE_ENVIRONMENT
             }
           }
         });

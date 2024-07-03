@@ -58,7 +58,7 @@ export default async function handler(
     console.log('queryResponse : ', queryResponse);
 
 
-    console.log('PINECONE_INDEX_NAME : ', PINECONE_INDEX_NAME);
+    console.log('PINECONE_NAME_SPACE : ', PINECONE_NAME_SPACE);
 
     await index.namespace(PINECONE_NAME_SPACE).deleteMany({
       // filter: {
