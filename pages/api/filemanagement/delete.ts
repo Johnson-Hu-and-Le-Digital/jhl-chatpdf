@@ -60,7 +60,6 @@ export default async function handler(
     });
 
 
-
     // const vectorStore = await PineconeStore.fromExistingIndex(
     //   new OpenAIEmbeddings({}),
     //   {
@@ -84,11 +83,15 @@ export default async function handler(
 
 
     // console.log('delete url : ', pdfurl);
-    // await index.deleteMany(
-    //   {
-    //     'source': "/home/gsk/lib/shingrix/YunPengTest/Ballalai I;Expert review of medicines;2023;22;457-467.pdf",
-    //   }
-    // );
+    await index.deleteMany(
+      {
+        filter: {
+          metadata: {
+            source: pdfurl
+          }
+        }
+      }
+    );
 
     // deleteFile(pdfurl);
 
