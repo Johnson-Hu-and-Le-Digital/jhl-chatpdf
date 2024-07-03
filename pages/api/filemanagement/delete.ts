@@ -47,14 +47,26 @@ export default async function handler(
     // const deleteIndex = await index.deleteMany({
     //   deleteRequest: innerObject
     // });
-
     // console.log('deleteIndex', deleteIndex);
+
+    const queryResponse = await index.query({
+      vector: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+      // filter: { genre: { $in: ["comedy", "documentary", "drama"] } },
+      topK: 10,
+      includeMetadata: true,
+    });
+    console.log('queryResponse : ', queryResponse);
+
+
+    console.log('PINECONE_INDEX_NAME : ', PINECONE_INDEX_NAME);
 
     await index.namespace(PINECONE_NAME_SPACE).deleteMany({
       // filter: {
         'source': pdfurl,
       // }
     });
+
+
 
     // const vectorStore = await PineconeStore.fromExistingIndex(
     //   new OpenAIEmbeddings({}),
