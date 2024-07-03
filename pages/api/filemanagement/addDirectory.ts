@@ -15,7 +15,7 @@ export default async function handler(
     // Check if the directory exists
     if (!fs.existsSync(directoryPath)) {
         // If it doesn't exist, create the directory
-        
+
         fs.mkdirSync(directoryPath);
 
         const pinecone = new Pinecone({
