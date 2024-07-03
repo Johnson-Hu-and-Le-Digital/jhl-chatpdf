@@ -32,7 +32,7 @@ export default async function handler(
           spec: {
             serverless: {
               cloud: 'gcp',
-              region: PINECONE_ENVIRONMENT
+              region: 'us-east-4',
             }
           }
         });
