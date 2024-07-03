@@ -51,9 +51,9 @@ export default async function handler(
     // console.log('deleteIndex', deleteIndex);
 
     await index.namespace(PINECONE_NAME_SPACE).deleteMany({
-      filter: {
+      // filter: {
         'source': pdfurl,
-      }
+      // }
     });
 
     // const vectorStore = await PineconeStore.fromExistingIndex(
