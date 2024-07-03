@@ -16,7 +16,6 @@ export default async function handler(
     // Check if the directory exists
     if (!fs.existsSync(directoryPath)) {
         // If it doesn't exist, create the directory
-        fs.mkdirSync(directoryPath);
 
         const pinecone = new Pinecone({
           apiKey: process.env.PINECONE_API_KEY ?? '',
@@ -31,11 +30,13 @@ export default async function handler(
           metric: 'cosine',
           spec: {
             serverless: {
-              cloud: 'gcp',
-              region: 'us-east-4',
+              cloud: 'aws',
+              region: 'us-east-1',
             }
           }
         });
+
+        fs.mkdirSync(directoryPath);
 
         // await pinecone.configureIndex(indexname, { podType: 's1.x2' });
 
