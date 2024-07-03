@@ -228,6 +228,7 @@ export default function Index() {
 
     if(flg){
       try {
+        console.log('directoryname', directoryname);
         const data = {
           directoryname: directoryname,
           // pdfDirectory: pdfDirectory
@@ -275,7 +276,6 @@ export default function Index() {
   async function handleGetPDFList() {
     
     try {
-      console.log('serach dir: ', clickDir);
       const data = {
         directoryname: clickDir
       }

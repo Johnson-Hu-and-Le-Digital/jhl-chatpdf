@@ -24,7 +24,7 @@ export default async function handler(
 
         let indexname = directoryname.toLowerCase();
         indexname = indexname.replaceAll(' ', '-').replaceAll('_', '-');
-        // console.log(indexname);
+        console.log('indexname : ',indexname);
         await pinecone.createIndex({
           name: indexname,
           dimension: 1536,
@@ -32,12 +32,10 @@ export default async function handler(
           spec: {
             serverless: {
               cloud: 'aws',
-              region: 'us-wast-2',
+              region: 'us-east-1'
             }
           }
         });
-
-        
 
         // await pinecone.configureIndex(indexname, { podType: 's1.x2' });
 
