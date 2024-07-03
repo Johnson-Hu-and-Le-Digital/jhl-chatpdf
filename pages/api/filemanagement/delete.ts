@@ -86,9 +86,7 @@ export default async function handler(
     await index.deleteMany(
       {
         filter: {
-          metadata: {
-            source: pdfurl
-          }
+          source: {"$eq": pdfurl}
         }
       }
     );
