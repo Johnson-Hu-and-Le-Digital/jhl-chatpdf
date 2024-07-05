@@ -51,45 +51,27 @@ export default async function handler(
 
     console.log('PINECONE_NAME_SPACE : ', PINECONE_NAME_SPACE);
 
-    await index.namespace(PINECONE_NAME_SPACE).deleteMany({
-      filter: {
-        'metadata': {
-          'source': pdfurl,
-        }
-      }
-    });
+    const results = await index.listPaginated();
+    console.log('results : ', results);
 
-
-    // const vectorStore = await PineconeStore.fromExistingIndex(
-    //   new OpenAIEmbeddings({}),
-    //   {
-    //     pineconeIndex: index,
-    //     textKey: 'text',
-    //     // filter: {
-    //     //   'source': pdfurl,
-    //     // }
-    //     namespace: PINECONE_NAME_SPACE,
-    //   },
-    // );
-    // // console.log('vectorStore : ', vectorStore);
-
-    // vectorStore.delete({
-    //   // deleteAll: true,
+    // await index.namespace(PINECONE_NAME_SPACE).deleteMany({
     //   filter: {
-    //     'source': pdfurl,
-    //   },
-    //   namespace: PINECONE_NAME_SPACE
+    //     'metadata': {
+    //       'source': pdfurl,
+    //     }
+    //   }
     // });
 
-
     // console.log('delete url : ', pdfurl);
-    await index.deleteMany(
-      {
-        filter: {
-          source: {"$eq": pdfurl}
-        }
-      }
-    );
+    // await index.deleteMany(
+    //   {
+    //     filter: {
+    //       source: {
+    //         "$eq": pdfurl
+    //       }
+    //     }
+    //   }
+    // );
 
     // deleteFile(pdfurl);
 
