@@ -31,7 +31,7 @@ export default async function handler(
     const index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
     console.log("index name: "+index_name);
 
-    const index = pinecone.index(index_name);
+    // const index = pinecone.index(index_name);
     // pinecone.deleteIndex('test-library-index');
     
     // await index.namespace(pdfname).deleteAll();
@@ -51,6 +51,7 @@ export default async function handler(
 
     console.log('PINECONE_NAME_SPACE : ', PINECONE_NAME_SPACE);
 
+    const index = pinecone.index(index_name).namespace(PINECONE_INDEX_NAME);
     const results = await index.listPaginated();
     console.log('results : ', results);
 
