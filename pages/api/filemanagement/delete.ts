@@ -37,12 +37,12 @@ export default async function handler(
     // await index.namespace(pdfname).deleteAll();
 
 
-    const innerObject = {
-      namespace: PINECONE_NAME_SPACE,
-      "filter": {
-        "source": { $eq: pdfurl },
-      },
-    }
+    // const innerObject = {
+    //   namespace: PINECONE_NAME_SPACE,
+    //   "filter": {
+    //     "source": { $eq: pdfurl },
+    //   },
+    // }
 
     // const deleteIndex = await index.deleteMany({
     //   deleteRequest: innerObject
@@ -51,9 +51,18 @@ export default async function handler(
 
     console.log('PINECONE_NAME_SPACE : ', PINECONE_NAME_SPACE);
 
+
+    const sanitizedFilename = pdfname!.replace(/[^\w\s-]/g, '');
+    const normalizedFilename = path.normalize(sanitizedFilename.replace(/\s+/g, '_'));
+    const prefixT = normalizedFilename+'#';
+    console.log('prefixT : '+prefixT);
     const index = pinecone.index(index_name).namespace(PINECONE_INDEX_NAME);
-    const results = await index.listPaginated();
+
+    const results = await index.listPaginated({ prefix: prefixT });
     console.log('results : ', results);
+
+    // const vectorIds = results.vectors.map((vector) => vector.id);
+    // await index.deleteMany(vectorIds);
 
     // await index.namespace(PINECONE_NAME_SPACE).deleteMany({
     //   filter: {
