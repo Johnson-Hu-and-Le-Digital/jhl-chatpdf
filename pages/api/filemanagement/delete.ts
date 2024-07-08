@@ -58,10 +58,10 @@ export default async function handler(
     const normalizedFilename = path.normalize(sanitizedFilename.replace(/\s+/g, '_'));
     const prefixT = normalizedFilename+'#';
     console.log('prefixT : '+prefixT);
-    // const index = pinecone.index(index_name).namespace(PINECONE_INDEX_NAME);
+    const index = pinecone.index(index_name).namespace(PINECONE_NAME_SPACE);
 
-    const pc = new Pinecone();
-    const index = pc.index(index_name).namespace(PINECONE_INDEX_NAME);
+    // const pc = new Pinecone();
+    // const index = pc.index(index_name).namespace(PINECONE_NAME_SPACE);
 
     const results = await index.listPaginated({ prefix: prefixT });
     console.log('results : ', results);
