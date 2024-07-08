@@ -111,7 +111,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 const newDocs = docs.map((doc, index) => {
 
-                  console.log('doc index : ', index);
+                  // console.log('doc index : ', index);
 
                   const docsMetadataPDF = doc['metadata']['pdf'];
                   delete docsMetadataPDF.metadata;
@@ -123,6 +123,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     metadata: doc.metadata
                   };
                 });
+
+                console.log(newDocs);
 
                 // console.log('new docs : ', newDocs);
 
