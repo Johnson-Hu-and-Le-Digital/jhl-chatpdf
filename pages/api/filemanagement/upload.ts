@@ -110,9 +110,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 const index = pinecone.Index(index_name);
 
                 const newDocs = docs.map((doc, index) => {
-
                   // console.log('doc index : ', index);
-
                   const docsMetadataPDF = doc['metadata']['pdf'];
                   delete docsMetadataPDF.metadata;
                   doc['metadata']['pdf'] = docsMetadataPDF;
@@ -123,41 +121,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     metadata: doc.metadata
                   };
                 });
-
-                console.log(newDocs);
-
                 // console.log('new docs : ', newDocs);
+                
 
-                //embed the PDF documents
-                await PineconeStore.fromDocuments(newDocs, embeddings, {
-                  pineconeIndex: index,
-                  // namespace: names_pace?.toString(),
-                  namespace: PINECONE_NAME_SPACE,
-                  textKey: 'text',
+                const pineconeStore = new PineconeStore(new OpenAIEmbeddings(), {
+                    pineconeIndex: index
+                });
+                await pineconeStore.addDocuments(newDocs, {
+                  ids: [normalizedFilename]
                 });
 
-                // console.log('docs length', newDocs.length);
 
-                // Split docs into batches
-                // for (let i = 0; i < docs.length; i += BATCH_SIZE) {
-                //   // console.log('docs '+i+' :', docs[i]);
-                //   // console.log('metadata pdf : ', docs[i]['metadata']['pdf']);
-                //   // console.log('metadata loc',docs[i]['metadata']['loc']);
-                //   // const docsMetadataPDF = docs[i]['metadata']['pdf'];
-                //   // console.log('metadata : ',docsMetadataPDF);
-                //   // delete docsMetadataPDF.metadata;
-                //   // docs[i]['metadata']['pdf'] = docsMetadataPDF;
-                //   // console.log('new docs '+[i]+' metadata pdf : ', docsMetadataPDF);
-                //   // console.log('new docs '+[i]+' : ', docs[i]);
+                //embed the PDF documents
+                // await PineconeStore.fromDocuments(newDocs, embeddings, {
+                //   pineconeIndex: index,
+                //   // namespace: names_pace?.toString(),
+                //   namespace: PINECONE_NAME_SPACE,
+                //   textKey: 'text',
+                // });
 
-                //   const batch = docs.slice(i, i + BATCH_SIZE);
-                //   // Embed and upsert each batch separately
-                //   await PineconeStore.fromDocuments(batch, embeddings, {
-                //     pineconeIndex: index,
-                //     namespace: names_pace?.toString(),
-                //     textKey: 'text',
-                //   });
-                // }
               } catch (error) {
 
                 const filePath = targetPath + file[1].originalFilename;
