@@ -92,7 +92,7 @@ export default async function handler(
     //   }
     // );
 
-    // deleteFile(pdfurl);
+    deleteFile(pdfurl);
 
     // 删除文件
     // fs.unlink(pdfurl, (err) => {
