@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           
             const tempPath = file[1].filepath;
 
-            await fs.rename(tempPath, targetPath + file[1].originalFilename);
+            // await fs.rename(tempPath, targetPath + file[1].originalFilename);
 
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
@@ -74,91 +74,97 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const names_pace = file[1].originalFilename;
 
-            try {
-                /*load raw docs from the all files in the directory */
-                // const directoryLoader = new DirectoryLoader(importPath, {
-                //   '.pdf': (path) => new PDFLoader(path),
-                // });
+
+            const sanitizedFilename = names_pace!.replace(/[^\w\s-]/g, '');
+            const normalizedFilename = path.normalize(sanitizedFilename.replace(/\s+/g, '_'));
+            console.log('normalizedFilename : ', normalizedFilename);
+
+            // try {
+            //     /*load raw docs from the all files in the directory */
+            //     // const directoryLoader = new DirectoryLoader(importPath, {
+            //     //   '.pdf': (path) => new PDFLoader(path),
+            //     // });
           
-                // const rawDocs = await directoryLoader.load();
+            //     // const rawDocs = await directoryLoader.load();
 
-                const loader = new PDFLoader(pdfImportPath);
-                const rawDocs = await loader.load();
+            //     const loader = new PDFLoader(pdfImportPath);
+            //     const rawDocs = await loader.load();
             
-                /* Split text into chunks */
-                const textSplitter = new RecursiveCharacterTextSplitter({
-                  chunkSize: 1000,
-                  chunkOverlap: 200,
-                });
+            //     /* Split text into chunks */
+            //     const textSplitter = new RecursiveCharacterTextSplitter({
+            //       chunkSize: 1000,
+            //       chunkOverlap: 200,
+            //     });
 
-                const BATCH_SIZE = 50; // Adjust this value as needed
+            //     const BATCH_SIZE = 50; // Adjust this value as needed
             
-                const docs = await textSplitter.splitDocuments(rawDocs);
+            //     const docs = await textSplitter.splitDocuments(rawDocs);
               
-                // console.log('split docs', docs);
+            //     // console.log('split docs', docs);
             
-                console.log('creating vector store...');
-                /*create and store the embeddings in the vectorStore*/
-                const embeddings = new OpenAIEmbeddings();
+            //     console.log('creating vector store...');
+            //     /*create and store the embeddings in the vectorStore*/
+            //     const embeddings = new OpenAIEmbeddings();
 
-                // const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
-                const index = pinecone.Index(index_name);
+            //     // const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
+            //     const index = pinecone.Index(index_name);
 
-                const newDocs = docs.map(doc => {
+            //     const newDocs = docs.map(doc => {
 
-                  const docsMetadataPDF = doc['metadata']['pdf'];
-                  delete docsMetadataPDF.metadata;
-                  doc['metadata']['pdf'] = docsMetadataPDF;
+            //       const docsMetadataPDF = doc['metadata']['pdf'];
+            //       delete docsMetadataPDF.metadata;
+            //       doc['metadata']['pdf'] = docsMetadataPDF;
 
-                  return {
-                    pageContent: doc.pageContent,
-                    metadata: doc.metadata
-                  };
-                });
+            //       return {
+            //         ID: names_pace+'#',
+            //         pageContent: doc.pageContent,
+            //         metadata: doc.metadata
+            //       };
+            //     });
 
-                // console.log('new docs : ', newDocs);
+            //     // console.log('new docs : ', newDocs);
 
-                //embed the PDF documents
-                await PineconeStore.fromDocuments(newDocs, embeddings, {
-                  pineconeIndex: index,
-                  // namespace: names_pace?.toString(),
-                  namespace: PINECONE_NAME_SPACE,
-                  textKey: 'text',
-                });
+            //     //embed the PDF documents
+            //     await PineconeStore.fromDocuments(newDocs, embeddings, {
+            //       pineconeIndex: index,
+            //       // namespace: names_pace?.toString(),
+            //       namespace: PINECONE_NAME_SPACE,
+            //       textKey: 'text',
+            //     });
 
-                // console.log('docs length', newDocs.length);
+            //     // console.log('docs length', newDocs.length);
 
-                // Split docs into batches
-                // for (let i = 0; i < docs.length; i += BATCH_SIZE) {
-                //   // console.log('docs '+i+' :', docs[i]);
-                //   // console.log('metadata pdf : ', docs[i]['metadata']['pdf']);
-                //   // console.log('metadata loc',docs[i]['metadata']['loc']);
-                //   // const docsMetadataPDF = docs[i]['metadata']['pdf'];
-                //   // console.log('metadata : ',docsMetadataPDF);
-                //   // delete docsMetadataPDF.metadata;
-                //   // docs[i]['metadata']['pdf'] = docsMetadataPDF;
-                //   // console.log('new docs '+[i]+' metadata pdf : ', docsMetadataPDF);
-                //   // console.log('new docs '+[i]+' : ', docs[i]);
+            //     // Split docs into batches
+            //     // for (let i = 0; i < docs.length; i += BATCH_SIZE) {
+            //     //   // console.log('docs '+i+' :', docs[i]);
+            //     //   // console.log('metadata pdf : ', docs[i]['metadata']['pdf']);
+            //     //   // console.log('metadata loc',docs[i]['metadata']['loc']);
+            //     //   // const docsMetadataPDF = docs[i]['metadata']['pdf'];
+            //     //   // console.log('metadata : ',docsMetadataPDF);
+            //     //   // delete docsMetadataPDF.metadata;
+            //     //   // docs[i]['metadata']['pdf'] = docsMetadataPDF;
+            //     //   // console.log('new docs '+[i]+' metadata pdf : ', docsMetadataPDF);
+            //     //   // console.log('new docs '+[i]+' : ', docs[i]);
 
-                //   const batch = docs.slice(i, i + BATCH_SIZE);
-                //   // Embed and upsert each batch separately
-                //   await PineconeStore.fromDocuments(batch, embeddings, {
-                //     pineconeIndex: index,
-                //     namespace: names_pace?.toString(),
-                //     textKey: 'text',
-                //   });
-                // }
-              } catch (error) {
+            //     //   const batch = docs.slice(i, i + BATCH_SIZE);
+            //     //   // Embed and upsert each batch separately
+            //     //   await PineconeStore.fromDocuments(batch, embeddings, {
+            //     //     pineconeIndex: index,
+            //     //     namespace: names_pace?.toString(),
+            //     //     textKey: 'text',
+            //     //   });
+            //     // }
+            //   } catch (error) {
 
-                const filePath = targetPath + file[1].originalFilename;
+            //     const filePath = targetPath + file[1].originalFilename;
 
-                await fs.unlink(filePath);
+            //     await fs.unlink(filePath);
 
-                console.log('error', error);
-                // throw new Error('Failed to ingest your data');
-                // resultBody = { status: 'no', message: 'Files were upload Error.', filepath: req.body.filepath};
-                continue;
-              }
+            //     console.log('error', error);
+            //     // throw new Error('Failed to ingest your data');
+            //     // resultBody = { status: 'no', message: 'Files were upload Error.', filepath: req.body.filepath};
+            //     continue;
+            //   }
         }
 
         resultBody = { status: 'ok', message: 'Files were uploaded successfully', filepath: req.body.filepath};
