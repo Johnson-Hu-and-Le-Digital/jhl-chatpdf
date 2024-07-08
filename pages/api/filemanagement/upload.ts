@@ -134,11 +134,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 });
 
 
-                await pineconeStore.addDocuments(newDocs, {
+                const addIds = await pineconeStore.addDocuments(newDocs, {
                   ids: ids,
                   namespace: PINECONE_NAME_SPACE,
                 });
 
+                console.log('add docs ids : '+addIds);
 
                 //embed the PDF documents
                 // await PineconeStore.fromDocuments(newDocs, embeddings, {
