@@ -49,10 +49,7 @@ export default async function handler(
     // });
     // console.log('deleteIndex', deleteIndex);
 
-    
-
     console.log('PINECONE_NAME_SPACE : ', PINECONE_NAME_SPACE);
-
 
     const sanitizedFilename = pdfname!.replace(/[^\w\s-]/g, '');
     const normalizedFilename = path.normalize(sanitizedFilename.replace(/\s+/g, '_'));
@@ -66,8 +63,15 @@ export default async function handler(
     const results = await index.listPaginated({ prefix: prefixT });
     console.log('results : ', results);
 
-    // const vectorIds = results.vectors.map((vector) => vector.id);
+    // const vectorIds : any[] = [];
+    // const vectorIds = results.vectors?.map((vector) => vector.id);
+
+    // console.log('vectorIds : ', vectorIds);
+
     // await index.deleteMany(vectorIds);
+
+    const vectorIds = results.vectors!.map((vector) => vector.id);
+    await index.deleteMany(vectorIds);
 
     // await index.namespace(PINECONE_NAME_SPACE).deleteMany({
     //   filter: {
