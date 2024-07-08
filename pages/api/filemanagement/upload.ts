@@ -109,11 +109,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 // const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
                 const index = pinecone.Index(index_name);
 
+                const ids : any[] = [];
+
                 const newDocs = docs.map((doc, index) => {
                   // console.log('doc index : ', index);
                   const docsMetadataPDF = doc['metadata']['pdf'];
                   delete docsMetadataPDF.metadata;
                   doc['metadata']['pdf'] = docsMetadataPDF;
+
+                  ids.push(normalizedFilename+'#'+index);
 
                   return {
                     ID: normalizedFilename+'#'+index,
@@ -123,12 +127,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 });
                 // console.log('new docs : ', newDocs);
                 
+                console.log('map ids : '+ids);
 
                 const pineconeStore = new PineconeStore(new OpenAIEmbeddings(), {
                     pineconeIndex: index
                 });
+
+
                 await pineconeStore.addDocuments(newDocs, {
-                  ids: [normalizedFilename]
+                  ids: ids
                 });
 
 
