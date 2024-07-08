@@ -118,7 +118,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   doc['metadata']['pdf'] = docsMetadataPDF;
 
                   return {
-                    ID: names_pace+'#'+index,
+                    ID: normalizedFilename+'#'+index,
                     pageContent: doc.pageContent,
                     metadata: doc.metadata
                   };
