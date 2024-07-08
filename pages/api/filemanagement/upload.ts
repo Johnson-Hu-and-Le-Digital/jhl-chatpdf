@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           
             const tempPath = file[1].filepath;
 
-            // await fs.rename(tempPath, targetPath + file[1].originalFilename);
+            await fs.rename(tempPath, targetPath + file[1].originalFilename);
 
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
