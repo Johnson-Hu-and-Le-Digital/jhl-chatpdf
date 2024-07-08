@@ -135,7 +135,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
                 await pineconeStore.addDocuments(newDocs, {
-                  ids: ids
+                  ids: ids,
+                  namespace: PINECONE_NAME_SPACE,
                 });
 
 
