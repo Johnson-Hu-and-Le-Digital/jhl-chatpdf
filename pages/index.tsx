@@ -486,8 +486,12 @@ export default function Index() {
   };
 
   //===== Delete PDF =====
+  const [deletePDFLoading, setDeletePDFLoading] = useState(false);
+
   async function  handleDeleteFile(e: any) {
     e.preventDefault();
+    // setDeletePDFLoading(true);
+    e.target.classList.add('disabled');
     try {
       let pdfname = e.target.getAttribute('data-pdfname');
       let delDir = e.target.getAttribute('data-dir');
@@ -508,18 +512,25 @@ export default function Index() {
       console.log(body);
       if (res.ok) {
         // handleDirectoryList();
+        // setDeletePDFLoading(false);
+        e.target.classList.remove('disabled');
         clickDir = body.delDir;
         console.log('delete dir: ', clickDir);
         handleGetPDFList();
       }
   
       if (res.status === 400) {
+        // setDeletePDFLoading(false);
+        e.target.classList.remove('disabled');
         alert(`${body.message} 😢`);
       }
     } catch (err) {
+      // setDeletePDFLoading(false);
+      e.target.classList.remove('disabled');
       clickDir = e.target.getAttribute('data-dir');
       handleGetPDFList();
       console.log('Something went wrong: ', err);
+      alert(err);
     }
   };
   //===== Delete PDF End =====
@@ -677,7 +688,12 @@ export default function Index() {
                               <div className="pdf-file flist">
                                 <span className="before"></span>
                                 <span className='txt'>{item}</span>
-                                <span className="after delete-btn" data-pdfname={item} data-dir={clickDir2} onDoubleClick={handleDeleteFile}></span></div>
+                                <span className="after delete-btn" data-pdfname={item} data-dir={clickDir2} onDoubleClick={handleDeleteFile}>
+                                  <div className='loadingwheel'>
+                                    <LoadingDots color="#000" />
+                                  </div>
+                                </span>
+                              </div>
                           </div>
                           </>
                         ))}

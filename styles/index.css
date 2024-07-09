@@ -681,6 +681,19 @@ hr.hr-white {
   cursor: pointer;
 }
 
+.flist.pdf-file .delete-btn .loadingwheel{
+  display: none;
+  padding-left: 4px;
+}
+.flist.pdf-file .delete-btn.disabled{
+  pointer-events: none;
+}
+
+.flist.pdf-file .delete-btn.disabled .loadingwheel{
+  opacity: 0.7;
+  display: block;
+}
+
 .home-banner {
   position: relative;
 }
