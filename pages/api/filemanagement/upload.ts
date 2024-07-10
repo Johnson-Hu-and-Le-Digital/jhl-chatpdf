@@ -60,13 +60,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         /* Move uploaded files to directory */
         // for (const file of files) {
 
+        let leg = files.length;
         console.log('files : ',files);
-        console.log('files[files?.length] : ', files[1]);
-        console.log('files[files?.length][1] : ', files[1][1]);
+        console.log('files[files?.length] : ', files[leg]);
+        console.log('files[files?.length][1] : ', files[leg][1]);
           
-            const tempPath = files[files?.length][1].filepath;
+            const tempPath = files[leg][1].filepath;
 
-            await fs.rename(tempPath, targetPath + files[1][1].originalFilename);
+            await fs.rename(tempPath, targetPath + files[leg][1].originalFilename);
 
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
@@ -74,10 +75,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
 
-            const pdfImportPath = process.env.PDF_DIRECTORY+'/'+fileDir+'/'+files[files?.length][1].originalFilename;
+            const pdfImportPath = process.env.PDF_DIRECTORY+'/'+fileDir+'/'+files[leg][1].originalFilename;
             console.log('pdfImportPath', pdfImportPath);
 
-            const names_pace = files[files?.length][1].originalFilename;
+            const names_pace = files[leg][1].originalFilename;
 
 
             const sanitizedFilename = names_pace!.replace(/[^\w\s-]/g, '');
@@ -155,7 +156,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
               } catch (error) {
 
-                const filePath = targetPath + files[files?.length][1].originalFilename;
+                const filePath = targetPath + files[leg][1].originalFilename;
 
                 await fs.unlink(filePath);
 
