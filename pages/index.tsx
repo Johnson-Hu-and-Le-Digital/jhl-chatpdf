@@ -395,8 +395,6 @@ export default function Index() {
   const [nowUploadPDF, setNowUploadPDF] = useState<string>('');
   // let onFileUpload = async (file: any) => {
   async function onFileUpload(file: any){
-    const formData = new FormData();
-    formData.append('filepath', clickDir2);
     // const promises = file.map(async (fil: any, index: any) => {
     //   console.log(index);
     //   console.log(fil);
@@ -442,6 +440,9 @@ export default function Index() {
       console.log(file[i]);
       console.log(file[i].name);
       setNowUploadPDF(file[i].name);
+      const formData = new FormData();
+      
+      formData.append('filepath', clickDir2);
       formData.append('file', file[i]);
       try {
         console.log(formData);
