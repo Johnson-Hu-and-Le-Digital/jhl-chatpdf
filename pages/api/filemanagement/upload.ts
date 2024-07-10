@@ -58,11 +58,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // const targetPath = process.env.PDF_DIRECTORY+'/directory3/';
         const targetPath = process.env.PDF_DIRECTORY+'/'+req.body.filepath+'/';
         /* Move uploaded files to directory */
-        for (const file of files) {
+        // for (const file of files) {
           
-            const tempPath = file[1].filepath;
+            const tempPath = files[files?.length][1].filepath;
 
-            await fs.rename(tempPath, targetPath + file[1].originalFilename);
+            await fs.rename(tempPath, targetPath + files[files?.length][1].originalFilename);
 
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
@@ -70,10 +70,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
 
-            const pdfImportPath = process.env.PDF_DIRECTORY+'/'+fileDir+'/'+file[1].originalFilename;
+            const pdfImportPath = process.env.PDF_DIRECTORY+'/'+fileDir+'/'+files[files?.length][1].originalFilename;
             console.log('pdfImportPath', pdfImportPath);
 
-            const names_pace = file[1].originalFilename;
+            const names_pace = files[files?.length][1].originalFilename;
 
 
             const sanitizedFilename = names_pace!.replace(/[^\w\s-]/g, '');
@@ -151,15 +151,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
               } catch (error) {
 
-                const filePath = targetPath + file[1].originalFilename;
+                const filePath = targetPath + files[files?.length][1].originalFilename;
 
                 await fs.unlink(filePath);
 
                 console.log('error', error);
                 // throw new Error('Failed to ingest your data');
                 // resultBody = { status: 'no', message: 'Files were upload Error.', filepath: req.body.filepath};
-                continue;
-              }
+                // continue;
+              // }
         }
 
         resultBody = { status: 'ok', message: 'Files were uploaded successfully', filepath: req.body.filepath};
