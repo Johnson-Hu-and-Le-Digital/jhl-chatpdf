@@ -396,7 +396,6 @@ export default function Index() {
   const onFileUpload = async (file: any) => {
     const formData = new FormData();
     formData.append('filepath', clickDir2);
-
     // const promises = file.map(async (fil: any, index: any) => {
     //   console.log(index);
     //   console.log(fil);
@@ -513,7 +512,9 @@ export default function Index() {
       // console.log(acceptedFiles);
       if (acceptedFiles.length > 0) {
         for(const file of acceptedFiles){
+          console.log('===========');
           onFileUpload(file);
+          console.log('-----------');
         }
         // onFileUpload(acceptedFiles);
         setFileEnter(true);
