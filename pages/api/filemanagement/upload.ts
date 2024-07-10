@@ -59,6 +59,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const targetPath = process.env.PDF_DIRECTORY+'/'+req.body.filepath+'/';
         /* Move uploaded files to directory */
         // for (const file of files) {
+
+        console.log('files : ',files);
+        console.log('files[files?.length] : ', files[files?.length]);
+        console.log('files[files?.length][1] : ', files[files?.length][1]);
           
             const tempPath = files[files?.length][1].filepath;
 
