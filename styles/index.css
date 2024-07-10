@@ -624,6 +624,12 @@ hr.hr-white {
   color: #66e6ff;
 }
 
+.txt{
+  color: #716da3;
+  font-family: 'Poppins-Medium';
+  font-size: 16px;
+}
+
 .flist {
   color: #716da3;
   font-family: 'Poppins-Medium';

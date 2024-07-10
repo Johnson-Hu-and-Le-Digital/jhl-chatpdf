@@ -391,42 +391,77 @@ export default function Index() {
   const [file, setFile] = useState<string>();
   const [fileEnter, setFileEnter] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+
+  const [nowUploadPDF, setNowUploadPDF] = useState<string>('');
   const onFileUpload = async (file: any) => {
     const formData = new FormData();
 
     for (let i = 0; i < file.length; i++) {
+      setUploadLoading(true);
+      // console.log(file[i].name);
+      setNowUploadPDF(file[i].name);
       formData.append('file', file[i]);
-    }
-      // formData.append('file', file);
       formData.append('filepath', clickDir2);
 
-    try {
-      const response = await fetch('/api/filemanagement/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      const body = await response.json();
-      if (response.ok) {
-        // handleDirectoryList();
-        // console.log(body);
-        console.log(body);
-        clickDir = body.filepath;
-        handleGetPDFList();
+      try {
+        const response = await fetch('/api/filemanagement/upload', {
+          method: 'POST',
+          body: formData
+        });
+  
+        const body = await response.json();
+        if (response.ok) {
+          // handleDirectoryList();
+          // console.log(body);
+          console.log(body);
+          clickDir = body.filepath;
+          handleGetPDFList();
+          setFileEnter(false);
+          setUploadLoading(false);
+        } else {
+          alert(body.message);
+          setFileEnter(false);
+          setUploadLoading(false);
+          console.error('Upload failed');
+        }
+      } catch (error) {
         setFileEnter(false);
         setUploadLoading(false);
-      } else {
-        alert(body.message);
-        setFileEnter(false);
-        setUploadLoading(false);
-        console.error('Upload failed');
+        console.error('Error while uploading file:', error);
+        alert('Error while uploading file: '+ error);
       }
-    } catch (error) {
-      setFileEnter(false);
-      setUploadLoading(false);
-      console.error('Error while uploading file:', error);
-      alert('Error while uploading file: '+ error);
+
     }
+    
+    // formData.append('filepath', clickDir2);
+
+    // try {
+    //   const response = await fetch('/api/filemanagement/upload', {
+    //     method: 'POST',
+    //     body: formData
+    //   });
+
+    //   const body = await response.json();
+    //   if (response.ok) {
+    //     // handleDirectoryList();
+    //     // console.log(body);
+    //     console.log(body);
+    //     clickDir = body.filepath;
+    //     handleGetPDFList();
+    //     setFileEnter(false);
+    //     setUploadLoading(false);
+    //   } else {
+    //     alert(body.message);
+    //     setFileEnter(false);
+    //     setUploadLoading(false);
+    //     console.error('Upload failed');
+    //   }
+    // } catch (error) {
+    //   setFileEnter(false);
+    //   setUploadLoading(false);
+    //   console.error('Error while uploading file:', error);
+    //   alert('Error while uploading file: '+ error);
+    // }
   };
   //===== Upload File End =====
 
@@ -699,6 +734,7 @@ export default function Index() {
                         ))}
                     </div>
                     <div className='pt-4'></div>
+                    <div className='txt pb-2'>Uploading file: {nowUploadPDF}</div>
                     <DropZone onFileUpload={onFileUpload} />
                     
                     <div className="form-check pt-4">
