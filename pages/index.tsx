@@ -399,11 +399,12 @@ export default function Index() {
 
     for (let i = 0; i < file.length; i++) {
       setUploadLoading(true);
-      // console.log(file[i].name);
+      console.log(file[i].name);
       setNowUploadPDF(file[i].name);
       formData.append('file', file[i]);
 
       try {
+        console.log(formData);
         const response = await fetch('/api/filemanagement/upload', {
           method: 'POST',
           body: formData
