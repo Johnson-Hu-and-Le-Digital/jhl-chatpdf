@@ -395,13 +395,13 @@ export default function Index() {
   const [nowUploadPDF, setNowUploadPDF] = useState<string>('');
   const onFileUpload = async (file: any) => {
     const formData = new FormData();
+    formData.append('filepath', clickDir2);
 
     for (let i = 0; i < file.length; i++) {
       setUploadLoading(true);
       // console.log(file[i].name);
       setNowUploadPDF(file[i].name);
       formData.append('file', file[i]);
-      formData.append('filepath', clickDir2);
 
       try {
         const response = await fetch('/api/filemanagement/upload', {
@@ -734,7 +734,11 @@ export default function Index() {
                         ))}
                     </div>
                     <div className='pt-4'></div>
-                    <div className='txt pb-2'>Uploading file: {nowUploadPDF}</div>
+                    {uploadLoading ? (
+                      <div className='txt pb-2'>Uploading file: {nowUploadPDF}</div>
+                    ) : (
+                      ''
+                    )}
                     <DropZone onFileUpload={onFileUpload} />
                     
                     <div className="form-check pt-4">
