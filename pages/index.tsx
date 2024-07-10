@@ -397,13 +397,16 @@ export default function Index() {
     const formData = new FormData();
     formData.append('filepath', clickDir2);
 
-    for (let i = 0; i < file.length; i++) {
-      setUploadLoading(true);
-      console.log(file[i].name);
-      setNowUploadPDF(file[i].name);
-      formData.append('file', file[i]);
+    const promises = file.map(async (fil: any, index: any) => {
+      console.log(index);
+      console.log(fil);
 
+      setUploadLoading(true);
+      console.log(fil.name);
+      setNowUploadPDF(fil.name);
+      formData.append('file', fil);
       try {
+
         console.log(formData);
         const response = await fetch('/api/filemanagement/upload', {
           method: 'POST',
@@ -431,8 +434,47 @@ export default function Index() {
         console.error('Error while uploading file:', error);
         alert('Error while uploading file: '+ error);
       }
+      
+    });
 
-    }
+    // for (let i = 0; i < file.length; i++) {
+    //   setUploadLoading(true);
+    //   console.log(file[i]);
+    //   console.log(file[i].name);
+    //   setNowUploadPDF(file[i].name);
+    //   formData.append('file', file[i]);
+    //   try {
+
+
+    //     console.log(formData);
+    //     const response = await fetch('/api/filemanagement/upload', {
+    //       method: 'POST',
+    //       body: formData
+    //     });
+  
+    //     const body = await response.json();
+    //     if (response.ok) {
+    //       // handleDirectoryList();
+    //       // console.log(body);
+    //       console.log(body);
+    //       clickDir = body.filepath;
+    //       handleGetPDFList();
+    //       setFileEnter(false);
+    //       setUploadLoading(false);
+    //     } else {
+    //       alert(body.message);
+    //       setFileEnter(false);
+    //       setUploadLoading(false);
+    //       console.error('Upload failed');
+    //     }
+    //   } catch (error) {
+    //     setFileEnter(false);
+    //     setUploadLoading(false);
+    //     console.error('Error while uploading file:', error);
+    //     alert('Error while uploading file: '+ error);
+    //   }
+
+    // }
     
     // formData.append('filepath', clickDir2);
 
