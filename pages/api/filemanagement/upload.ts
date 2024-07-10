@@ -49,7 +49,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
     });
 
-    // console.log(files?.length);
+    console.log('=================');
+    console.log('files length : ', files?.length);
 
     if (files?.length) {
         /* Create directory for uploads */
@@ -126,8 +127,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   };
                 });
                 // console.log('new docs : ', newDocs);
-                
-                console.log('map ids : '+ids);
+                // console.log('map ids : '+ids);
 
                 const pineconeStore = new PineconeStore(new OpenAIEmbeddings(), {
                     pineconeIndex: index
@@ -139,7 +139,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   namespace: PINECONE_NAME_SPACE,
                 });
 
-                console.log('add docs ids : '+addIds);
+                // console.log('add docs ids : '+addIds);
 
                 //embed the PDF documents
                 // await PineconeStore.fromDocuments(newDocs, embeddings, {
