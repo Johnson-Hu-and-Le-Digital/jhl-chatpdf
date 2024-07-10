@@ -441,7 +441,7 @@ export default function Index() {
       setUploadLoading(true);
       console.log(file);
       console.log(file.name);
-      setNowUploadPDF(file.name);
+      
       formData.append('file', file);
       try {
         console.log(formData);
@@ -514,6 +514,7 @@ export default function Index() {
       if (acceptedFiles.length > 0) {
         for(const file of acceptedFiles){
           console.log('===========');
+          setNowUploadPDF(file.name);
           onFileUpload(file);
           console.log('-----------');
         }
