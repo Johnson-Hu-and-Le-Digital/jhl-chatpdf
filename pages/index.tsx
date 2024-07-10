@@ -437,12 +437,12 @@ export default function Index() {
       
     // });
 
-    // for (let i = 0; i < file.length; i++) {
+    for (let i = 0; i < file.length; i++) {
       setUploadLoading(true);
-      console.log(file);
-      console.log(file.name);
+      console.log(file[i]);
+      console.log(file[i].name);
       
-      formData.append('file', file);
+      formData.append('file', file[i]);
       try {
         console.log(formData);
         const response = await fetch('/api/filemanagement/upload', {
@@ -471,6 +471,7 @@ export default function Index() {
         console.error('Error while uploading file:', error);
         alert('Error while uploading file: '+ error);
       }
+    }
     
     // formData.append('filepath', clickDir2);
 
@@ -512,13 +513,13 @@ export default function Index() {
     const onDrop = useCallback((acceptedFiles: any) => {
       // console.log(acceptedFiles);
       if (acceptedFiles.length > 0) {
-        for(const file of acceptedFiles){
-          console.log('===========');
-          setNowUploadPDF(file.name);
-          onFileUpload(file);
-          console.log('-----------');
-        }
-        // onFileUpload(acceptedFiles);
+        // for(const file of acceptedFiles){
+        //   console.log('===========');
+        //   setNowUploadPDF(file.name);
+        //   onFileUpload(file);
+        //   console.log('-----------');
+        // }
+        onFileUpload(acceptedFiles);
         setFileEnter(true);
         setUploadLoading(true);
       }
