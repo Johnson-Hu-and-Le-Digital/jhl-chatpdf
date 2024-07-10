@@ -61,12 +61,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // for (const file of files) {
 
         console.log('files : ',files);
-        console.log('files[files?.length] : ', files[files.length]);
-        console.log('files[files?.length][1] : ', files[files.length][1]);
+        console.log('files[files?.length] : ', files[1]);
+        console.log('files[files?.length][1] : ', files[1][1]);
           
             const tempPath = files[files?.length][1].filepath;
 
-            await fs.rename(tempPath, targetPath + files[files?.length][1].originalFilename);
+            await fs.rename(tempPath, targetPath + files[1][1].originalFilename);
 
             let fileDir = req.body.filepath;
             fileDir = fileDir[0];
