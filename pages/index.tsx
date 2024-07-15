@@ -788,12 +788,12 @@ export default function Index() {
                     )}
                     <DropZone onFileUpload={onFileUpload} />
                     
-                    <div className="form-check pt-4">
+                    {/* <div className="form-check pt-4">
                         <input className="form-check-input" type="checkbox" value="" id="check_2" />
                         <label className="form-check-label">
                             Override and upload to my personal directory user.documents
                         </label>
-                    </div>
+                    </div> */}
                     
                 </div>
             </div>
