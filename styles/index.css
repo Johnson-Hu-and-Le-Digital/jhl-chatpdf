@@ -944,3 +944,10 @@ hr.hr-white {
   position: absolute;
   left: 0;
 }
+
+.uploading-files{
+  color: blue;
+  font-family: 'Poppins-Light';
+  font-size: 14px;
+  font-style: italic;
+}

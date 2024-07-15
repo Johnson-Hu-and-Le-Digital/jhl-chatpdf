@@ -782,7 +782,7 @@ export default function Index() {
                     </div>
                     <div className='pt-4'></div>
                     {uploadLoading ? (
-                      <div className='txt pb-2'>Uploading file: {nowUploadPDF}</div>
+                      <div className='txt uploading-files pb-2'>Uploading {nowUploadPDF}</div>
                     ) : (
                       ''
                     )}
