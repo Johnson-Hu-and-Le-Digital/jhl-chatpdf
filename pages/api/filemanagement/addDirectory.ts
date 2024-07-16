@@ -24,6 +24,9 @@ export default async function handler(
 
         let indexname = directoryname.toLowerCase();
         indexname = indexname.replaceAll(' ', '-').replaceAll('_', '-');
+        if(process.env.PINECONE_INDEX_PREFIX != undefined && process.env.PINECONE_INDEX_PREFIX != ''){
+          indexname = process.env.PINECONE_INDEX_PREFIX+'-'+indexname;
+        }
         console.log('indexname : ',indexname);
         await pinecone.createIndex({
           name: indexname,

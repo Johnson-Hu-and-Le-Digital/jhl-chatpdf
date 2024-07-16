@@ -68,6 +68,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             fileDir = fileDir[0];
             let fileDirLo = fileDir.toLowerCase();
             let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
+            if(process.env.PINECONE_INDEX_PREFIX != undefined && process.env.PINECONE_INDEX_PREFIX != ''){
+              index_name = process.env.PINECONE_INDEX_PREFIX+'-'+index_name;
+            }
+            
             const importPath = process.env.PDF_DIRECTORY+'/'+fileDir;
 
             const pdfImportPath = process.env.PDF_DIRECTORY+'/'+fileDir+'/'+file[1].originalFilename;

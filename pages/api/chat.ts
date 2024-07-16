@@ -42,7 +42,11 @@ export default async function handler(
     const index_name_space = firstFileName ? firstFileName : '';
 
     let fileDirLo = selectIndex.toLowerCase();
-    const index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
+    let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
+    
+    if(process.env.PINECONE_INDEX_PREFIX != undefined && process.env.PINECONE_INDEX_PREFIX != ''){
+      index_name = process.env.PINECONE_INDEX_PREFIX+'-'+index_name;
+    }
     console.log("index name: "+index_name);
 
     const index = pinecone.Index(index_name);

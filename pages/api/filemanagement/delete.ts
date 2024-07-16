@@ -28,7 +28,11 @@ export default async function handler(
     });
 
     let fileDirLo = delDir.toLowerCase();
-    const index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
+    let index_name = fileDirLo.replaceAll(' ', '-').replaceAll('_', '-');
+    // index_name = process.env.PINECONE_INDEX_PREFIX+'-'+index_name;
+    if(process.env.PINECONE_INDEX_PREFIX != undefined && process.env.PINECONE_INDEX_PREFIX != ''){
+      index_name = process.env.PINECONE_INDEX_PREFIX+'-'+index_name;
+    }
     console.log("index name: "+index_name);
 
     // const index = pinecone.index(index_name);
