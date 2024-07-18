@@ -52,11 +52,16 @@ export default async function handler(
     console.log('results pagination next: ', results.pagination?.next);
 
     if(results.pagination?.next != undefined){
+      
       const pageTwoList = await index.listPaginated({ prefix: prefixT, limit: 100, paginationToken: results.pagination?.next });
       console.log('pageTwoList : ', pageTwoList);
-  
+      
       const pageTwoVectorIds = pageTwoList.vectors!.map((vector) => vector.id);
-      await index.deleteMany(pageTwoVectorIds);
+      console.log('pageTwoVectorIds : ', pageTwoVectorIds);
+      
+      if(pageTwoVectorIds.length > 0){
+        await index.deleteMany(pageTwoVectorIds);
+      }
     }
 
     // const pageOneList = await index.listPaginated({ prefix: prefixT });
