@@ -35,24 +35,6 @@ export default async function handler(
     }
     console.log("index name: "+index_name);
 
-    // const index = pinecone.index(index_name);
-    // pinecone.deleteIndex('test-library-index');
-    
-    // await index.namespace(pdfname).deleteAll();
-
-
-    // const innerObject = {
-    //   namespace: PINECONE_NAME_SPACE,
-    //   "filter": {
-    //     "source": { $eq: pdfurl },
-    //   },
-    // }
-
-    // const deleteIndex = await index.deleteMany({
-    //   deleteRequest: innerObject
-    // });
-    // console.log('deleteIndex', deleteIndex);
-
     console.log('PINECONE_NAME_SPACE : ', PINECONE_NAME_SPACE);
 
     const sanitizedFilename = pdfname!.replace(/[^\w\s-]/g, '');
@@ -61,68 +43,27 @@ export default async function handler(
     console.log('prefixT : '+prefixT);
     const index = pinecone.index(index_name).namespace(PINECONE_NAME_SPACE);
 
-    // const pc = new Pinecone();
-    // const index = pc.index(index_name).namespace(PINECONE_NAME_SPACE);
+    // const results = await index.listPaginated({ prefix: prefixT });
+    // console.log('results : ', results);
 
-    const results = await index.listPaginated({ prefix: prefixT });
-    console.log('results : ', results);
-
-    // const vectorIds : any[] = [];
-    // const vectorIds = results.vectors?.map((vector) => vector.id);
-
-    // console.log('vectorIds : ', vectorIds);
-
+    // const vectorIds = results.vectors!.map((vector) => vector.id);
     // await index.deleteMany(vectorIds);
 
-    const vectorIds = results.vectors!.map((vector) => vector.id);
-    await index.deleteMany(vectorIds);
 
-    // await index.namespace(PINECONE_NAME_SPACE).deleteMany({
-    //   filter: {
-    //     'metadata': {
-    //       'source': pdfurl,
-    //     }
-    //   }
-    // });
+    const pageOneList = await index.listPaginated({ prefix: 'doc1#' });
+    const pageOneVectorIds = pageOneList.vectors!.map((vector) => vector.id);
 
-    // console.log('delete url : ', pdfurl);
-    // await index.deleteMany(
-    //   {
-    //     filter: {
-    //       source: {
-    //         "$eq": pdfurl
-    //       }
-    //     }
-    //   }
-    // );
+    // Then, delete the first page of records by ID:
+    await index.deleteMany(pageOneVectorIds);
+
+    // For a second page of returned records:
+    const pageTwoList = await index.listPaginated({ prefix: 'doc1#', paginationToken: pageOneList.pagination!.next });
+    const pageTwoVectorIds = pageTwoList.vectors!.map((vector) => vector.id);
+
+    await index.deleteMany(pageTwoVectorIds);
+
 
     deleteFile(pdfurl);
-
-    // 删除文件
-    // fs.unlink(pdfurl, (err) => {
-
-    //   try{
-    //     const pinecone = new Pinecone({
-    //       apiKey: process.env.PINECONE_API_KEY ?? '',
-    //     });
-    //     const index = pinecone.index("pinecone-index");
-    //     // pinecone.deleteIndex('test-library-index');
-  
-    //     await index.deleteMany({
-    //       source: pdfurl,
-    //     });
-
-    //     res.status(200).json({ message: `PDF deleted successfully.`, delDir: delDir});
-
-    //   }catch(err){
-
-    //       // console.log(err);
-    //       res.status(400).json({ message: err});
-    //   }
-    //   // if (err) throw err;
-    //   // console.log('文件已删除');
-
-    // });
 
     res.status(200).json({ message: `PDF deleted successfully.`, delDir: delDir});
 
