@@ -43,12 +43,19 @@ export default async function handler(
     console.log('prefixT : '+prefixT);
     const index = pinecone.index(index_name).namespace(PINECONE_NAME_SPACE);
 
-    const results = await index.listPaginated({ prefix: prefixT, limit: 1000 });
+    const results = await index.listPaginated({ prefix: prefixT });
     console.log('results : ', results);
 
-    const vectorIds = results.vectors!.map((vector) => vector.id);
-    await index.deleteMany(vectorIds);
+    const vectorIds = results.vectors?.map((vector) => vector.id);
+    await index.deleteMany(vectorIds || []);
 
+    console.log('results pagination next: ', results.pagination?.next);
+
+    const pageTwoList = await index.listPaginated({ prefix: prefixT, paginationToken: results.pagination?.next });
+    console.log('pageTwoList : ', pageTwoList);
+    const pageTwoVectorIds = pageTwoList.vectors?.map((vector) => vector.id);
+
+    await index.deleteMany(pageTwoVectorIds || []);
 
     // const pageOneList = await index.listPaginated({ prefix: prefixT });
     // const pageOneVectorIds = pageOneList.vectors!.map((vector) => vector.id);
