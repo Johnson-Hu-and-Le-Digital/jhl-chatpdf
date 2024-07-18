@@ -50,7 +50,7 @@ export default async function handler(
     // await index.deleteMany(vectorIds);
 
 
-    const pageOneList = await index.listPaginated({ prefix: 'doc1#' });
+    const pageOneList = await index.listPaginated({ prefix: prefixT });
     const pageOneVectorIds = pageOneList.vectors!.map((vector) => vector.id);
     console.log('pageOneVectorIds : ', pageOneVectorIds);
 
@@ -58,7 +58,7 @@ export default async function handler(
     await index.deleteMany(pageOneVectorIds);
 
     // For a second page of returned records:
-    const pageTwoList = await index.listPaginated({ prefix: 'doc1#', paginationToken: pageOneList.pagination!.next });
+    const pageTwoList = await index.listPaginated({ prefix: prefixT, paginationToken: pageOneList.pagination!.next });
     const pageTwoVectorIds = pageTwoList.vectors!.map((vector) => vector.id);
     console.log('pageTwoVectorIds : ', pageTwoVectorIds);
 
