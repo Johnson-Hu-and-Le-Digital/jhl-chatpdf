@@ -43,26 +43,41 @@ export default async function handler(
     console.log('prefixT : '+prefixT);
     const index = pinecone.index(index_name).namespace(PINECONE_NAME_SPACE);
 
-    const results = await index.listPaginated({ prefix: prefixT, limit: 100 });
+    const results = await index.listPaginated({ prefix: prefixT, limit: 10 });
     console.log('results : ', results);
 
-    const vectorIds = results.vectors!.map((vector) => vector.id);
-    await index.deleteMany(vectorIds);
+    let pagination_token = results.pagination?.next;
+    while (pagination_token != undefined) {
 
-    console.log('results pagination next: ', results.pagination?.next);
+      const while_list = await index.listPaginated({ prefix: prefixT, limit: 100, paginationToken: pagination_token });
+      console.log('while_list : ', while_list);
+      
+      const vectorIds = while_list.vectors!.map((vector) => vector.id);
+      console.log('vectorIds : ', vectorIds);
 
-    if(results.pagination?.next != undefined){
-      
-      const pageTwoList = await index.listPaginated({ prefix: prefixT, limit: 100, paginationToken: results.pagination?.next });
-      console.log('pageTwoList : ', pageTwoList);
-      
-      const pageTwoVectorIds = pageTwoList.vectors!.map((vector) => vector.id);
-      console.log('pageTwoVectorIds : ', pageTwoVectorIds);
-      
-      if(pageTwoVectorIds.length > 0){
-        await index.deleteMany(pageTwoVectorIds);
-      }
+      console.log('results pagination next: ', while_list.pagination?.next);
+      pagination_token = while_list.pagination?.next;
+
     }
+
+
+    // const vectorIds = results.vectors!.map((vector) => vector.id);
+    // await index.deleteMany(vectorIds);
+
+    // console.log('results pagination next: ', results.pagination?.next);
+
+    // if(results.pagination?.next != undefined){
+      
+    //   const pageTwoList = await index.listPaginated({ prefix: prefixT, limit: 100, paginationToken: results.pagination?.next });
+    //   console.log('pageTwoList : ', pageTwoList);
+      
+    //   const pageTwoVectorIds = pageTwoList.vectors!.map((vector) => vector.id);
+    //   console.log('pageTwoVectorIds : ', pageTwoVectorIds);
+
+    //   if(pageTwoVectorIds.length > 0){
+    //     await index.deleteMany(pageTwoVectorIds);
+    //   }
+    // }
 
     // const pageOneList = await index.listPaginated({ prefix: prefixT });
     // const pageOneVectorIds = pageOneList.vectors!.map((vector) => vector.id);
