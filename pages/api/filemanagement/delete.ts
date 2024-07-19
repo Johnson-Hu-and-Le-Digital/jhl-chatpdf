@@ -43,8 +43,10 @@ export default async function handler(
     console.log('prefixT : '+prefixT);
     const index = pinecone.index(index_name).namespace(PINECONE_NAME_SPACE);
 
-    const results = await index.listPaginated({ prefix: prefixT, limit: 10 });
+    const results = await index.listPaginated({ prefix: prefixT, limit: 100 });
     console.log('results : ', results);
+    const vectorIds = results.vectors!.map((vector) => vector.id);
+    await index.deleteMany(vectorIds);
 
     let pagination_token = results.pagination?.next;
     while (pagination_token != undefined) {
@@ -52,8 +54,12 @@ export default async function handler(
       const while_list = await index.listPaginated({ prefix: prefixT, limit: 100, paginationToken: pagination_token });
       console.log('while_list : ', while_list);
       
-      const vectorIds = while_list.vectors!.map((vector) => vector.id);
-      console.log('vectorIds : ', vectorIds);
+      const while_vectorIds = while_list.vectors!.map((vector) => vector.id);
+      console.log('while_vectorIds : ', while_vectorIds);
+
+      if(while_vectorIds.length > 0){
+        await index.deleteMany(while_vectorIds);
+      }
 
       console.log('results pagination next: ', while_list.pagination?.next);
       pagination_token = while_list.pagination?.next;
