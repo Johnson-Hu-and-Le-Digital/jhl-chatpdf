@@ -228,7 +228,7 @@ export default function Index() {
 
     if(flg){
       try {
-        console.log('directoryname', directoryname);
+        // console.log('directoryname', directoryname);
         const data = {
           directoryname: directoryname,
           // pdfDirectory: pdfDirectory
@@ -272,6 +272,7 @@ export default function Index() {
   // let clickDirIndex = 0;
   
   const [files, setFiles] = useState<string[]>([]);
+  // const [filesFilArray, setFilesFilArray] = useState<string[]>([]);
 
   async function handleGetPDFList() {
     
@@ -289,6 +290,7 @@ export default function Index() {
       const body = await res.json();
       if (res.ok) {
         setFiles(body.files);
+        // setNowdirectory(body.directoryPath);
       }
   
       if (res.status === 400) {
@@ -437,15 +439,15 @@ export default function Index() {
 
     for (let i = 0; i < file.length; i++) {
       setUploadLoading(true);
-      console.log(file[i]);
-      console.log(file[i].name);
+      // console.log(file[i]);
+      // console.log(file[i].name);
       setNowUploadPDF(file[i].name);
       const formData = new FormData();
       
       formData.append('filepath', clickDir2);
       formData.append('file', file[i]);
       try {
-        console.log(formData);
+        // console.log(formData);
         const response = await fetch('/api/filemanagement/upload', {
           method: 'POST',
           body: formData
@@ -455,7 +457,7 @@ export default function Index() {
         if (response.ok) {
           // handleDirectoryList();
           // console.log(body);
-          console.log(body);
+          // console.log(body);
           clickDir = body.filepath;
           handleGetPDFList();
           setFileEnter(false);
@@ -761,15 +763,17 @@ export default function Index() {
                     ) : ( '' )}
                 </div>
                 <div className="col-12 col-lg-11 pt-3">
-                    
+                    {/* <div>{filesArray}</div> */}
                     <div className='pdfListBox'>
-                    {files.map((item, index) => (
+                    {files.map((item, index) => {
+
+                      return (
                           <>
                           <div className="pdfList" id="" key={index}>
                               <hr />
                               <div className="pdf-file flist">
                                 <span className="before"></span>
-                                <span className='txt'>{item}</span>
+                                <a href={`/libs/${clickDir2}/${item}`} target='_blank' className='txt'>{item}</a>
                                 <span className="after delete-btn" data-pdfname={item} data-dir={clickDir2} onDoubleClick={handleDeleteFile}>
                                   <div className='loadingwheel'>
                                     <LoadingDots color="#000" />
@@ -778,7 +782,7 @@ export default function Index() {
                               </div>
                           </div>
                           </>
-                        ))}
+                        )})}
                     </div>
                     <div className='pt-4'></div>
                     {uploadLoading ? (
