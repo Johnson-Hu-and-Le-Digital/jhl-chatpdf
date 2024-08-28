@@ -11,6 +11,7 @@ import type { Document } from 'langchain/document';
 import type { VectorStoreRetriever } from '@langchain/core/vectorstores';
 
 const CONDENSE_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
+Rinvoq and upadacitinib are the same drug, rinvoq is the trade name and upadacitinib is the drug name.
 
 <chat_history>
   {chat_history}
@@ -43,8 +44,6 @@ const combineDocumentsFn = (docs: Document[], separator = '\n\n' as any) => {
 export const makeChain = (retriever: VectorStoreRetriever) => {
   const condenseQuestionPrompt =
     ChatPromptTemplate.fromTemplate(CONDENSE_TEMPLATE);
-
-
   const answerPrompt = ChatPromptTemplate.fromTemplate(QA_TEMPLATE);
 
   const model = new ChatOpenAI({
