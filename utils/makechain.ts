@@ -22,6 +22,7 @@ Standalone question:`;
 const QA_TEMPLATE = `You are an expert researcher. Use the following pieces of context to answer the question at the end.
 If you don't know the answer, just say you don't know. DO NOT try to make up an answer.
 If the question is not related to the context or chat history, politely respond that you are tuned to only answer questions that are related to the context.
+Rinvoq and upadacitinib are the same drug, rinvoq is the trade name and upadacitinib is the drug name.
 
 <context>
   {context}
@@ -42,11 +43,27 @@ const combineDocumentsFn = (docs: Document[], separator = '\n\n' as any) => {
 export const makeChain = (retriever: VectorStoreRetriever) => {
   const condenseQuestionPrompt =
     ChatPromptTemplate.fromTemplate(CONDENSE_TEMPLATE);
+
+
   const answerPrompt = ChatPromptTemplate.fromTemplate(QA_TEMPLATE);
 
   const model = new ChatOpenAI({
     temperature: 0, // increase temperature to get more creative answers
     modelName: 'gpt-4', //change this to gpt-4 if you have access
+    // prefixMessages: [
+    //   {
+    //     "role" : "system",
+    //     "content": "You are a helpful translator. Translate the user sentence to French.",
+    //   },
+    //   {
+    //     "role" : "user",
+    //     "content" : "I love programming.",
+    //   },
+    //   {
+    //     "role" : "assistant",
+    //     "content" : ""
+    //   }
+    // ]
   });
 
   // Rephrase the initial question into a dereferenced standalone question based on
