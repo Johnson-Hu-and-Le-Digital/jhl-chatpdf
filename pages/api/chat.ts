@@ -85,8 +85,9 @@ export default async function handler(
       ],
     });
 
+    let additional = 'Rinvoq and upadacitinib are the same drug, rinvoq is the trade name and upadacitinib is the drug name.';
     //create chain
-    const chain = makeChain(retriever);
+    const chain = makeChain(retriever, additional);
 
     const pastMessages = history
       .map((message: [string, string]) => {
