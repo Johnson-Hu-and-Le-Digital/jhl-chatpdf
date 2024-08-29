@@ -29,7 +29,11 @@ export default async function handler(
 
       const fileslist = files.filter((file) => file.isFile());
       fileslist.forEach((fil) => {
-        filesArray.push(fil.name);
+        let filename = fil.name;
+        let lastFourChars = filename.slice(-4);
+        if(lastFourChars === '.pdf'){
+          filesArray.push(fil.name);
+        }
       });
 
       res.status(200).json({ message: directoryPath, directoryPath: directoryPath,files: filesArray});

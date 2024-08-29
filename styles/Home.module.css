@@ -32,6 +32,20 @@
   outline: none;
 }
 
+.textarea2 {
+  position: relative;
+  resize: none;
+  font-size: 1.1rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  width: 75vw;
+  border-radius: 0.5rem;
+  border: 1px solid #d9d9e3;
+  background: #ffffff;
+  color: #000;
+  outline: none;
+}
+
 .textarea:disabled {
   opacity: 0.5;
 }

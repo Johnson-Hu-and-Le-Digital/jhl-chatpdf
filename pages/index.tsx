@@ -210,6 +210,7 @@ export default function Index() {
   }
 
   const [directoryname, setDirectoryname] = useState<string>('');
+  const [promptEngineering, setPromptEngineering] = useState<string>('');
   const [dirNameFlg, setDirNameFlg] = useState(true);
   const [addDirLoading, setAddDirLoading] = useState<boolean>(false);
   async function handleAddDirectory(e: any) {
@@ -231,6 +232,7 @@ export default function Index() {
         // console.log('directoryname', directoryname);
         const data = {
           directoryname: directoryname,
+          promptEngineering: promptEngineering
           // pdfDirectory: pdfDirectory
         }
         const res = await fetch('/api/filemanagement/addDirectory', {
@@ -747,6 +749,20 @@ export default function Index() {
                           value={directoryname}
                           onChange={(e) => setDirectoryname(e.target.value)} />
 
+                        <textarea
+                          ref={textAreaRef}
+                          autoFocus={false}
+                          rows={3}
+                          maxLength={512}
+                          id="promptEngineering"
+                          name="promptEngineering"
+                          placeholder="Enter prompt engineering"
+                          value={promptEngineering}
+                          className={styles.textarea2}
+                          style={{width: '100%'}}
+                          onChange={(e) => setPromptEngineering(e.target.value)}
+                        />
+                                  
                           {!dirNameFlg && <div className="error-msg pt-3" id="dir_name_error">Start and end with an alphanumeric character, and consist only of case alphanumeric characters or &apos;-&apos;.</div>}
                         <button type="button" className="btn font-uppercase max-width-125 mt-3" id="add_Dir" 
                           disabled={addDirLoading} onClick={handleAddDirectory}>Add<span className="icon"></span>

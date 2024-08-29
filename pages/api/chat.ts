@@ -37,7 +37,6 @@ export default async function handler(
     const filePath = process.env.PDF_DIRECTORY+'/'+selectIndex+'/';
     const files = fs.readdirSync(filePath);
     const firstFileName = files[0];
-    console.log('firstFileName : ', firstFileName);
 
     const index_name_space = firstFileName ? firstFileName : '';
 
@@ -85,8 +84,15 @@ export default async function handler(
       ],
     });
 
-    let additional = 'Rinvoq and upadacitinib are the same drug, rinvoq is the trade name and upadacitinib is the drug name.';
-    // let additional = '';
+    let additional = '';
+    if(fs.existsSync(filePath+'config.json')){
+      const data = fs.readFileSync(filePath+'config.json', 'utf8');
+      const jsonData = JSON.parse(data);
+      // console.log(jsonData.prompt_engineering);
+      additional = jsonData.prompt_engineering;
+    }
+    
+    // console.log(additional);
     //create chain
     const chain = makeChain(retriever, additional);
 
