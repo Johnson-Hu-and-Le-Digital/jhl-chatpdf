@@ -269,6 +269,44 @@ export default function Index() {
   }
   //===== Add Directory End =====
 
+  //===== Modify Prompt =====
+  const [modifyPromptEngineering, setModifyPromptEngineering] = useState<string>('');
+  const [modifyPromptLoading, setModifyPromptLoading] = useState<boolean>(false);
+  const [isModifySuccess, setIsModifySuccess] = useState(false);
+  async function handleModifyPrompt(e: any) {
+    e.preventDefault();
+    setModifyPromptLoading(true);
+    try {
+      const data = {
+        directoryname: clickDir2,
+        modifyPromptEngineering: modifyPromptEngineering
+      }
+      const res = await fetch('/api/filemanagement/modifyPromptEngineering', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      const body = await res.json();
+  
+      if (res.ok) {
+        setModifyPromptLoading(false);
+        setIsModifySuccess(true);
+      }
+  
+      if (res.status === 400) {
+        setModifyPromptLoading(false);
+        alert(`${body.message} 😢`);
+      }
+    } catch (err) {
+      setModifyPromptLoading(false);
+      console.log('Something went wrong: ', err);
+    }
+  }
+
+
   //===== PDF List =====
   let clickDir = '';
   // let clickDirIndex = 0;
@@ -292,6 +330,7 @@ export default function Index() {
       const body = await res.json();
       if (res.ok) {
         setFiles(body.files);
+        setModifyPromptEngineering(body.additional);
         // setNowdirectory(body.directoryPath);
       }
   
@@ -308,7 +347,7 @@ export default function Index() {
   const handleDoubleDirClick = (event: any) => {
     clickDir = event.target.getAttribute('value');
     setClickDir2(event.target.getAttribute('value'));
-
+    setIsModifySuccess(false);
     handleGetPDFList();
   };
   //===== Double Click Directory End =====
@@ -777,6 +816,39 @@ export default function Index() {
                           </button>
                       </div>
                     ) : ( '' )}
+
+                    <hr />
+                    <div className='modify-prompt-engineering'>
+                      <div className='modify-title font-Poppins-Medium font-size-16 text-line-height-18 '>Modify Prompt Engineering</div>
+                      <textarea
+                            ref={textAreaRef}
+                            autoFocus={false}
+                            rows={3}
+                            maxLength={512}
+                            id="modifyPromptEngineering"
+                            name="modifyPromptEngineering"
+                            placeholder="Enter prompt engineering"
+                            value={modifyPromptEngineering}
+                            className={styles.textarea2}
+                            style={{width: '100%'}}
+                            onChange={(e) => setModifyPromptEngineering(e.target.value)}
+                          />
+
+                      
+                      <button type="button" className="btn font-uppercase max-width-125 mt-3" id="modify_prompt" 
+                          disabled={modifyPromptLoading} onClick={handleModifyPrompt}>Modify<span className="icon"></span>
+                          {modifyPromptLoading ? (
+                            <div className='loadingwheel'>
+                              <LoadingDots color="#000" />
+                            </div>
+                          ) : (
+                            <span className='bor'></span>
+                          )}
+                          
+                          </button>
+                          {isModifySuccess && ( <div className='success-msg pt-2'>Modify Successfully.</div> )}
+                    </div>
+                    
                 </div>
                 <div className="col-12 col-lg-11 pt-3">
                     {/* <div>{filesArray}</div> */}

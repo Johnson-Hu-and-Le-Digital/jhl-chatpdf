@@ -36,7 +36,16 @@ export default async function handler(
         }
       });
 
-      res.status(200).json({ message: directoryPath, directoryPath: directoryPath,files: filesArray});
+      let additional = '';
+      if(fs.existsSync(directoryPath+'/config.json')){
+        const data = fs.readFileSync(directoryPath+'/config.json', 'utf8');
+        const jsonData = JSON.parse(data);
+        // console.log(jsonData.prompt_engineering);
+        additional = jsonData.prompt_engineering;
+      }
+      console.log("additional: "+additional);
+
+      res.status(200).json({ message: directoryPath, directoryPath: directoryPath,files: filesArray,additional: additional});
     });
 
     return;

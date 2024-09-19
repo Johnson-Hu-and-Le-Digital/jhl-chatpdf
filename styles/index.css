@@ -951,3 +951,17 @@ hr.hr-white {
   font-size: 14px;
   font-style: italic;
 }
+
+.modify-prompt-engineering .modify-title{
+  color: #716da3;
+}
+
+#modify_prompt .loadingwheel{
+  position: absolute;
+  top: 0.8rem;
+  right: 3rem;
+}
+
+.success-msg{
+  color: green;
+}
